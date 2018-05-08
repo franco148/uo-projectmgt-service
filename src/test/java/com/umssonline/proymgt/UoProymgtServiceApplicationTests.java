@@ -1,4 +1,4 @@
-package com.umssonline.proymgt.uoproymgtservice;
+package com.umssonline.proymgt;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
