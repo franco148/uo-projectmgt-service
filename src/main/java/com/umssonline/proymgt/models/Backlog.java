@@ -23,12 +23,12 @@ public class Backlog {
     @OneToOne(mappedBy = "backlog")
     private Project project;
     @OneToMany(mappedBy = "backlog")
-    private List<SprintItem> sprintItems;
+    private List<UserStory> userStories;
     //endregion
 
     //region Constructors
     protected Backlog() {
-        this.sprintItems = new ArrayList<>();
+        this.userStories = new ArrayList<>();
     }
 
     public Backlog(String description) {
@@ -87,12 +87,12 @@ public class Backlog {
         this.project = project;
     }
 
-    public List<SprintItem> getSprintItems() {
-        return sprintItems;
+    public List<UserStory> getUserStories() {
+        return userStories;
     }
 
-    public void addSprintItem(SprintItem item) {
-        this.sprintItems.add(item);
+    public void addSprintItem(UserStory userStory) {
+        this.userStories.add(userStory);
         //Set a Backlog to the task.
     }
 

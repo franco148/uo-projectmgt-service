@@ -19,14 +19,14 @@ public class Sprint {
     @Column(nullable = false)
     private LocalDate completedOn;
     @OneToMany
-    private List<SprintItem> sprintItems;
+    private List<UserStory> userStories;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Project project;
     //endregion
 
     //region Constructors
     protected Sprint() {
-        this.sprintItems = new ArrayList<>();
+        this.userStories = new ArrayList<>();
     }
 
     public Sprint(String name) {
@@ -69,13 +69,20 @@ public class Sprint {
         this.completedOn = completedOn;
     }
 
-    public List<SprintItem> getSprintItems() {
-        return sprintItems;
+    public List<UserStory> getUserStories() {
+        return userStories;
     }
 
-    public void addSprintItems(SprintItem sprintItem) {
-        this.sprintItems.add(sprintItem);
+    public void addSprintItems(UserStory userStory) {
+        this.userStories.add(userStory);
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
     //endregion
 }

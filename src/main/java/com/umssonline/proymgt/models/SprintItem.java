@@ -4,9 +4,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class SprintItem {
+@MappedSuperclass
+public abstract class SprintItem {
 
     //region Properties
     @Id
@@ -30,9 +29,6 @@ public class SprintItem {
     private LocalDateTime startedOn;
     private LocalDateTime updatedOn;
     private LocalDateTime completedOn;
-
-    @ManyToOne(optional = false)
-    private Backlog backlog;
     //endregion
 
     //region Constructors
@@ -40,7 +36,7 @@ public class SprintItem {
 
     }
 
-    public SprintItem(String name, String description, Priority priority, User createdBy, User assignedTo, User updatedBy, Integer estimatedTime) {
+    protected SprintItem(String name, String description, Priority priority, User createdBy, User assignedTo, User updatedBy, Integer estimatedTime) {
         this.name = name;
         this.description = description;
         this.priority = priority;
@@ -148,12 +144,5 @@ public class SprintItem {
         this.completedOn = completedOn;
     }
 
-    public Backlog getBacklog() {
-        return backlog;
-    }
-
-    public void setBacklog(Backlog backlog) {
-        this.backlog = backlog;
-    }
     //endregion
 }
