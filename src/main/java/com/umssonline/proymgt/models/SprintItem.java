@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class SprintItem {
 
+    //region Properties
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -17,15 +18,24 @@ public class SprintItem {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Priority priority;
+    @Column(nullable = false, updatable = false)
     private User createdBy;
     private User assignedTo;
+    @Column(nullable = false)
     private User updatedBy;
     private Integer estimatedTime;
+    @Column(nullable = false, updatable = false)
     private LocalDate createdOn;
+    @Column(updatable = false)
     private LocalDateTime startedOn;
     private LocalDateTime updatedOn;
     private LocalDateTime completedOn;
 
+    @ManyToOne(optional = false)
+    private Backlog backlog;
+    //endregion
+
+    //region Constructors
     protected SprintItem() {
 
     }
@@ -39,7 +49,16 @@ public class SprintItem {
         this.updatedBy = updatedBy;
         this.estimatedTime = estimatedTime;
     }
+    //endregion
 
+    //region Getters & Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -129,4 +148,12 @@ public class SprintItem {
         this.completedOn = completedOn;
     }
 
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
+    }
+    //endregion
 }

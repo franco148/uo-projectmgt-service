@@ -9,26 +9,43 @@ import java.util.List;
 @Entity
 public class Backlog {
 
+    //region Properties
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String description;
+    @Column(nullable = false)
     private Integer amountOfTasks;
-    @OneToMany
-    private List<Task> tasks;
     @Column(nullable = false)
     private LocalDate createdOn;
     private LocalDateTime updatedOn;
 
+    @OneToOne(mappedBy = "backlog")
+    private Project project;
+    @OneToMany(mappedBy = "backlog")
+    private List<SprintItem> sprintItems;
+    //endregion
+
+    //region Constructors
     protected Backlog() {
-        this.tasks = new ArrayList<>();
+        this.sprintItems = new ArrayList<>();
     }
 
     public Backlog(String description) {
+        this();
         this.description = description;
-        this.tasks = new ArrayList<>();
+    }
+    //endregion
+
+    //region Getters & Setters
+
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
@@ -46,15 +63,6 @@ public class Backlog {
         this.amountOfTasks = amountOfTasks;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void addTask(Task task) {
-        this.tasks = tasks;
-        //Set a Backlog to the task.
-    }
-
     public LocalDate getCreatedOn() {
         return createdOn;
     }
@@ -70,4 +78,23 @@ public class Backlog {
     public void setUpdatedOn(LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public List<SprintItem> getSprintItems() {
+        return sprintItems;
+    }
+
+    public void addSprintItem(SprintItem item) {
+        this.sprintItems.add(item);
+        //Set a Backlog to the task.
+    }
+
+    //endregion
 }

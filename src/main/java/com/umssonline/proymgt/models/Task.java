@@ -1,12 +1,11 @@
 package com.umssonline.proymgt.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 public class Task extends SprintItem {
 
+    @ManyToOne(optional = false)
     private UserStory userStory;
 
     protected Task() {
