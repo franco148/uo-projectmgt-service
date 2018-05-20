@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: default
+  application:
+    name: project-mgt-service
+  cloud:
+    config:
+      uri: http://localhost:9010
