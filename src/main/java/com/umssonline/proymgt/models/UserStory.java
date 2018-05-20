@@ -13,6 +13,9 @@ public class UserStory extends SprintItem {
     //region Properties
     @ManyToOne(optional = false)
     private Backlog backlog;
+    //@Column(nullable = false)
+    @ManyToOne(optional = false)
+    private Sprint sprint;
     @Column(nullable = false)
     @OneToMany(mappedBy = "userStory", orphanRemoval = true)
     private Set<Task> tasks;

@@ -18,7 +18,7 @@ public class Sprint {
     private LocalDate startedOn;
     @Column(nullable = false)
     private LocalDate completedOn;
-    @OneToMany
+    @OneToMany(mappedBy = "sprint", orphanRemoval = true)
     private List<UserStory> userStories;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Project project;
