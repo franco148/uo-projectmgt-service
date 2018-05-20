@@ -16,7 +16,7 @@ public class Project {
     private String name;
     @Column(nullable = false)
     private LocalDate startedOn;
-    private LocalDate completeDateEstimation;
+    private LocalDate completedDateEstimation;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Backlog backlog;
@@ -60,12 +60,12 @@ public class Project {
         this.startedOn = startedOn;
     }
 
-    public LocalDate getCompleteDateEstimation() {
-        return completeDateEstimation;
+    public LocalDate getCompletedDateEstimation() {
+        return completedDateEstimation;
     }
 
-    public void setCompleteDateEstimation(LocalDate completeDateEstimation) {
-        this.completeDateEstimation = completeDateEstimation;
+    public void setCompletedDateEstimation(LocalDate completedDateEstimation) {
+        this.completedDateEstimation = completedDateEstimation;
     }
 
     public List<Sprint> getSprints() {

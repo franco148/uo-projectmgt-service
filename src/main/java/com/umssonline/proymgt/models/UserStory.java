@@ -36,6 +36,14 @@ public class UserStory extends SprintItem {
         this.backlog = backlog;
     }
 
+    public Sprint getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
+    }
+
     public Set<Task> getTasks() {
         return tasks;
     }
