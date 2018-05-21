@@ -1,9 +1,9 @@
 package com.umssonline.proymgt.repositories;
 
-import com.umssonline.proymgt.models.Project;
+import com.umssonline.proymgt.models.Backlog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, Long> {
+public interface BacklogRepository extends JpaRepository<Backlog, Long> {
 }
