@@ -1,5 +1,6 @@
 package com.umssonline.proymgt.controllers;
 
+import com.umssonline.proymgt.models.Backlog;
 import com.umssonline.proymgt.models.Project;
 import com.umssonline.proymgt.services.ProjectService;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,11 @@ public class ProjectRestController {
         Project savedProject = service.create(project);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProject);
+    }
+
+    @GetMapping("/{id}/backlog")
+    public ResponseEntity<Backlog> findBacklogByProjectId(@PathVariable("id") Long projectId) {
+        return null;
     }
     //endregion
 }

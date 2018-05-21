@@ -1,12 +1,16 @@
 package com.umssonline.proymgt.services;
 
 import com.umssonline.proymgt.models.Backlog;
+import com.umssonline.proymgt.models.UserStory;
 import com.umssonline.proymgt.repositories.BacklogRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class BacklogService {
@@ -53,6 +57,18 @@ public class BacklogService {
         }
 
         repository.delete(backlogFromDb.get());
+    }
+
+    public Collection<UserStory> loadUserStories(Long backlogId) throws Exception {
+        Optional<Backlog> backlogFromDb = repository.findById(backlogId);
+
+        if (!backlogFromDb.isPresent()) {
+            throw new Exception("Backlog with specified ID can not be found, process has been terminated");
+        }
+
+        Set<UserStory> userStories = new HashSet<>(backlogFromDb.get().getUserStories());
+
+        return userStories;
     }
     //endregion
 }
