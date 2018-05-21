@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/projects")
@@ -18,6 +19,12 @@ public class ProjectRestController {
     //endregion
 
     //region Methods
+    @GetMapping
+    public ResponseEntity<Collection<Project>> getAll() {
+        Collection<Project> projects = service.getAll();
+        return ResponseEntity.ok(projects);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Project> find(@PathVariable("id") Long projectId) {
         Project response;

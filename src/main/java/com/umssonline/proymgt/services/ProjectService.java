@@ -5,6 +5,7 @@ import com.umssonline.proymgt.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,10 @@ public class ProjectService {
     //endregion
 
     //region CRUD Methods
+    public Collection<Project> getAll() {
+        return repository.findAll();
+    }
+
     public Project find(Long projectId) throws Exception {
         Optional<Project> projectFromDb = repository.findById(projectId);
 
