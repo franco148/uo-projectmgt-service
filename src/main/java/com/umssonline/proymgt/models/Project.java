@@ -1,5 +1,7 @@
 package com.umssonline.proymgt.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,7 +17,9 @@ public class Project {
     @Column(nullable = false, length = 30, unique = true)
     private String name;
     @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate startedOn;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedDateEstimation;
 
     @OneToOne(fetch = FetchType.LAZY)
