@@ -20,7 +20,7 @@ public class Backlog {
     private LocalDate createdOn;
     private LocalDateTime updatedOn;
 
-    @OneToOne(mappedBy = "backlog")
+    @OneToOne(mappedBy = "backlog", fetch = FetchType.LAZY)
     private Project project;
     @OneToMany(mappedBy = "backlog")
     private List<UserStory> userStories;

@@ -1,11 +1,15 @@
 package com.umssonline.proymgt.services;
 
+import com.umssonline.proymgt.controllers.request.BacklogDto;
 import com.umssonline.proymgt.models.Backlog;
+import com.umssonline.proymgt.models.Project;
 import com.umssonline.proymgt.models.UserStory;
 import com.umssonline.proymgt.repositories.BacklogRepository;
+import com.umssonline.proymgt.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,6 +22,9 @@ public class BacklogService {
     //region Properties
     @Resource
     private BacklogRepository repository;
+
+    @Resource
+    private ProjectRepository projectRepository;
     //endregion
 
     //region CRUD Methods
@@ -31,8 +38,27 @@ public class BacklogService {
         return backlogFromDb.get();
     }
 
-    public Backlog create(Backlog backlog) {
-        return repository.save(backlog);
+    public Backlog create(BacklogDto backlog) throws Exception {
+
+        Optional<Project> projectForBacklog = projectRepository.findById(backlog.getProjectId());
+
+        if (!projectForBacklog.isPresent()) {
+            throw new Exception("Project in which needs to be created a backlog does not exist.");
+        }
+
+        Backlog backlogToSave = new Backlog(backlog.getDescription());
+        backlogToSave.setAmountOfTasks(0);
+        backlogToSave.setCreatedOn(LocalDate.now());
+        backlogToSave.setUpdatedOn(LocalDateTime.now());
+        //backlogToSave.setProject(projectForBacklog.get());
+
+        Backlog savedBacklog = repository.save(backlogToSave);
+
+        projectForBacklog.get().setBacklog(backlogToSave);
+        //projectRepository.save(projectForBacklog.get());
+        projectRepository.flush();
+
+        return savedBacklog;
     }
 
     public Backlog edit(Backlog backlog) throws Exception {
