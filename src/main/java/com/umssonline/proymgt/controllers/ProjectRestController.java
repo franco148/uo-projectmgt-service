@@ -46,9 +46,37 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProject);
     }
 
+    @PatchMapping
+    public ResponseEntity<Project> edit(@RequestBody Project editedProject) {
+
+        try {
+            Project updatedProject = service.edit(editedProject);
+            return ResponseEntity.ok(updatedProject);
+        } catch (Exception ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable("id") Long projectId) {
+
+        try {
+            service.remove(projectId);
+            return ResponseEntity.ok(true);
+        } catch (Exception ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/{id}/backlog")
     public ResponseEntity<Backlog> findBacklogByProjectId(@PathVariable("id") Long projectId) {
-        return null;
+
+        try {
+            Backlog backlogFromDb = service.loadBacklog(projectId);
+            return ResponseEntity.ok(backlogFromDb);
+        } catch (Exception ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
     //endregion
 }

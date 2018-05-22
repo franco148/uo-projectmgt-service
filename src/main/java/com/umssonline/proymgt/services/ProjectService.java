@@ -1,5 +1,6 @@
 package com.umssonline.proymgt.services;
 
+import com.umssonline.proymgt.models.Backlog;
 import com.umssonline.proymgt.models.Project;
 import com.umssonline.proymgt.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,16 @@ public class ProjectService {
         }
 
         repository.delete(projectFromDb.get());
+    }
+
+    public Backlog loadBacklog(Long projectId) throws Exception {
+        Optional<Project> projectFromDb = repository.findById(projectId);
+
+        if (!projectFromDb.isPresent()) {
+            throw new Exception("Backlog with specified ID does not exist.");
+        }
+
+        return projectFromDb.get().getBacklog();
     }
     //endregion
 }
