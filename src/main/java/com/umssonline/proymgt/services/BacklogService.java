@@ -55,8 +55,10 @@ public class BacklogService {
         Backlog savedBacklog = repository.save(backlogToSave);
 
         projectForBacklog.get().setBacklog(backlogToSave);
+        backlogToSave.setProject(projectForBacklog.get());
         //projectRepository.save(projectForBacklog.get());
-        projectRepository.flush();
+        //projectRepository.flush();
+        projectRepository.saveAndFlush(projectForBacklog.get());
 
         return savedBacklog;
     }

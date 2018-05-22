@@ -21,8 +21,15 @@ public class BacklogRestController {
 
     //region Methods
     @GetMapping("/{id}")
-    public ResponseEntity<Backlog> find(@PathVariable("id") Long backlogId) {
-        return null;
+    public ResponseEntity find(@PathVariable("id") Long backlogId) {
+
+        try {
+            Backlog backlogFromDb = service.find(backlogId);
+            return ResponseEntity.ok(backlogFromDb);
+        } catch (Exception ex) {
+            String errorMessage = "Backlog can not be saved because: " + ex.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
     }
 
     @GetMapping("/{id}/userstories")
