@@ -26,6 +26,7 @@ public class Backlog {
     @JsonManagedReference
     private Project project;
     @OneToMany(mappedBy = "backlog")
+    @JsonManagedReference
     private List<UserStory> userStories;
     //endregion
 

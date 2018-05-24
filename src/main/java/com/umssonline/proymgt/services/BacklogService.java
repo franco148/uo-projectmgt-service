@@ -50,14 +50,11 @@ public class BacklogService {
         backlogToSave.setAmountOfTasks(0);
         backlogToSave.setCreatedOn(LocalDate.now());
         backlogToSave.setUpdatedOn(LocalDateTime.now());
-        //backlogToSave.setProject(projectForBacklog.get());
 
         Backlog savedBacklog = repository.save(backlogToSave);
 
         projectForBacklog.get().setBacklog(backlogToSave);
         backlogToSave.setProject(projectForBacklog.get());
-        //projectRepository.save(projectForBacklog.get());
-        //projectRepository.flush();
         projectRepository.saveAndFlush(projectForBacklog.get());
 
         return savedBacklog;

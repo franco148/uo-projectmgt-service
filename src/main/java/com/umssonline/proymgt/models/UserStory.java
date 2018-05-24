@@ -1,5 +1,7 @@
 package com.umssonline.proymgt.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -11,6 +13,7 @@ import java.util.Set;
 public class UserStory extends SprintItem {
 
     //region Properties
+    @JsonBackReference
     @ManyToOne(optional = false)
     private Backlog backlog;
     //@Column(nullable = false)
