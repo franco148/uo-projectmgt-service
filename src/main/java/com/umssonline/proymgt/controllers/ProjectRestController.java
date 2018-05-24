@@ -2,6 +2,7 @@ package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.Backlog;
 import com.umssonline.proymgt.models.Project;
+import com.umssonline.proymgt.models.Sprint;
 import com.umssonline.proymgt.services.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,6 +78,13 @@ public class ProjectRestController {
         } catch (Exception ex) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/{id}/sprints")
+    public ResponseEntity loadSprintsByProject(@PathVariable("id") Long projectId) {
+        Collection<Sprint> projectSprints = service.loadSprints(projectId);
+
+        return ResponseEntity.ok(projectSprints);
     }
     //endregion
 }

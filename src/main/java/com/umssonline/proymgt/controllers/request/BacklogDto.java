@@ -3,6 +3,7 @@ package com.umssonline.proymgt.controllers.request;
 public class BacklogDto {
 
     //region Properties
+    private Long id;
     private String description;
     private Long projectId;
     //endregion
@@ -18,6 +19,15 @@ public class BacklogDto {
     //endregion
 
     //region Getters & Setters
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;

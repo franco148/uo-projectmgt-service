@@ -2,8 +2,10 @@ package com.umssonline.proymgt.services;
 
 import com.umssonline.proymgt.models.Backlog;
 import com.umssonline.proymgt.models.Project;
+import com.umssonline.proymgt.models.Sprint;
 import com.umssonline.proymgt.repositories.BacklogRepository;
 import com.umssonline.proymgt.repositories.ProjectRepository;
+import com.umssonline.proymgt.repositories.SprintRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +21,9 @@ public class ProjectService {
 
     @Resource
     private BacklogRepository backlogRepository;
+
+    @Resource
+    private SprintRepository sprintRepository;
     //endregion
 
     //region CRUD Methods
@@ -72,6 +77,12 @@ public class ProjectService {
         }
 
         return backlogFromDb.get();
+    }
+
+    public Collection<Sprint> loadSprints(Long projectId) {
+        Collection<Sprint> sprintFromDb = sprintRepository.findByProjectId(projectId);
+
+        return sprintFromDb;
     }
     //endregion
 }

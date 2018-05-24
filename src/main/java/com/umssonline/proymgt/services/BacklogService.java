@@ -60,7 +60,7 @@ public class BacklogService {
         return savedBacklog;
     }
 
-    public Backlog edit(Backlog backlog) throws Exception {
+    public Backlog edit(BacklogDto backlog) throws Exception {
         Optional<Backlog> backlogFromDb = repository.findById(backlog.getId());
 
         if (!backlogFromDb.isPresent()) {
@@ -68,7 +68,6 @@ public class BacklogService {
         }
 
         backlogFromDb.get().setDescription(backlog.getDescription());
-        backlogFromDb.get().setAmountOfTasks(backlog.getAmountOfTasks());
         backlogFromDb.get().setUpdatedOn(LocalDateTime.now());
 
         return repository.saveAndFlush(backlogFromDb.get());
