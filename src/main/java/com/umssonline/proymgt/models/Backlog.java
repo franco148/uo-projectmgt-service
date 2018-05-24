@@ -1,5 +1,7 @@
 package com.umssonline.proymgt.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,9 +22,11 @@ public class Backlog {
     private LocalDate createdOn;
     private LocalDateTime updatedOn;
 
-    @OneToOne(mappedBy = "backlog")
+    @OneToOne(mappedBy = "backlog", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Project project;
     @OneToMany(mappedBy = "backlog")
+    @JsonManagedReference
     private List<UserStory> userStories;
     //endregion
 

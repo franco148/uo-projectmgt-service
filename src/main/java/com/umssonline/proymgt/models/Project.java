@@ -1,5 +1,6 @@
 package com.umssonline.proymgt.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Project {
     private LocalDate completedDateEstimation;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Backlog backlog;
     @OneToMany(mappedBy = "project")
     private List<Sprint> sprints;
