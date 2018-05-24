@@ -59,7 +59,7 @@ public class BacklogRestController {
     }
 
     @PatchMapping
-    public ResponseEntity update(@RequestBody Backlog editedBacklog) {
+    public ResponseEntity update(@RequestBody BacklogDto editedBacklog) {
 
         try {
             Backlog savedBacklog = service.edit(editedBacklog);
