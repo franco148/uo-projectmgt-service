@@ -17,11 +17,12 @@ public abstract class SprintItem {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Priority priority;
-//    @Column(nullable = false, updatable = false)
-//    private User createdBy;
-//    private User assignedTo;
-//    @Column(nullable = false)
-//    private User updatedBy;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    private User createdBy;
+    @OneToOne(fetch = FetchType.LAZY)
+    private User assignedTo;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    private User updatedBy;
     private Integer estimatedTime;
     @Column(nullable = false, updatable = false)
     private LocalDate createdOn;
@@ -80,29 +81,29 @@ public abstract class SprintItem {
         this.priority = priority;
     }
 
-//    public User getCreatedBy() {
-//        return createdBy;
-//    }
-//
-//    public void setCreatedBy(User createdBy) {
-//        this.createdBy = createdBy;
-//    }
-//
-//    public User getAssignedTo() {
-//        return assignedTo;
-//    }
-//
-//    public void setAssignedTo(User assignedTo) {
-//        this.assignedTo = assignedTo;
-//    }
-//
-//    public User getUpdatedBy() {
-//        return updatedBy;
-//    }
-//
-//    public void setUpdatedBy(User updatedBy) {
-//        this.updatedBy = updatedBy;
-//    }
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public User getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(User updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
     public Integer getEstimatedTime() {
         return estimatedTime;
