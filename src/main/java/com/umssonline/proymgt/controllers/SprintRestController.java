@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.controllers.request.SprintDto;
+import com.umssonline.proymgt.common.dto.SprintDto;
 import com.umssonline.proymgt.models.Sprint;
 import com.umssonline.proymgt.services.SprintService;
 import org.springframework.http.HttpStatus;

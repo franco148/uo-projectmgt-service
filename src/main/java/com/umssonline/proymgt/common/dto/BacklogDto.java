@@ -1,4 +1,4 @@
-package com.umssonline.proymgt.controllers.request;
+package com.umssonline.proymgt.common.dto;
 
 public class BacklogDto {
 

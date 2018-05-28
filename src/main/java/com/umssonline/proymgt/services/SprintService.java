@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.services;
 
-import com.umssonline.proymgt.controllers.request.SprintDto;
+import com.umssonline.proymgt.common.dto.SprintDto;
 import com.umssonline.proymgt.models.Sprint;
 import com.umssonline.proymgt.repositories.SprintRepository;
 import org.springframework.stereotype.Service;

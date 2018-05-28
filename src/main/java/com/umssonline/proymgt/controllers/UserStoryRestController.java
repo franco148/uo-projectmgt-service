@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.controllers.request.UserStoryDto;
+import com.umssonline.proymgt.common.dto.UserStoryDto;
 import com.umssonline.proymgt.models.UserStory;
 import com.umssonline.proymgt.services.UserStoryService;
 import org.springframework.http.HttpStatus;
