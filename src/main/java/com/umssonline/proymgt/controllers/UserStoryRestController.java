@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.common.dto.UserStoryDto;
+import com.umssonline.proymgt.common.dto.CreateUserStoryDto;
 import com.umssonline.proymgt.models.UserStory;
 import com.umssonline.proymgt.services.UserStoryService;
 import org.springframework.http.HttpStatus;
@@ -32,10 +32,10 @@ public class UserStoryRestController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody UserStoryDto userStoryDto) {
+    public ResponseEntity create(@RequestBody CreateUserStoryDto createUserStoryDto) {
 
         try {
-            UserStory savedStory = userStoryService.save(userStoryDto);
+            UserStory savedStory = userStoryService.save(createUserStoryDto);
             return ResponseEntity.ok(savedStory);
         } catch (Exception ex) {
             String errorMessage = "UserStory can not be updated because: " + ex.getMessage();

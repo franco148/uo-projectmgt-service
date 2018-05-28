@@ -1,6 +1,5 @@
 package com.umssonline.proymgt.services;
 
-import com.umssonline.proymgt.common.dto.UserStoryDto;
 import com.umssonline.proymgt.models.UserStory;
 import com.umssonline.proymgt.repositories.UserStoryRepository;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,8 @@ public class UserStoryService {
         return usrStoryFromDb.get();
     }
 
-    public UserStory save(UserStoryDto userStoryDto) {
-        return null;
+    public UserStory save(UserStory userStory) {
+        return usRepository.save(userStory);
     }
 
     public UserStory edit(UserStory editedUserStory) {
