@@ -3,6 +3,7 @@ package com.umssonline.proymgt.controllers;
 import com.umssonline.proymgt.common.dto.CreateUserStoryDto;
 import com.umssonline.proymgt.models.UserStory;
 import com.umssonline.proymgt.services.UserStoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,8 @@ public class UserStoryRestController {
     //region Properties
     @Resource
     private UserStoryService userStoryService;
+
+    private static final ModelMapper modelMapper = new ModelMapper();
     //endregion
 
     //region Methods
@@ -35,7 +38,8 @@ public class UserStoryRestController {
     public ResponseEntity create(@RequestBody CreateUserStoryDto createUserStoryDto) {
 
         try {
-            UserStory savedStory = userStoryService.save(createUserStoryDto);
+
+            UserStory savedStory = userStoryService.save(modelMapper.map(createUserStoryDto, UserStory.class));
             return ResponseEntity.ok(savedStory);
         } catch (Exception ex) {
             String errorMessage = "UserStory can not be updated because: " + ex.getMessage();
