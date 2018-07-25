@@ -6,9 +6,9 @@ import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.repositories.BacklogRepository;
 import com.umssonline.proymgt.repositories.ProjectRepository;
 import com.umssonline.proymgt.repositories.SprintRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -16,13 +16,13 @@ import java.util.Optional;
 public class ProjectService {
 
     //region Properties
-    @Resource
+    @Autowired
     private ProjectRepository projRepository;
 
-    @Resource
+    @Autowired
     private BacklogRepository backlogRepository;
 
-    @Resource
+    @Autowired
     private SprintRepository sprintRepository;
     //endregion
 

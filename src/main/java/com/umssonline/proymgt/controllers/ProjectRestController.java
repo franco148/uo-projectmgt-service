@@ -1,14 +1,16 @@
 package com.umssonline.proymgt.controllers;
 
+import com.umssonline.proymgt.models.dto.CreateProjectDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.services.ProjectService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.Collection;
 
 @RestController
@@ -16,8 +18,11 @@ import java.util.Collection;
 public class ProjectRestController {
 
     //region Properties
-    @Resource
+    @Autowired
     private ProjectService service;
+
+    @Autowired
+    private ModelMapper modelMapper;
     //endregion
 
     //region Methods
@@ -41,17 +46,18 @@ public class ProjectRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Project> save(@RequestBody Project project) {
-        Project savedProject = service.create(project);
+    public ResponseEntity<Project> save(@RequestBody CreateProjectDto project) {
+        Project converted = modelMapper.map(project, Project.class);
+        Project savedProject = service.create(converted);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProject);
     }
 
     @PatchMapping
-    public ResponseEntity<Project> edit(@RequestBody Project editedProject) {
+    public ResponseEntity<Project> edit(@RequestBody Project project) {
 
         try {
-            Project updatedProject = service.edit(editedProject);
+            Project updatedProject = service.edit(project);
             return ResponseEntity.ok(updatedProject);
         } catch (Exception ex) {
             return ResponseEntity.notFound().build();

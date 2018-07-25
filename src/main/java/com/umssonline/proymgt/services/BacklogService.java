@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.services;
 
-import com.umssonline.proymgt.models.dto.BacklogDto;
+import com.umssonline.proymgt.models.dto.CreateBacklogDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.UserStory;
@@ -9,7 +9,6 @@ import com.umssonline.proymgt.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,7 +37,7 @@ public class BacklogService {
         return backlogFromDb.get();
     }
 
-    public Backlog create(BacklogDto backlog) throws Exception {
+    public Backlog create(CreateBacklogDto backlog) throws Exception {
 
         Optional<Project> projectForBacklog = projectRepository.findById(backlog.getProjectId());
 
@@ -46,10 +45,11 @@ public class BacklogService {
             throw new Exception("Project in which needs to be created a backlog does not exist.");
         }
 
-        Backlog backlogToSave = new Backlog(backlog.getDescription());
+        Backlog backlogToSave = new Backlog();
+        backlogToSave.setDescription(backlog.getDescription());
         backlogToSave.setAmountOfTasks(0);
-        backlogToSave.setCreatedOn(LocalDate.now());
-        backlogToSave.setUpdatedOn(LocalDateTime.now());
+        backlogToSave.setCreatedAt(LocalDateTime.now());
+        backlogToSave.setUpdatedAt(LocalDateTime.now());
 
         Backlog savedBacklog = repository.save(backlogToSave);
 
@@ -60,7 +60,7 @@ public class BacklogService {
         return savedBacklog;
     }
 
-    public Backlog edit(BacklogDto backlog) throws Exception {
+    public Backlog edit(CreateBacklogDto backlog) throws Exception {
         Optional<Backlog> backlogFromDb = repository.findById(backlog.getId());
 
         if (!backlogFromDb.isPresent()) {
@@ -68,7 +68,7 @@ public class BacklogService {
         }
 
         backlogFromDb.get().setDescription(backlog.getDescription());
-        backlogFromDb.get().setUpdatedOn(LocalDateTime.now());
+        backlogFromDb.get().setUpdatedAt(LocalDateTime.now());
 
         return repository.saveAndFlush(backlogFromDb.get());
     }

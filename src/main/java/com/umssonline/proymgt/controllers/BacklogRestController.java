@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.BacklogDto;
+import com.umssonline.proymgt.models.dto.CreateBacklogDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.services.BacklogService;
@@ -46,7 +46,7 @@ public class BacklogRestController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody BacklogDto backlog) {
+    public ResponseEntity create(@RequestBody CreateBacklogDto backlog) {
 
         try {
             //return service.create(backlog);
@@ -59,7 +59,7 @@ public class BacklogRestController {
     }
 
     @PatchMapping
-    public ResponseEntity update(@RequestBody BacklogDto editedBacklog) {
+    public ResponseEntity update(@RequestBody CreateBacklogDto editedBacklog) {
 
         try {
             Backlog savedBacklog = service.edit(editedBacklog);
