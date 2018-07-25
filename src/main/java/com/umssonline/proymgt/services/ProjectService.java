@@ -1,8 +1,8 @@
 package com.umssonline.proymgt.services;
 
-import com.umssonline.proymgt.models.Backlog;
-import com.umssonline.proymgt.models.Project;
-import com.umssonline.proymgt.models.Sprint;
+import com.umssonline.proymgt.models.entity.Backlog;
+import com.umssonline.proymgt.models.entity.Project;
+import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.repositories.BacklogRepository;
 import com.umssonline.proymgt.repositories.ProjectRepository;
 import com.umssonline.proymgt.repositories.SprintRepository;

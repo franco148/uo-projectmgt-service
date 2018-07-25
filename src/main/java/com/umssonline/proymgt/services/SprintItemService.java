@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.services;
 
-import com.umssonline.proymgt.models.UserStory;
+import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.repositories.TaskRepository;
 import com.umssonline.proymgt.repositories.UserStoryRepository;
 import org.springframework.stereotype.Service;

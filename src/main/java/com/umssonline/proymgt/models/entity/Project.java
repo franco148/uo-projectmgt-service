@@ -1,4 +1,4 @@
-package com.umssonline.proymgt.models;
+package com.umssonline.proymgt.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;

@@ -1,7 +1,7 @@
 package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.SprintDto;
-import com.umssonline.proymgt.models.Sprint;
+import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.services.SprintService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.repositories;
 
-import com.umssonline.proymgt.models.Backlog;
+import com.umssonline.proymgt.models.entity.Backlog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

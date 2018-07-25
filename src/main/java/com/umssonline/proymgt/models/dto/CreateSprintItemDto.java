@@ -1,7 +1,7 @@
 package com.umssonline.proymgt.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.umssonline.proymgt.models.Priority;
+import com.umssonline.proymgt.models.entity.Priority;
 import lombok.Getter;
 import lombok.Setter;
 
