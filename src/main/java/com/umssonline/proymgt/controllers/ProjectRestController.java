@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
@@ -34,19 +35,14 @@ public class ProjectRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Project> find(@PathVariable("id") Long projectId) {
-        Project response;
 
-        try {
-            response = service.find(projectId);
-        } catch (Exception ex) {
-            return ResponseEntity.notFound().build();
-        }
+        Project response = service.find(projectId);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<Project> save(@RequestBody CreateProjectDto project) {
+    public ResponseEntity<Project> save(@Valid @RequestBody CreateProjectDto project) {
         Project converted = modelMapper.map(project, Project.class);
         Project savedProject = service.create(converted);
 

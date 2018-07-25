@@ -41,8 +41,8 @@ public class Project {
     private LocalDate completedDateEstimation;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
     @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Backlog backlog;
 
     @OneToMany(mappedBy = "project")

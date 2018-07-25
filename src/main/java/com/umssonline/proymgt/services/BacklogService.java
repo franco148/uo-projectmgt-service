@@ -39,7 +39,7 @@ public class BacklogService {
 
     public Backlog create(CreateBacklogDto backlog) throws Exception {
 
-        Optional<Project> projectForBacklog = projectRepository.findById(backlog.getProjectId());
+        Optional<Project> projectForBacklog = projectRepository.findById(1L);
 
         if (!projectForBacklog.isPresent()) {
             throw new Exception("Project in which needs to be created a backlog does not exist.");
@@ -61,7 +61,7 @@ public class BacklogService {
     }
 
     public Backlog edit(CreateBacklogDto backlog) throws Exception {
-        Optional<Backlog> backlogFromDb = repository.findById(backlog.getId());
+        Optional<Backlog> backlogFromDb = repository.findById(1L);
 
         if (!backlogFromDb.isPresent()) {
             throw new Exception("Backlog with specified ID can not be found, process has been terminated");

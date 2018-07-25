@@ -1,5 +1,6 @@
 package com.umssonline.proymgt.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,6 +34,7 @@ public class CreateProjectDto {
             )
     @NotNull(message = "Completed Date Estimation field can should not be null.")
     @Future(message = "Completed Date Estimation should be a future date.")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedDateEstimation;
 
     @ApiModelProperty

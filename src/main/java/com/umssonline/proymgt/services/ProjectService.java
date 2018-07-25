@@ -8,7 +8,9 @@ import com.umssonline.proymgt.repositories.ProjectRepository;
 import com.umssonline.proymgt.repositories.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -31,25 +33,26 @@ public class ProjectService {
         return projRepository.findAll();
     }
 
-    public Project find(Long projectId) throws Exception {
+    public Project find(Long projectId) {
         Optional<Project> projectFromDb = projRepository.findById(projectId);
 
         if (!projectFromDb.isPresent()) {
-            throw new Exception("Backlog with specified ID does not exist.");
+            throw new EntityNotFoundException("Backlog with specified ID does not exist.");
         }
 
         return projectFromDb.get();
     }
 
+    @Transactional
     public Project create(Project project) {
         return projRepository.save(project);
     }
 
-    public Project edit(Project editedProject) throws Exception {
+    public Project edit(Project editedProject) {
         Optional<Project> projectFromDb = projRepository.findById(editedProject.getId());
 
         if (!projectFromDb.isPresent()) {
-            throw new Exception("Backlog with specified ID can not be found, process has been terminated");
+            throw new EntityNotFoundException("Backlog with specified ID can not be found, process has been terminated");
         }
 
         projectFromDb.get().setName(editedProject.getName());
@@ -58,22 +61,22 @@ public class ProjectService {
         return projRepository.saveAndFlush(projectFromDb.get());
     }
 
-    public void remove(Long projectId) throws Exception {
+    public void remove(Long projectId) {
         Optional<Project> projectFromDb = projRepository.findById(projectId);
 
         if (!projectFromDb.isPresent()) {
-            throw new Exception("Backlog with specified ID can not be found, process has been terminated");
+            throw new EntityNotFoundException("Backlog with specified ID can not be found, process has been terminated");
         }
 
         projRepository.delete(projectFromDb.get());
     }
 
-    public Backlog loadBacklog(Long projectId) throws Exception {
+    public Backlog loadBacklog(Long projectId) {
 
         Optional<Backlog> backlogFromDb = backlogRepository.findByProjectId(projectId);
 
         if (!backlogFromDb.isPresent()) {
-            throw new Exception("Backlog with specified ID does not exist.");
+            throw new EntityNotFoundException("Backlog with specified ID does not exist.");
         }
 
         return backlogFromDb.get();

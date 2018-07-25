@@ -38,8 +38,8 @@ public class Backlog {
     private LocalDateTime updatedAt;
 
     @NotNull(message = "Project should exist before creating a backlog.")
-    @OneToOne(mappedBy = "backlog", fetch = FetchType.LAZY)
     @JsonManagedReference
+    @OneToOne(mappedBy = "backlog", fetch = FetchType.LAZY)
     private Project project;
 
     @OneToMany(mappedBy = "backlog")
