@@ -1,6 +1,7 @@
 package com.umssonline.proymgt.services;
 
 import com.umssonline.proymgt.models.UserStory;
+import com.umssonline.proymgt.repositories.TaskRepository;
 import com.umssonline.proymgt.repositories.UserStoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -8,11 +9,14 @@ import javax.annotation.Resource;
 import java.util.Optional;
 
 @Service
-public class UserStoryService {
+public class SprintItemService {
 
     //region Properties
     @Resource
     private UserStoryRepository usRepository;
+
+    @Resource
+    private TaskRepository taskRepository;
     //endregion
 
     //region Methods

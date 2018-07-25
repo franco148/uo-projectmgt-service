@@ -1,8 +1,8 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.common.dto.CreateUserStoryDto;
+import com.umssonline.proymgt.common.dto.CreateSprintItemDto;
 import com.umssonline.proymgt.models.UserStory;
-import com.umssonline.proymgt.services.UserStoryService;
+import com.umssonline.proymgt.services.SprintItemService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class UserStoryRestController {
 
     //region Properties
     @Resource
-    private UserStoryService userStoryService;
+    private SprintItemService sprintItemService;
 
     private static final ModelMapper modelMapper = new ModelMapper();
     //endregion
@@ -26,7 +26,7 @@ public class UserStoryRestController {
     public ResponseEntity find(@PathVariable("id") Long id) {
 
         try {
-            UserStory storyFromB = userStoryService.find(id);
+            UserStory storyFromB = sprintItemService.find(id);
             return ResponseEntity.ok(storyFromB);
         } catch (Exception ex) {
             String errorMessage = "UserStory can not be found: " + ex.getMessage();
@@ -35,11 +35,11 @@ public class UserStoryRestController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody CreateUserStoryDto createUserStoryDto) {
+    public ResponseEntity create(@RequestBody CreateSprintItemDto createSprintItemDto) {
 
         try {
 
-            UserStory savedStory = userStoryService.save(modelMapper.map(createUserStoryDto, UserStory.class));
+            UserStory savedStory = sprintItemService.save(modelMapper.map(createSprintItemDto, UserStory.class));
             return ResponseEntity.ok(savedStory);
         } catch (Exception ex) {
             String errorMessage = "UserStory can not be updated because: " + ex.getMessage();
@@ -51,7 +51,7 @@ public class UserStoryRestController {
     public ResponseEntity update(@RequestBody UserStory editedUserStory) {
 
         try {
-            UserStory savedStory = userStoryService.edit(editedUserStory);
+            UserStory savedStory = sprintItemService.edit(editedUserStory);
             return ResponseEntity.ok(savedStory);
         } catch (Exception ex) {
             String errorMessage = "UserStory can not be updated because: " + ex.getMessage();
@@ -63,7 +63,7 @@ public class UserStoryRestController {
     public ResponseEntity remove(@PathVariable("id") Long storyId) {
 
         try {
-            userStoryService.delete(storyId);
+            sprintItemService.delete(storyId);
             return ResponseEntity.ok().body("UserStory was deleted successfully");
         } catch (Exception ex) {
             String errorMessage = "UserStory can not be deleted because: " + ex.getMessage();
