@@ -1,7 +1,7 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.common.dto.CreateSprintItemDto;
-import com.umssonline.proymgt.common.dto.UpdateSprintItemDto;
+import com.umssonline.proymgt.models.dto.CreateSprintItemDto;
+import com.umssonline.proymgt.models.dto.UpdateSprintItemDto;
 import com.umssonline.proymgt.services.SprintItemService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.services;
 
-import com.umssonline.proymgt.common.dto.BacklogDto;
+import com.umssonline.proymgt.models.dto.BacklogDto;
 import com.umssonline.proymgt.models.Backlog;
 import com.umssonline.proymgt.models.Project;
 import com.umssonline.proymgt.models.UserStory;

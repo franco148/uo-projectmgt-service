@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.common.dto.CreateSprintItemDto;
+import com.umssonline.proymgt.models.dto.CreateSprintItemDto;
 import com.umssonline.proymgt.models.UserStory;
 import com.umssonline.proymgt.services.SprintItemService;
 import org.modelmapper.ModelMapper;
