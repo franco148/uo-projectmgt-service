@@ -1,10 +1,11 @@
 package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.CreateProjectDto;
+import com.umssonline.proymgt.models.dto.UpdateProjectDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.Sprint;
-import com.umssonline.proymgt.services.ProjectService;
+import com.umssonline.proymgt.services.ProjectServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class ProjectRestController {
 
     //region Properties
     @Autowired
-    private ProjectService service;
+    private ProjectServiceImpl service;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -28,15 +29,15 @@ public class ProjectRestController {
 
     //region Methods
     @GetMapping
-    public ResponseEntity<Collection<Project>> getAll() {
-        Collection<Project> projects = service.getAll();
+    public ResponseEntity<Iterable<Project>> getAll() {
+        Iterable<Project> projects = service.finAll();
         return ResponseEntity.ok(projects);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Project> find(@PathVariable("id") Long projectId) {
+    @GetMapping("/{project_id}")
+    public ResponseEntity<Project> find(@PathVariable("project_id") Long projectId) {
 
-        Project response = service.find(projectId);
+        Project response = service.findById(projectId);
 
         return ResponseEntity.ok(response);
     }
@@ -44,47 +45,38 @@ public class ProjectRestController {
     @PostMapping
     public ResponseEntity<Project> save(@Valid @RequestBody CreateProjectDto project) {
         Project converted = modelMapper.map(project, Project.class);
-        Project savedProject = service.create(converted);
+        Project savedProject = service.save(converted);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProject);
     }
 
     @PatchMapping
-    public ResponseEntity<Project> edit(@RequestBody Project project) {
+    public ResponseEntity<Project> edit(@RequestBody UpdateProjectDto project) {
 
-        try {
-            Project updatedProject = service.edit(project);
-            return ResponseEntity.ok(updatedProject);
-        } catch (Exception ex) {
-            return ResponseEntity.notFound().build();
-        }
+        Project converted = modelMapper.map(project, Project.class);
+        Project updatedProject = service.update(converted);
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProject);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable("id") Long projectId) {
+    @DeleteMapping("/{project_id}")
+    public ResponseEntity<Void> delete(@PathVariable("project_id") Long projectId) {
 
-        try {
-            service.remove(projectId);
-            return ResponseEntity.ok(true);
-        } catch (Exception ex) {
-            return ResponseEntity.notFound().build();
-        }
+        service.delete(projectId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{id}/backlog")
-    public ResponseEntity<Backlog> findBacklogByProjectId(@PathVariable("id") Long projectId) {
+    @GetMapping("/{project_id}/backlog")
+    public ResponseEntity<Backlog> findBacklogByProjectId(@PathVariable("project_id") Long projectId) {
 
-        try {
-            Backlog backlogFromDb = service.loadBacklog(projectId);
-            return ResponseEntity.ok(backlogFromDb);
-        } catch (Exception ex) {
-            return ResponseEntity.notFound().build();
-        }
+        Backlog backlog = service.getBacklog(projectId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(backlog);
     }
 
-    @GetMapping("/{id}/sprints")
-    public ResponseEntity loadSprintsByProject(@PathVariable("id") Long projectId) {
-        Collection<Sprint> projectSprints = service.loadSprints(projectId);
+    @GetMapping("/{project_id}/sprints")
+    public ResponseEntity<Iterable<Sprint>> loadSprintsByProject(@PathVariable("project_id") Long projectId) {
+        Iterable<Sprint> projectSprints = service.loadSprints(projectId);
 
         return ResponseEntity.ok(projectSprints);
     }

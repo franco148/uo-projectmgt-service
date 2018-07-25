@@ -6,13 +6,21 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @ApiModel(description = "Backlog Model")
 @Getter
 @Setter
-public class CreateBacklogDto {
+public class UpdateBacklogDto {
 
+    @ApiModelProperty
+    (
+        notes = "Id field should not be null.",
+        required = true
+    )
+    @NotNull(message = "Id field should not be null.")
+    private Long id;
     @ApiModelProperty
     (
         notes = "Backlog description",
@@ -21,10 +29,5 @@ public class CreateBacklogDto {
     private String description;
 
     @JsonIgnore
-    private Integer amountOfTasks = 0;
-    @JsonIgnore
-    private LocalDateTime createdAt = LocalDateTime.now();
-    @JsonIgnore
     private LocalDateTime updatedAt = LocalDateTime.now();
-
 }
