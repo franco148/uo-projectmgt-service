@@ -1,9 +1,10 @@
-package com.umssonline.proymgt.services;
+package com.umssonline.proymgt.services.impl;
 
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.repositories.BacklogRepository;
 import com.umssonline.proymgt.repositories.ProjectRepository;
+import com.umssonline.proymgt.services.api.BacklogService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,4 +1,4 @@
-package com.umssonline.proymgt.services;
+package com.umssonline.proymgt.services.impl;
 
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.repositories.TaskRepository;

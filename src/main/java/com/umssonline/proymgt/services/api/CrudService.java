@@ -1,4 +1,4 @@
-package com.umssonline.proymgt.services;
+package com.umssonline.proymgt.services.api;
 
 import java.io.Serializable;
 

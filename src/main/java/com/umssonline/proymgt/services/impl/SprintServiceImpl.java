@@ -1,14 +1,12 @@
-package com.umssonline.proymgt.services;
+package com.umssonline.proymgt.services.impl;
 
-import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.repositories.SprintRepository;
+import com.umssonline.proymgt.services.api.SprintService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
-import java.util.Collection;
-import java.util.Optional;
 
 @Service
 public class SprintServiceImpl implements SprintService {

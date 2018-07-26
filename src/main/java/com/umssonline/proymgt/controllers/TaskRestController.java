@@ -2,7 +2,7 @@ package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
 import com.umssonline.proymgt.models.dto.story.UpdateUserStoryDto;
-import com.umssonline.proymgt.services.SprintItemService;
+import com.umssonline.proymgt.services.impl.SprintItemService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

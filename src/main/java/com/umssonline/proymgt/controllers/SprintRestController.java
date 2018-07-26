@@ -2,7 +2,7 @@ package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;
 import com.umssonline.proymgt.models.entity.Sprint;
-import com.umssonline.proymgt.services.SprintService;
+import com.umssonline.proymgt.services.api.SprintService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

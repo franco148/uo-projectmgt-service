@@ -1,4 +1,6 @@
-package com.umssonline.proymgt.services;
+package com.umssonline.proymgt.services.api;
 
-public interface TaskService {
+import com.umssonline.proymgt.models.entity.Task;
+
+public interface TaskService extends CrudService<Task> {
 }

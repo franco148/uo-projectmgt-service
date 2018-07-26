@@ -3,7 +3,7 @@ package com.umssonline.proymgt.controllers;
 import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
-import com.umssonline.proymgt.services.BacklogServiceImpl;
+import com.umssonline.proymgt.services.impl.BacklogServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

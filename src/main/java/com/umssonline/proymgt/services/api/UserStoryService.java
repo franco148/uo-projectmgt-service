@@ -1,4 +1,6 @@
-package com.umssonline.proymgt.services;
+package com.umssonline.proymgt.services.api;
 
-public interface UserStoryService {
+import com.umssonline.proymgt.models.entity.UserStory;
+
+public interface UserStoryService extends CrudService<UserStory> {
 }
