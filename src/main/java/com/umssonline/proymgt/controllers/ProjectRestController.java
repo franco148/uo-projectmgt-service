@@ -35,7 +35,7 @@ public class ProjectRestController {
     }
 
     @GetMapping("/{project_id}")
-    public ResponseEntity<Project> find(@PathVariable("project_id") Long projectId) {
+    public ResponseEntity<Project> find(@PathVariable("project_id") final Long projectId) {
 
         Project response = service.findById(projectId);
 
@@ -43,31 +43,33 @@ public class ProjectRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Project> save(@Valid @RequestBody CreateProjectDto project) {
+    public ResponseEntity<Project> save(@Valid @RequestBody final CreateProjectDto project) {
         Project converted = modelMapper.map(project, Project.class);
         Project savedProject = service.save(converted);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProject);
     }
 
-    @PatchMapping
-    public ResponseEntity<Project> edit(@RequestBody UpdateProjectDto project) {
+    @PatchMapping("/{project_id}")
+    public ResponseEntity<Project> edit(@PathVariable("project_id") final Long id, @Valid @RequestBody final UpdateProjectDto project) {
 
         Project converted = modelMapper.map(project, Project.class);
+        converted.setId(id);
+
         Project updatedProject = service.update(converted);
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedProject);
     }
 
     @DeleteMapping("/{project_id}")
-    public ResponseEntity<Void> delete(@PathVariable("project_id") Long projectId) {
+    public ResponseEntity<Void> delete(@PathVariable("project_id") final Long projectId) {
 
         service.delete(projectId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/{project_id}/backlog")
-    public ResponseEntity<Backlog> findBacklogByProjectId(@PathVariable("project_id") Long projectId) {
+    public ResponseEntity<Backlog> findBacklogByProjectId(@PathVariable("project_id") final Long projectId) {
 
         Backlog backlog = service.getBacklog(projectId);
 
@@ -75,7 +77,7 @@ public class ProjectRestController {
     }
 
     @GetMapping("/{project_id}/sprints")
-    public ResponseEntity<Iterable<Sprint>> loadSprintsByProject(@PathVariable("project_id") Long projectId) {
+    public ResponseEntity<Iterable<Sprint>> loadSprintsByProject(@PathVariable("project_id") final Long projectId) {
         Iterable<Sprint> projectSprints = service.loadSprints(projectId);
 
         return ResponseEntity.ok(projectSprints);
