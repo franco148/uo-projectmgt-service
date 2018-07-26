@@ -1,74 +1,65 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
+import com.umssonline.proymgt.models.dto.story.UpdateUserStoryDto;
+import com.umssonline.proymgt.models.entity.Task;
 import com.umssonline.proymgt.models.entity.UserStory;
-import com.umssonline.proymgt.services.impl.SprintItemService;
+import com.umssonline.proymgt.services.api.UserStoryService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/userstories")
+@RequestMapping("/user-stories")
 public class UserStoryRestController {
 
     //region Properties
-    @Resource
-    private SprintItemService sprintItemService;
+    @Autowired
+    private UserStoryService userStoryService;
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
     //endregion
 
     //region Methods
-    @GetMapping("/{id}")
-    public ResponseEntity find(@PathVariable("id") Long id) {
-
-        try {
-            UserStory storyFromB = sprintItemService.find(id);
-            return ResponseEntity.ok(storyFromB);
-        } catch (Exception ex) {
-            String errorMessage = "UserStory can not be found: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+    //Need to build queries by everything
+    public ResponseEntity<UserStory> findAllBy() {
+        return null;
     }
 
-    @PostMapping
-    public ResponseEntity create(@RequestBody CreateUserStoryDto createUserStoryDto) {
+    @GetMapping("/{us_id}")
+    public ResponseEntity findById(@PathVariable("us_id") final Long id) {
 
-        try {
+        UserStory userStory = userStoryService.findById(id);
 
-            UserStory savedStory = sprintItemService.save(modelMapper.map(createUserStoryDto, UserStory.class));
-            return ResponseEntity.ok(savedStory);
-        } catch (Exception ex) {
-            String errorMessage = "UserStory can not be updated because: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+        return ResponseEntity.ok(userStory);
     }
 
-    @PatchMapping
-    public ResponseEntity update(@RequestBody UserStory editedUserStory) {
+    @PutMapping("/{us_id}")
+    public ResponseEntity<UserStory> update(@PathVariable("us_id") final Long id, @RequestBody final UpdateUserStoryDto userStory) {
 
-        try {
-            UserStory savedStory = sprintItemService.edit(editedUserStory);
-            return ResponseEntity.ok(savedStory);
-        } catch (Exception ex) {
-            String errorMessage = "UserStory can not be updated because: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+        UserStory converted = modelMapper.map(userStory, UserStory.class);
+        converted.setId(id);
+        UserStory saved = userStoryService.update(converted);
+
+        return ResponseEntity.ok(saved);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity remove(@PathVariable("id") Long storyId) {
+    @PostMapping("/{us_id}/task")
+    public ResponseEntity<Void> addTask(@PathVariable("us_id") final Long userStoryId, @RequestBody final UpdateUserStoryDto userStory) {
+        return null;
+    }
 
-        try {
-            sprintItemService.delete(storyId);
-            return ResponseEntity.ok().body("UserStory was deleted successfully");
-        } catch (Exception ex) {
-            String errorMessage = "UserStory can not be deleted because: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+    @DeleteMapping("/{us_id}/task/{task_id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable("us_id") final Long userStoryId, @PathVariable("task_id") final Long taskId) {
+        return null;
+    }
+
+    @GetMapping("/{us_id}/tasks")
+    public ResponseEntity<Iterable<Task>> loadTasks(@PathVariable("us_id") final Long userStoryId) {
+        return null;
     }
     //endregion
 }
