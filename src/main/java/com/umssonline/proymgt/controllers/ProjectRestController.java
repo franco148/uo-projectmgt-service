@@ -2,6 +2,7 @@ package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.project.CreateProjectDto;
 import com.umssonline.proymgt.models.dto.project.UpdateProjectDto;
+import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.Sprint;
@@ -28,13 +29,13 @@ public class ProjectRestController {
 
     //region Methods
     @GetMapping
-    public ResponseEntity<Iterable<Project>> getAll() {
+    public ResponseEntity<Iterable<Project>> findAll() {
         Iterable<Project> projects = service.finAll();
         return ResponseEntity.ok(projects);
     }
 
     @GetMapping("/{project_id}")
-    public ResponseEntity<Project> find(@PathVariable("project_id") final Long projectId) {
+    public ResponseEntity<Project> findById(@PathVariable("project_id") final Long projectId) {
 
         Project response = service.findById(projectId);
 
@@ -42,7 +43,7 @@ public class ProjectRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Project> save(@Valid @RequestBody final CreateProjectDto project) {
+    public ResponseEntity<Project> create(@Valid @RequestBody final CreateProjectDto project) {
         Project converted = modelMapper.map(project, Project.class);
         Project savedProject = service.save(converted);
 
@@ -50,7 +51,7 @@ public class ProjectRestController {
     }
 
     @PatchMapping("/{project_id}")
-    public ResponseEntity<Project> edit(@PathVariable("project_id") final Long id, @Valid @RequestBody final UpdateProjectDto project) {
+    public ResponseEntity<Project> update(@PathVariable("project_id") final Long id, @Valid @RequestBody final UpdateProjectDto project) {
 
         Project converted = modelMapper.map(project, Project.class);
         converted.setId(id);
@@ -67,19 +68,17 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{project_id}/backlog")
-    public ResponseEntity<Backlog> findBacklogByProjectId(@PathVariable("project_id") final Long projectId) {
-
-        Backlog backlog = service.getBacklog(projectId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(backlog);
-    }
-
     @GetMapping("/{project_id}/sprints")
-    public ResponseEntity<Iterable<Sprint>> loadSprintsByProject(@PathVariable("project_id") final Long projectId) {
+    public ResponseEntity<Iterable<Sprint>> loadSprints(@PathVariable("project_id") final Long projectId) {
         Iterable<Sprint> projectSprints = service.loadSprints(projectId);
 
         return ResponseEntity.ok(projectSprints);
+    }
+
+    @PostMapping("/{project_id}/sprint")
+    public ResponseEntity<Void> addSprint(@PathVariable("project_id") final Long id, @Valid @RequestBody final CreateSprintDto sprint) {
+
+        return null;
     }
     //endregion
 }

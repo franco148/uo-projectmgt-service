@@ -1,6 +1,5 @@
 package com.umssonline.proymgt.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,8 +40,10 @@ public class Project {
     private LocalDate completedDateEstimation;
 
 
-    @JsonBackReference
+    //@JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fk_backlog", nullable = false)
+    //@MapsId
     private Backlog backlog;
 
     @OneToMany(mappedBy = "project")

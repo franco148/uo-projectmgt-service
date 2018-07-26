@@ -74,10 +74,11 @@ public class ProjectServiceImpl implements ProjectService {
     //region SprintService Members
     @Override
     public Backlog getBacklog(Long projectId) {
-        Backlog backlogFromDb = backlogRepository.findByProjectId(projectId)
-                .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID does not exist."));
-
-        return backlogFromDb;
+//        Backlog backlogFromDb = backlogRepository.findByProjectId(projectId)
+//                .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID does not exist."));
+//
+//        return backlogFromDb;
+        return null;
     }
 
     @Override

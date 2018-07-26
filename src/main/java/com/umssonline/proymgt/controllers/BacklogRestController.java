@@ -1,13 +1,11 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.backlog.CreateBacklogDto;
-import com.umssonline.proymgt.models.dto.backlog.UpdateBacklogDto;
+import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.services.BacklogServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,43 +26,32 @@ public class BacklogRestController {
 
     //region Methods
     @GetMapping("/{backlog_id}")
-    public ResponseEntity<Backlog> find(@PathVariable("backlog_id") final Long backlogId) {
+    public ResponseEntity<Backlog> findById(@PathVariable("backlog_id") final Long backlogId) {
 
         Backlog backlogFound = service.findById(backlogId);
         return ResponseEntity.ok(backlogFound);
     }
 
-    @GetMapping("/{backlog_id}/userstories")
+    @GetMapping("/{backlog_id}/user-stories")
     public ResponseEntity<Iterable<UserStory>> loadUserStories(@PathVariable("backlog_id") final Long backlogId) {
 
         Iterable<UserStory> userStories = service.loadUserStories(backlogId);
         return ResponseEntity.ok(userStories);
     }
 
-    @PostMapping
-    public ResponseEntity<Backlog> create(@Valid @RequestBody final CreateBacklogDto backlog) {
-
-        Backlog converted = modelMapper.map(backlog, Backlog.class);
-        Backlog savedBacklog = service.save(converted);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedBacklog);
+    @PostMapping("/{backlog_id}/user-story")
+    public ResponseEntity<UserStory> addUserStory(@PathVariable("backlog_id") final Long id, @Valid @RequestBody final CreateUserStoryDto userStory) {
+        return null;
     }
 
-    @PatchMapping("/{backlog_id}")
-    public ResponseEntity<Backlog> update(@PathVariable("backlog_id") final Long backlogId, @Valid @RequestBody UpdateBacklogDto backlog) {
-
-        Backlog converted = modelMapper.map(backlog, Backlog.class);
-        converted.setId(backlogId);
-        Backlog updatedBacklog = service.update(converted);
-
-        return ResponseEntity.ok(updatedBacklog);
+    @PostMapping("/move-user-story/{us-id}/sprint/{sprintId}")
+    public ResponseEntity<Void> moveUserStoryToSprint(@PathVariable("us-id") final Long userStoryId, @PathVariable("sprintId") final Long sprintId) {
+        return null;
     }
 
-    @DeleteMapping("/{backlog_id}")
-    public ResponseEntity<Void> remove(@PathVariable("backlog_id") final Long backlogId) {
-
-        service.delete(backlogId);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{backlogId}/user-story/{userStoryId}")
+    public ResponseEntity<Void> deleteUserStory(@PathVariable("backlogId") final Long backlogId, @PathVariable("userStoryId") final Long userStoryId) {
+        return null;
     }
 
     //endregion

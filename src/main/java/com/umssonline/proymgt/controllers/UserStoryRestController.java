@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.CreateSprintItemDto;
+import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.services.SprintItemService;
 import org.modelmapper.ModelMapper;
@@ -35,11 +35,11 @@ public class UserStoryRestController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody CreateSprintItemDto createSprintItemDto) {
+    public ResponseEntity create(@RequestBody CreateUserStoryDto createUserStoryDto) {
 
         try {
 
-            UserStory savedStory = sprintItemService.save(modelMapper.map(createSprintItemDto, UserStory.class));
+            UserStory savedStory = sprintItemService.save(modelMapper.map(createUserStoryDto, UserStory.class));
             return ResponseEntity.ok(savedStory);
         } catch (Exception ex) {
             String errorMessage = "UserStory can not be updated because: " + ex.getMessage();

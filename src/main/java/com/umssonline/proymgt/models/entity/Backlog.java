@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(exclude = {"project", "userStories"})
-@ToString(exclude = {"project", "userStories"})
+@EqualsAndHashCode(exclude = {"userStories"}) //exclude = {"project", "userStories"}
+@ToString(exclude = {"userStories"})//exclude = {"project", "userStories"}
 @Data
 
 @Entity
@@ -37,10 +37,12 @@ public class Backlog {
 
     private LocalDateTime updatedAt;
 
-    @NotNull(message = "Project should exist before creating a backlog.")
-    @JsonManagedReference
-    @OneToOne(mappedBy = "backlog", fetch = FetchType.LAZY)
-    private Project project;
+//    @NotNull(message = "Project should exist before creating a backlog.")
+    //@JsonManagedReference
+    //@OneToOne(mappedBy = "backlog", fetch = FetchType.LAZY)
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @MapsId
+//    private Project project;
 
     @OneToMany(mappedBy = "backlog")
     @JsonManagedReference

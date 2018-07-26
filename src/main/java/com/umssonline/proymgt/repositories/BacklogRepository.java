@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface BacklogRepository extends JpaRepository<Backlog, Long> {
 
-    Optional<Backlog> findByProjectId(Long projectId);
+    //Optional<Backlog> findByProjectId(Long projectId);
 }

@@ -1,7 +1,7 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.CreateSprintItemDto;
-import com.umssonline.proymgt.models.dto.UpdateSprintItemDto;
+import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
+import com.umssonline.proymgt.models.dto.story.UpdateUserStoryDto;
 import com.umssonline.proymgt.services.SprintItemService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +32,12 @@ public class TaskRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody CreateSprintItemDto sprintItemDto) {
+    public ResponseEntity<?> create(@RequestBody CreateUserStoryDto sprintItemDto) {
         return null;
     }
 
     @PatchMapping("/{task_id}")
-    public ResponseEntity<?> update(@PathVariable("task_id") Long taskId, UpdateSprintItemDto updateSprintItemDto) {
+    public ResponseEntity<?> update(@PathVariable("task_id") Long taskId, UpdateUserStoryDto updateUserStoryDto) {
         return null;
     }
 
