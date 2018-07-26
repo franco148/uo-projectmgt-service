@@ -25,11 +25,17 @@ public class SprintRestController {
 
     //region Methods
     @GetMapping("/{sprint_id}")
-    public ResponseEntity<Sprint> find(@PathVariable("sprint_id") final Long id) {
+    public ResponseEntity<Sprint> findById(@PathVariable("sprint_id") final Long id) {
 
         Sprint sprint = sprintService.findById(id);
 
         return ResponseEntity.ok(sprint);
+    }
+
+    //By many parameters ?????
+    @GetMapping
+    public ResponseEntity<Iterable<Sprint>> findAllByProjectId(@RequestParam("projectId") final Long projectId) {
+        return null;
     }
 
     @PostMapping
@@ -40,7 +46,7 @@ public class SprintRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSprint);
     }
 
-    @PatchMapping("/{sprint_id}")
+    @PutMapping("/{sprint_id}")
     public ResponseEntity<Sprint> update(@PathVariable("sprint_id") final Long id, @Valid @RequestBody final CreateSprintDto sprint) {
 
         Sprint converted = modelMapper.map(sprint, Sprint.class);
@@ -50,11 +56,22 @@ public class SprintRestController {
         return ResponseEntity.ok(savedSprint);
     }
 
-    @DeleteMapping("/{sprint_id}")
-    public ResponseEntity<Void> delete(@PathVariable("sprint_id") final Long id) {
-
-        sprintService.delete(id);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/move-task{task_id}/from/{source_sprint_id}/to/{target_sprint_id}")
+    public ResponseEntity<Void> moveTaskToOtherSprint(@PathVariable("task_id") final Long taskId,
+                                                      @PathVariable("source_sprint_id") final Long sourceSprintId,
+                                                      @PathVariable("target_sprint_id") final Long targetSprintId) {
+        return null;
     }
+
+    @PatchMapping("/{sprint_id}/start")
+    public ResponseEntity<Void> startSprint(@PathVariable("sprint_id") final Long id) {
+        return null;
+    }
+
+    @PatchMapping("/{sprint_id}/end")
+    public ResponseEntity<Void> endSprint(@PathVariable("sprint_id") final Long id) {
+        return null;
+    }
+
     //endregion
 }

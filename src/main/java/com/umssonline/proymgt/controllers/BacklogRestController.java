@@ -44,13 +44,13 @@ public class BacklogRestController {
         return null;
     }
 
-    @PostMapping("/move-user-story/{us-id}/sprint/{sprintId}")
-    public ResponseEntity<Void> moveUserStoryToSprint(@PathVariable("us-id") final Long userStoryId, @PathVariable("sprintId") final Long sprintId) {
+    @PostMapping("/move-user-story/{us_id}/sprint/{sprint_id}")
+    public ResponseEntity<Void> moveUserStoryToSprint(@PathVariable("us_id") final Long userStoryId, @PathVariable("sprint_id") final Long sprintId) {
         return null;
     }
 
-    @DeleteMapping("/{backlogId}/user-story/{userStoryId}")
-    public ResponseEntity<Void> deleteUserStory(@PathVariable("backlogId") final Long backlogId, @PathVariable("userStoryId") final Long userStoryId) {
+    @DeleteMapping("/{backlog_id}/user-story/{user_story_id}")
+    public ResponseEntity<Void> deleteUserStory(@PathVariable("backlog_id") final Long backlogId, @PathVariable("user_story_id") final Long userStoryId) {
         return null;
     }
 
