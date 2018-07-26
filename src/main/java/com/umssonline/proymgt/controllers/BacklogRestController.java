@@ -1,7 +1,7 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.CreateBacklogDto;
-import com.umssonline.proymgt.models.dto.UpdateBacklogDto;
+import com.umssonline.proymgt.models.dto.backlog.CreateBacklogDto;
+import com.umssonline.proymgt.models.dto.backlog.UpdateBacklogDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.services.BacklogServiceImpl;

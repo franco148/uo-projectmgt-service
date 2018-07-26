@@ -1,6 +1,8 @@
-package com.umssonline.proymgt.models.dto;
+package com.umssonline.proymgt.models.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.umssonline.proymgt.models.dto.backlog.CreateBacklogDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -10,19 +12,12 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@ApiModel(description = "Backlog")
+@ApiModel(description = "Project Model")
 @Getter
 @Setter
-public class UpdateProjectDto {
-
-    @ApiModelProperty
-    (
-        notes = "Id field should not be null.",
-        required = true
-    )
-    @NotNull(message = "Id field should not be null.")
-    private Long Id;
+public class CreateProjectDto {
 
     @ApiModelProperty
     (
@@ -34,10 +29,10 @@ public class UpdateProjectDto {
     private String name;
 
     @ApiModelProperty
-    (
-        notes = "Completed Date Estimation field can should not be null, and It should be future date.",
-        required = true
-    )
+            (
+                    notes = "Completed Date Estimation field can should not be null, and It should be future date.",
+                    required = true
+            )
     @NotNull(message = "Completed Date Estimation field can should not be null.")
     @Future(message = "Completed Date Estimation should be a future date.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -51,4 +46,7 @@ public class UpdateProjectDto {
     @NotNull(message = "Backlog should not be null.")
     private CreateBacklogDto backlog;
 
+
+    @JsonIgnore
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

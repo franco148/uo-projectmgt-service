@@ -1,4 +1,4 @@
-package com.umssonline.proymgt.models.dto;
+package com.umssonline.proymgt.models.dto.sprint;
 
 import java.time.LocalDate;
 

@@ -1,7 +1,7 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.CreateProjectDto;
-import com.umssonline.proymgt.models.dto.UpdateProjectDto;
+import com.umssonline.proymgt.models.dto.project.CreateProjectDto;
+import com.umssonline.proymgt.models.dto.project.UpdateProjectDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.Sprint;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/projects")
