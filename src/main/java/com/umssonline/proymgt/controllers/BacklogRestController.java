@@ -1,85 +1,57 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.common.dto.BacklogDto;
-import com.umssonline.proymgt.models.Backlog;
-import com.umssonline.proymgt.models.UserStory;
-import com.umssonline.proymgt.services.BacklogService;
-import org.springframework.http.HttpStatus;
+import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
+import com.umssonline.proymgt.models.entity.Backlog;
+import com.umssonline.proymgt.models.entity.UserStory;
+import com.umssonline.proymgt.services.impl.BacklogServiceImpl;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.util.Collection;
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/backlogs")
 public class BacklogRestController {
 
     //region Properties
-    @Resource
-    private BacklogService service;
+    @Autowired
+    private BacklogServiceImpl service;
+
+    @Autowired
+    private ModelMapper modelMapper;
     //endregion
 
     //region Methods
-    @GetMapping("/{id}")
-    public ResponseEntity find(@PathVariable("id") Long backlogId) {
+    @GetMapping("/{backlog_id}")
+    public ResponseEntity<Backlog> findById(@PathVariable("backlog_id") final Long backlogId) {
 
-        try {
-            Backlog backlogFromDb = service.find(backlogId);
-            return ResponseEntity.ok(backlogFromDb);
-        } catch (Exception ex) {
-            String errorMessage = "Backlog can not be found: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+        Backlog backlogFound = service.findById(backlogId);
+        return ResponseEntity.ok(backlogFound);
     }
 
-    @GetMapping("/{id}/userstories")
-    public ResponseEntity loadUserStories(@PathVariable("id") Long backlogId) {
+    @GetMapping("/{backlog_id}/user-stories")
+    public ResponseEntity<Iterable<UserStory>> loadUserStories(@PathVariable("backlog_id") final Long backlogId) {
 
-        try {
-            Collection<UserStory> userStories = service.loadUserStories(backlogId);
-            return ResponseEntity.ok(userStories);
-        } catch (Exception ex) {
-            String errorMessage = "User Stories for backlog can not be loaded: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+        Iterable<UserStory> userStories = service.loadUserStories(backlogId);
+        return ResponseEntity.ok(userStories);
     }
 
-    @PostMapping
-    public ResponseEntity create(@RequestBody BacklogDto backlog) {
-
-        try {
-            //return service.create(backlog);
-            Backlog savedBacklog = service.create(backlog);
-            return ResponseEntity.ok(savedBacklog);
-        } catch (Exception ex) {
-            String errorMessage = "Backlog can not be saved because: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+    @PostMapping("/{backlog_id}/user-story")
+    public ResponseEntity<UserStory> addUserStory(@PathVariable("backlog_id") final Long id, @Valid @RequestBody final CreateUserStoryDto userStory) {
+        return null;
     }
 
-    @PatchMapping
-    public ResponseEntity update(@RequestBody BacklogDto editedBacklog) {
-
-        try {
-            Backlog savedBacklog = service.edit(editedBacklog);
-            return ResponseEntity.ok(savedBacklog);
-        } catch (Exception ex) {
-            String errorMessage = "Backlog can not be updated because: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+    @PostMapping("/move-user-story/{us_id}/sprint/{sprint_id}")
+    public ResponseEntity<Void> moveUserStoryToSprint(@PathVariable("us_id") final Long userStoryId, @PathVariable("sprint_id") final Long sprintId) {
+        return null;
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity remove(@PathVariable("id") Long backlogId) {
-
-        try {
-            service.remove(backlogId);
-            return ResponseEntity.ok().body("Backlog was deleted successfully");
-        } catch (Exception ex) {
-            String errorMessage = "Backlog can not be deleted because: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+    @DeleteMapping("/{backlog_id}/user-story/{user_story_id}")
+    public ResponseEntity<Void> deleteUserStory(@PathVariable("backlog_id") final Long backlogId, @PathVariable("user_story_id") final Long userStoryId) {
+        return null;
     }
 
     //endregion

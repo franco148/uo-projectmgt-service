@@ -1,4 +1,4 @@
-package com.umssonline.proymgt.models;
+package com.umssonline.proymgt.models.entity;
 
 import javax.persistence.*;
 

@@ -1,49 +1,41 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.common.dto.CreateSprintItemDto;
-import com.umssonline.proymgt.common.dto.UpdateSprintItemDto;
-import com.umssonline.proymgt.services.SprintItemService;
+import com.umssonline.proymgt.models.dto.task.UpdateTaskDto;
+import com.umssonline.proymgt.models.entity.Task;
+import com.umssonline.proymgt.services.api.TaskService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/tasks")
 public class TaskRestController {
 
     //region Properties
-    @Resource
-    private SprintItemService sprintItemService;
+    @Autowired
+    private TaskService taskService;
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
     //endregion
 
     //region Methods
     @GetMapping
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<Task> findAllByUserStory(@RequestParam("story") final Long userStoryId) {
         return null;
     }
 
-    @GetMapping("/{task_id}")
-    public ResponseEntity<?> find(@PathVariable("task_id") Long taskId) {
-        return null;
+    @PutMapping("/{task_id}")
+    public ResponseEntity<Task> update(@PathVariable("task_id") final Long taskId, @RequestBody final UpdateTaskDto task) {
+
+        Task converted = modelMapper.map(task, Task.class);
+        converted.setId(taskId);
+        Task saved = taskService.update(converted);
+
+        return ResponseEntity.ok(saved);
     }
 
-    @PostMapping
-    public ResponseEntity<?> create(@RequestBody CreateSprintItemDto sprintItemDto) {
-        return null;
-    }
-
-    @PatchMapping("/{task_id}")
-    public ResponseEntity<?> update(@PathVariable("task_id") Long taskId, UpdateSprintItemDto updateSprintItemDto) {
-        return null;
-    }
-
-    @DeleteMapping("/{task_id}")
-    public ResponseEntity<?> remove(@PathVariable("task_id") Long taskId) {
-        return null;
-    }
     //endregion
 }
