@@ -21,7 +21,7 @@ public class SwaggerConfig {
     private String contactEmail = "franco.arratia@eextreme.com";
 
     // API INFO
-    private String apiInfoTitle = "Umss Online Project Management Service Api Documentation";
+    private String apiInfoTitle = "Umss Online - Project Management Service Api Documentation";
     private String apiInfoDescription = "API Rest Docs for Project Management service - Umss Online Project";
     private String apiInfoVersion = "1.0";
     private String apiInfoTermsOfServices = "All rights reserved.";
