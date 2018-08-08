@@ -2,6 +2,7 @@ package com.umssonline.proymgt.models.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.umssonline.proymgt.models.dto.BaseCreateDto;
 import com.umssonline.proymgt.models.dto.backlog.CreateBacklogDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,12 +13,11 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @ApiModel(description = "Project Model")
 @Getter
 @Setter
-public class CreateProjectDto {
+public class CreateProjectDto extends BaseCreateDto {
 
     @ApiModelProperty
     (
@@ -46,7 +46,4 @@ public class CreateProjectDto {
     @NotNull(message = "Backlog should not be null.")
     private CreateBacklogDto backlog;
 
-
-    @JsonIgnore
-    private LocalDateTime createdAt = LocalDateTime.now();
 }
