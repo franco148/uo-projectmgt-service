@@ -8,4 +8,6 @@ public interface ProjectService extends CrudService<Project> {
 
     Backlog getBacklog(Long projectId);
     Iterable<Sprint> loadSprints(Long projectId);
+
+    Sprint addSprintToProject(Long projectId, Sprint sprint);
 }

@@ -2,40 +2,26 @@ package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.task.UpdateTaskDto;
 import com.umssonline.proymgt.models.entity.Task;
-import com.umssonline.proymgt.services.api.TaskService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.ApiOperation;
+
+public interface TaskRestController {
+
+    @ApiOperation
+    (
+        notes = "Find a task with a specified ID.",
+        value = "Find task by ID.",
+        nickname = "findById",
+        code = 302
+    )
+    Task findById(final Long taskId);
 
 
-@RestController
-@RequestMapping("/tasks")
-public class TaskRestController {
-
-    //region Properties
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private ModelMapper modelMapper;
-    //endregion
-
-    //region Methods
-    @GetMapping
-    public ResponseEntity<Task> findAllByUserStory(@RequestParam("story") final Long userStoryId) {
-        return null;
-    }
-
-    @PutMapping("/{task_id}")
-    public ResponseEntity<Task> update(@PathVariable("task_id") final Long taskId, @RequestBody final UpdateTaskDto task) {
-
-        Task converted = modelMapper.map(task, Task.class);
-        converted.setId(taskId);
-        Task saved = taskService.update(converted);
-
-        return ResponseEntity.ok(saved);
-    }
-
-    //endregion
+    @ApiOperation
+    (
+        notes = "Update a Task with a specified ID.",
+        value = "Update task with a ID",
+        nickname = "update",
+        code = 200
+    )
+    Task update(final Long taskId, final UpdateTaskDto task);
 }

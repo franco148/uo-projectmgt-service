@@ -3,56 +3,59 @@ package com.umssonline.proymgt.controllers;
 import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
-import com.umssonline.proymgt.services.impl.BacklogServiceImpl;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+@Api(value = "Backlogs", description = "Controller for managing Backlog Entity", basePath = "/backlogs")
+public interface BacklogRestController {
+
+    @ApiOperation
+    (
+        notes = "Find a Backlog with the specified ID",
+        value = "Find a backlog",
+        nickname = "findById",
+        code = 302
+    )
+    ResponseEntity<Backlog> findById(final Long backlogId);
 
 
-@RestController
-@RequestMapping("/backlogs")
-public class BacklogRestController {
+    @ApiOperation
+    (
+        notes = "Create a project with its related Backlog",
+        value = "Create project with a backlog",
+        nickname = "createProject",
+        code = 201
+    )
+    ResponseEntity<UserStory> addUserStory(final Long backlogId, final CreateUserStoryDto userStory);
 
-    //region Properties
-    @Autowired
-    private BacklogServiceImpl service;
 
-    @Autowired
-    private ModelMapper modelMapper;
-    //endregion
+    @ApiOperation
+    (
+        notes = "Send a User Story from a backlog to a specified Sprint",
+        value = "Send User Story to a Sprint",
+        nickname = "sendUserStoryToSprint",
+        code = 200
+    )
+    ResponseEntity<Boolean> sendUserStoryToSprint(final Long backlogId, final Long userStoryId, final Long sprintId);
 
-    //region Methods
-    @GetMapping("/{backlog_id}")
-    public ResponseEntity<Backlog> findById(@PathVariable("backlog_id") final Long backlogId) {
 
-        Backlog backlogFound = service.findById(backlogId);
-        return ResponseEntity.ok(backlogFound);
-    }
+    @ApiOperation
+    (
+        notes = "Delete a specified User Story from a Backlog",
+        value = "Delete User Story from Backlog",
+        nickname = "deleteUserStoryFromBacklog",
+        code = 204
+    )
+    ResponseEntity<Void> deleteUserStoryFromBacklog(final Long backlogId, final Long userStoryId);
 
-    @GetMapping("/{backlog_id}/user-stories")
-    public ResponseEntity<Iterable<UserStory>> loadUserStories(@PathVariable("backlog_id") final Long backlogId) {
 
-        Iterable<UserStory> userStories = service.loadUserStories(backlogId);
-        return ResponseEntity.ok(userStories);
-    }
-
-    @PostMapping("/{backlog_id}/user-story")
-    public ResponseEntity<UserStory> addUserStory(@PathVariable("backlog_id") final Long id, @Valid @RequestBody final CreateUserStoryDto userStory) {
-        return null;
-    }
-
-    @PostMapping("/move-user-story/{us_id}/sprint/{sprint_id}")
-    public ResponseEntity<Void> moveUserStoryToSprint(@PathVariable("us_id") final Long userStoryId, @PathVariable("sprint_id") final Long sprintId) {
-        return null;
-    }
-
-    @DeleteMapping("/{backlog_id}/user-story/{user_story_id}")
-    public ResponseEntity<Void> deleteUserStory(@PathVariable("backlog_id") final Long backlogId, @PathVariable("user_story_id") final Long userStoryId) {
-        return null;
-    }
-
-    //endregion
+    @ApiOperation
+    (
+        notes = "Load User Stories from a backlog",
+        value = "Load User Story from Backlog.",
+        nickname = "loadUserStoriesFromBacklog",
+        code = 302
+    )
+    ResponseEntity<Backlog> loadUserStoriesFromBacklog(final Long backlogId);
 }

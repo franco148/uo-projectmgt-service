@@ -1,77 +1,71 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;
+import com.umssonline.proymgt.models.dto.sprint.UpdateSprintDto;
 import com.umssonline.proymgt.models.entity.Sprint;
-import com.umssonline.proymgt.services.api.SprintService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+@Api(value = "Sprints", description = "Controller for managing Sprint Entity", basePath = "/sprints")
+public interface SprintRestController {
 
-@RestController
-@RequestMapping("/sprints")
-public class SprintRestController {
+    @ApiOperation
+    (
+        notes = "Find a sprint with a specified ID.",
+        value = "Find sprint by ID.",
+        nickname = "findById",
+        code = 302
+    )
+    ResponseEntity<Sprint> findById(final Long sprintId);
 
-    //region Properties
-    @Autowired
-    private SprintService sprintService;
 
-    @Autowired
-    private ModelMapper modelMapper;
-    //endregion
+    @ApiOperation
+    (
+        notes = "Update a Sprint with a specified ID.",
+        value = "Update sprint with a ID",
+        nickname = "update",
+        code = 200
+    )
+    ResponseEntity<Sprint> update(final Long sprintId, final UpdateSprintDto sprint);
 
-    //region Methods
-    @GetMapping("/{sprint_id}")
-    public ResponseEntity<Sprint> findById(@PathVariable("sprint_id") final Long id) {
 
-        Sprint sprint = sprintService.findById(id);
+    @ApiOperation
+    (
+        notes = "Move task from a specified Sprint to another.",
+        value = "Move task from a sprint to another.",
+        nickname = "moveTaskToSprint",
+        code = 200
+    )
+    ResponseEntity<Boolean> moveTaskToSprint(final Long sourceSprint, final Long targetSprint, final Long taskId);
 
-        return ResponseEntity.ok(sprint);
-    }
 
-    //By many parameters ?????
-    @GetMapping
-    public ResponseEntity<Iterable<Sprint>> findAllByProjectId(@RequestParam("projectId") final Long projectId) {
-        return null;
-    }
+    @ApiOperation
+    (
+        notes = "Active a specified sprint.",
+        value = "Active a specified sprint",
+        nickname = "activate",
+        code = 200
+    )
+    ResponseEntity<Boolean> activate(final Long sprintId);
 
-    @PostMapping
-    public ResponseEntity<Sprint> create(@Valid @RequestBody final CreateSprintDto sprint) {
-        Sprint converted = modelMapper.map(sprint, Sprint.class);
-        Sprint savedSprint = sprintService.save(converted);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedSprint);
-    }
+    @ApiOperation
+    (
+        notes = "Mark as ended a specified sprint.",
+        value = "Mark as ended a sprint",
+        nickname = "markAsEnded",
+        code = 200
+    )
+    ResponseEntity<Void> markAsEnded(final Long sprintId);
 
-    @PutMapping("/{sprint_id}")
-    public ResponseEntity<Sprint> update(@PathVariable("sprint_id") final Long id, @Valid @RequestBody final CreateSprintDto sprint) {
 
-        Sprint converted = modelMapper.map(sprint, Sprint.class);
-        converted.setId(id);
+    @ApiOperation
+    (
+        notes = "Load User Stories from a sprint",
+        value = "Load User Story from Sprint.",
+        nickname = "loadUserStoriesFromSprint",
+        code = 302
+    )
+    ResponseEntity<Sprint> loadUserStoriesFromSprint(final Long sprintId);
 
-        Sprint savedSprint = sprintService.update(converted);
-        return ResponseEntity.ok(savedSprint);
-    }
-
-    @PostMapping("/move-task{task_id}/from/{source_sprint_id}/to/{target_sprint_id}")
-    public ResponseEntity<Void> moveTaskToOtherSprint(@PathVariable("task_id") final Long taskId,
-                                                      @PathVariable("source_sprint_id") final Long sourceSprintId,
-                                                      @PathVariable("target_sprint_id") final Long targetSprintId) {
-        return null;
-    }
-
-    @PatchMapping("/{sprint_id}/start")
-    public ResponseEntity<Void> startSprint(@PathVariable("sprint_id") final Long id) {
-        return null;
-    }
-
-    @PatchMapping("/{sprint_id}/end")
-    public ResponseEntity<Void> endSprint(@PathVariable("sprint_id") final Long id) {
-        return null;
-    }
-
-    //endregion
 }

@@ -1,65 +1,61 @@
 package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.story.UpdateUserStoryDto;
+import com.umssonline.proymgt.models.dto.task.CreateTaskDto;
+import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.Task;
 import com.umssonline.proymgt.models.entity.UserStory;
-import com.umssonline.proymgt.services.api.UserStoryService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+public interface UserStoryRestController {
+
+    @ApiOperation
+    (
+        notes = "Update a User Story with a specified ID.",
+        value = "Update user story with a ID",
+        nickname = "update",
+        code = 200
+    )
+    UserStory update(final Long userStoryId, final UpdateUserStoryDto userStory);
 
 
-@RestController
-@RequestMapping("/user-stories")
-public class UserStoryRestController {
+    @ApiOperation
+    (
+        notes = "Find a user story with a specified ID.",
+        value = "Find user story by ID.",
+        nickname = "findById",
+        code = 302
+    )
+    UserStory findById(final Long userStoryId);
 
-    //region Properties
-    @Autowired
-    private UserStoryService userStoryService;
 
-    @Autowired
-    private ModelMapper modelMapper;
-    //endregion
+    @ApiOperation
+    (
+        notes = "Add a new task to a specified user story.",
+        value = "Add a task to user story",
+        nickname = "addTaskToUserStory",
+        code = 201
+    )
+    Task addTaskToUserStory(final Long userStoryId, final CreateTaskDto task);
 
-    //region Methods
-    //Need to build queries by everything
-    public ResponseEntity<UserStory> findAllBy() {
-        return null;
-    }
 
-    @GetMapping("/{us_id}")
-    public ResponseEntity findById(@PathVariable("us_id") final Long id) {
+    @ApiOperation
+    (
+        notes = "Delete a task with a specified ID from User Story",
+        value = "Delete task from user story",
+        nickname = "deleteTaskFromUserStory",
+        code = 204
+    )
+    void deleteTaskFromUserStory(final Long userStoryId, final Long taskId);
 
-        UserStory userStory = userStoryService.findById(id);
 
-        return ResponseEntity.ok(userStory);
-    }
-
-    @PutMapping("/{us_id}")
-    public ResponseEntity<UserStory> update(@PathVariable("us_id") final Long id, @RequestBody final UpdateUserStoryDto userStory) {
-
-        UserStory converted = modelMapper.map(userStory, UserStory.class);
-        converted.setId(id);
-        UserStory saved = userStoryService.update(converted);
-
-        return ResponseEntity.ok(saved);
-    }
-
-    @PostMapping("/{us_id}/task")
-    public ResponseEntity<Void> addTask(@PathVariable("us_id") final Long userStoryId, @RequestBody final UpdateUserStoryDto userStory) {
-        return null;
-    }
-
-    @DeleteMapping("/{us_id}/task/{task_id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable("us_id") final Long userStoryId, @PathVariable("task_id") final Long taskId) {
-        return null;
-    }
-
-    @GetMapping("/{us_id}/tasks")
-    public ResponseEntity<Iterable<Task>> loadTasks(@PathVariable("us_id") final Long userStoryId) {
-        return null;
-    }
-    //endregion
+    @ApiOperation
+    (
+        notes = "Load Tasks from a User Story",
+        value = "Load Tasks from User Story.",
+        nickname = "loadTasksFromUserStory",
+        code = 302
+    )
+    ResponseEntity<Sprint> loadTasksFromUserStory(final Long userStoryId);
 }
