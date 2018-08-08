@@ -2,6 +2,7 @@ package com.umssonline.proymgt.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -24,30 +25,17 @@ import java.util.Set;
 @Table(name = "projects")
 public class Project extends BaseEntity {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//    private Long id;
-
-    @NotBlank(message = "Name field can not be empty.")
-    @Size(max = 30, message = "Name field should have at most 30 characters.")
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, length = 30)
     private String name;
 
-//    @NotNull(message = "Started On field can not be null.")
-//    @Column(nullable = false)
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-//    private LocalDateTime createdAt;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedDateEstimation;
 
-
-    //@JsonBackReference
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "fk_backlog", nullable = false)
     //@MapsId
     private Backlog backlog;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "project")
     private Set<Sprint> sprints = new HashSet<>();
 

@@ -2,7 +2,7 @@ package com.umssonline.proymgt.models.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.umssonline.proymgt.models.dto.backlog.CreateBacklogDto;
+import com.umssonline.proymgt.models.dto.BaseCreateDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -10,14 +10,13 @@ import lombok.Setter;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @ApiModel(description = "Project Model")
 @Getter
 @Setter
-public class CreateProjectDto {
+public class CreateProjectDto extends BaseCreateDto {
 
     @ApiModelProperty
     (
@@ -26,27 +25,25 @@ public class CreateProjectDto {
         example = "Google Maps REST Api"
     )
     @NotBlank(message = "Name field should not be null or empty.")
+    @Size(max = 30, message = "Name field should have at most 30 characters.")
     private String name;
 
     @ApiModelProperty
-            (
-                    notes = "Completed Date Estimation field can should not be null, and It should be future date.",
-                    required = true
-            )
-    @NotNull(message = "Completed Date Estimation field can should not be null.")
+    (
+        notes = "Completed Date Estimation field can should not be null, and It should be future date.",
+        required = true
+    )
     @Future(message = "Completed Date Estimation should be a future date.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedDateEstimation;
 
     @ApiModelProperty
     (
-        notes = "Backlog should not be null.",
-        required = true
+        notes = "Backlog Description field."
     )
-    @NotNull(message = "Backlog should not be null.")
-    private CreateBacklogDto backlog;
-
+    private String backlogDescription;
 
     @JsonIgnore
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private Integer backlogAmountOfUserStories = 0;
+
 }

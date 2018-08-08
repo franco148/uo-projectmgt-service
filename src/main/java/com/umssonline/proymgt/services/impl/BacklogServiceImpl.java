@@ -36,7 +36,7 @@ public class BacklogServiceImpl implements BacklogService {
 //
 //        Backlog backlogToSave = new Backlog();
 //        backlogToSave.setDescription(backlog.getDescription());
-//        backlogToSave.setAmountOfTasks(0);
+//        backlogToSave.setAmountOfUserStories(0);
 //        backlogToSave.setCreatedAt(LocalDateTime.now());
 //        backlogToSave.setUpdatedAt(LocalDateTime.now());
 //
