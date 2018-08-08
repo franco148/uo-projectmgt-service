@@ -3,9 +3,11 @@ package com.umssonline.proymgt.controllers;
 import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
+@Api(value = "Backlogs", description = "Controller for managing Backlog Entity", basePath = "/backlogs")
 public interface BacklogRestController {
 
     @ApiOperation
