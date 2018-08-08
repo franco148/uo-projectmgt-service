@@ -1,5 +1,6 @@
 package com.umssonline.proymgt.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -10,17 +11,14 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(exclude = {"userStories", "project"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@EqualsAndHashCode(exclude = {"userStories", "project"}, callSuper = false)
 @ToString(exclude = {"userStories", "project"})
 @Data
 
 @Entity
 @Table(name = "sprints")
-public class Sprint {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class Sprint extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 50)
     private String name;
@@ -28,12 +26,6 @@ public class Sprint {
     private LocalDate startedOn;
 
     private LocalDate completedOn;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "sprint", orphanRemoval = true)
     private Set<UserStory> userStories = new HashSet<>();
