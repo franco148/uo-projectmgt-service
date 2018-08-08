@@ -1,6 +1,8 @@
 package com.umssonline.proymgt.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -27,9 +29,11 @@ public class Sprint extends BaseEntity {
 
     private LocalDate completedOn;
 
-    @OneToMany(mappedBy = "sprint", orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "sprint")
     private Set<UserStory> userStories = new HashSet<>();
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Project project;
 

@@ -2,6 +2,7 @@ package com.umssonline.proymgt.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -33,11 +34,12 @@ public class Project extends BaseEntity {
     private LocalDate completedDateEstimation;
 
     //@JsonBackReference
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "fk_backlog", nullable = false)
     //@MapsId
     private Backlog backlog;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "project")
     private Set<Sprint> sprints = new HashSet<>();
 

@@ -13,12 +13,9 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Column(unique = true, nullable = false)
-    private String nickName;
+
     @Column(nullable = false)
-    private String role;
     private boolean isDeleted;
 
 }

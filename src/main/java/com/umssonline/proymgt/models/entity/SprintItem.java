@@ -25,6 +25,7 @@ public abstract class SprintItem extends BaseEntity {
     private Priority priority;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_AssignedTo")
     private User assignedTo;
 
     private Integer estimatedTime;

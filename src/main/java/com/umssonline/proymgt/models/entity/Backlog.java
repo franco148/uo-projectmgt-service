@@ -23,11 +23,12 @@ import java.util.Set;
 @Table(name = "backlogs")
 public class Backlog extends BaseEntity {
 
+    @Column(nullable = false, length = 500)
     private String description;
 
     @NotNull(message = "Number of Tasks field can not be null.")
     @Column(nullable = false)
-    private Integer amountOfTasks;
+    private Integer amountOfUserStories;
 
 //    @NotNull(message = "Project should exist before creating a backlog.")
     //@JsonManagedReference
@@ -36,8 +37,8 @@ public class Backlog extends BaseEntity {
 //    @MapsId
 //    private Project project;
 
-    @OneToMany(mappedBy = "backlog")
     @JsonManagedReference
+    @OneToMany(mappedBy = "backlog")
     private Set<UserStory> userStories = new HashSet<>();
 
 

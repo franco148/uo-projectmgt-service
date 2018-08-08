@@ -1,28 +1,23 @@
 package com.umssonline.proymgt.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.*;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@EqualsAndHashCode(exclude = { "userStory" }, callSuper = false)
+@ToString(exclude = { "userStory" })
+@Data
 
 @Entity
 public class Task extends SprintItem {
 
-    //region Properties
+    @JsonBackReference
     @ManyToOne(optional = false)
     private UserStory userStory;
-    //endregion
 
-    //region Constructors
-    protected Task() {
-
-    }
-    //endregion
-
-    //region Getters & Setters
-    public UserStory getUserStory() {
-        return userStory;
-    }
-
-    public void setUserStory(UserStory userStory) {
-        this.userStory = userStory;
-    }
-    //endregion
 }
