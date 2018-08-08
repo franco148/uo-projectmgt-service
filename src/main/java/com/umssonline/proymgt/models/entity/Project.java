@@ -1,6 +1,7 @@
 package com.umssonline.proymgt.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,27 +15,28 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(exclude = {"backlog", "sprints"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@EqualsAndHashCode(exclude = {"backlog", "sprints"}, callSuper = false)
 @ToString(exclude = {"backlog", "sprints"})
 @Data
 
 @Entity
 @Table(name = "projects")
-public class Project {
+public class Project extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+//    private Long id;
 
     @NotBlank(message = "Name field can not be empty.")
     @Size(max = 30, message = "Name field should have at most 30 characters.")
     @Column(nullable = false, length = 30, unique = true)
     private String name;
 
-    @NotNull(message = "Started On field can not be null.")
-    @Column(nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDateTime createdAt;
+//    @NotNull(message = "Started On field can not be null.")
+//    @Column(nullable = false)
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+//    private LocalDateTime createdAt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedDateEstimation;
@@ -48,8 +50,6 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private Set<Sprint> sprints = new HashSet<>();
-
-
 
     public void addSprint(Sprint sprint) {
         this.sprints.add(sprint);

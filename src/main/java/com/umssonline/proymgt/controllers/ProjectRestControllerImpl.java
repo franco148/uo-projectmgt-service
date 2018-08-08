@@ -87,39 +87,55 @@ public class ProjectRestControllerImpl implements ProjectRestController {
     @PostMapping
     @Override
     public ResponseEntity<Project> create(@Valid @RequestBody final CreateProjectDto project) {
-        return null;
+        Project converted = modelMapper.map(project, Project.class);
+        Project saved = service.save(converted);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping
     @Override
     public ResponseEntity<Iterable<Project>> findAll() {
-        return null;
+        Iterable<Project> projectsCollection = service.finAll();
+        return ResponseEntity.status(HttpStatus.FOUND).body(projectsCollection);
     }
 
     @GetMapping("/{project_id}")
     @Override
     public ResponseEntity<Project> findById(@PathVariable("project_id") final Long projectId) {
-        return null;
+        Project foundProject = service.findById(projectId);
+        return ResponseEntity.status(HttpStatus.FOUND).body(foundProject);
     }
 
     @PutMapping("/{project_id}")
     @Override
     public ResponseEntity<Project> update(@PathVariable("project_id") final Long projectId,
                                           @Valid @RequestBody final UpdateProjectDto project) {
-        return null;
+
+        Project converted = modelMapper.map(project, Project.class);
+        converted.setId(projectId);
+
+        Project updated = service.update(converted);
+
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{project_id}")
     @Override
     public ResponseEntity<Void> delete(@PathVariable("project_id") final Long projectId) {
-        return null;
+        service.delete(projectId);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{project_id}/sprint")
     @Override
     public ResponseEntity<Sprint> addSprint(@PathVariable("project_id") final Long projectId,
                                             @Valid @RequestBody final CreateSprintDto sprint) {
-        return null;
+
+        Sprint converted = modelMapper.map(sprint, Sprint.class);
+        Sprint addedSprint = service.addSprintToProject(projectId, converted);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedSprint);
     }
 
     @GetMapping("/{project_id}/sprints")
@@ -130,7 +146,7 @@ public class ProjectRestControllerImpl implements ProjectRestController {
 
     //@GetMapping("")
     @Override
-    public ResponseEntity<Boolean> entityExist(String entityType, Serializable entityId) {
+    public ResponseEntity<Boolean> entityExist(String entityType, Long entityId) {
         return null;
     }
 

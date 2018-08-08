@@ -87,5 +87,11 @@ public class ProjectServiceImpl implements ProjectService {
         Iterable<Sprint> sprintsList = sprintRepository.findByProjectId(projectId);
         return sprintsList;
     }
+
+    @Override
+    public Sprint addSprintToProject(Long projectId, Sprint sprint) {
+        return null;
+    }
+
     //endregion
 }

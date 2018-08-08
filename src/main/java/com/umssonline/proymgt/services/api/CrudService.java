@@ -1,7 +1,5 @@
 package com.umssonline.proymgt.services.api;
 
-import java.io.Serializable;
-
 public interface CrudService<TEntity> {
 
     TEntity save(TEntity entity);
