@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 
-import java.io.Serializable;
 
 @Api(value = "Projects", description = "Controller for managing Project Entity", basePath = "/project")
 public interface ProjectRestController {
