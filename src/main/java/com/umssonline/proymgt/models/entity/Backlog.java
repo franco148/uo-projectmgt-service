@@ -13,29 +13,19 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(exclude = {"userStories"}) //exclude = {"project", "userStories"}
+@EqualsAndHashCode(exclude = {"userStories"}, callSuper = false) //exclude = {"project", "userStories"}
 @ToString(exclude = {"userStories"})//exclude = {"project", "userStories"}
 @Data
 
 @Entity
 @Table(name = "backlogs")
-public class Backlog {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class Backlog extends BaseEntity {
 
     private String description;
 
     @NotNull(message = "Number of Tasks field can not be null.")
     @Column(nullable = false)
     private Integer amountOfTasks;
-
-    @PastOrPresent(message = "Created On date can not be future.")
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
 //    @NotNull(message = "Project should exist before creating a backlog.")
     //@JsonManagedReference
@@ -47,7 +37,6 @@ public class Backlog {
     @OneToMany(mappedBy = "backlog")
     @JsonManagedReference
     private Set<UserStory> userStories = new HashSet<>();
-
 
 
     public void addSprintItem(UserStory userStory) {

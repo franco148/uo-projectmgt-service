@@ -1,6 +1,7 @@
 package com.umssonline.proymgt.models.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.umssonline.proymgt.models.dto.BaseUpdateDto;
 import com.umssonline.proymgt.models.dto.backlog.CreateBacklogDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,15 +16,7 @@ import java.time.LocalDate;
 @ApiModel(description = "Backlog")
 @Getter
 @Setter
-public class UpdateProjectDto {
-
-    @ApiModelProperty
-    (
-        notes = "Id field should not be null.",
-        required = true
-    )
-    @NotNull(message = "Id field should not be null.")
-    private Long Id;
+public class UpdateProjectDto extends BaseUpdateDto {
 
     @ApiModelProperty
     (
@@ -46,10 +39,8 @@ public class UpdateProjectDto {
 
     @ApiModelProperty
     (
-        notes = "Backlog should not be null.",
-        required = true
+        notes = "Backlog Description field."
     )
-    @NotNull(message = "Backlog should not be null.")
-    private CreateBacklogDto backlog;
+    private String backlogDescription;
 
 }

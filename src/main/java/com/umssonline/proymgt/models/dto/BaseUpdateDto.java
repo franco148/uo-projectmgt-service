@@ -1,6 +1,7 @@
 package com.umssonline.proymgt.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,11 @@ public abstract class BaseUpdateDto {
     private Boolean isDeleted = false;
 
 
+    @ApiModelProperty
+    (
+        notes = "UpdatedById field should not be null and less than zero.",
+        required = true
+    )
     @NotNull(message = "UpdatedById field should not be null.")
     @Positive(message = "UpdatedById field should not be less than zero.")
     private Long updatedById;
