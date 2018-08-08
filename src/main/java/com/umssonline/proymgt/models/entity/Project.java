@@ -25,15 +25,11 @@ import java.util.Set;
 @Table(name = "projects")
 public class Project extends BaseEntity {
 
-    @NotBlank(message = "Name field can not be empty.")
-    @Size(max = 30, message = "Name field should have at most 30 characters.")
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, length = 30)
     private String name;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedDateEstimation;
 
-    //@JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "fk_backlog", nullable = false)
     //@MapsId

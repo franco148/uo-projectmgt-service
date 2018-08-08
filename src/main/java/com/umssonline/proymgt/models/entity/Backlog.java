@@ -26,16 +26,8 @@ public class Backlog extends BaseEntity {
     @Column(nullable = false, length = 500)
     private String description;
 
-    @NotNull(message = "Number of Tasks field can not be null.")
     @Column(nullable = false)
     private Integer amountOfUserStories;
-
-//    @NotNull(message = "Project should exist before creating a backlog.")
-    //@JsonManagedReference
-    //@OneToOne(mappedBy = "backlog", fetch = FetchType.LAZY)
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @MapsId
-//    private Project project;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "backlog")

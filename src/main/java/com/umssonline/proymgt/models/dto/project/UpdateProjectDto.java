@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@ApiModel(description = "Backlog")
+@ApiModel(description = "Project Model")
 @Getter
 @Setter
 public class UpdateProjectDto extends BaseUpdateDto {

@@ -21,9 +21,6 @@ public abstract class BaseUpdateDto {
     @JsonIgnore
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @JsonIgnore
-    private Boolean isDeleted = false;
-
 
     @ApiModelProperty
     (

@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.models.dto.sprint;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.umssonline.proymgt.models.dto.BaseCreateDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -8,12 +8,11 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @ApiModel(description = "Sprint Model")
 @Getter
 @Setter
-public class CreateSprintDto {
+public class CreateSprintDto extends BaseCreateDto {
 
     @ApiModelProperty
     (
@@ -36,8 +35,4 @@ public class CreateSprintDto {
     )
     private LocalDate completedOn;
 
-    @JsonIgnore
-    private LocalDateTime createdAt = LocalDateTime.now();
-    @JsonIgnore
-    private LocalDateTime updatedAt = LocalDateTime.now();
 }

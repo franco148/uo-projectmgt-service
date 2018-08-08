@@ -10,7 +10,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @ApiModel(description = "Project Model")
@@ -25,6 +25,7 @@ public class CreateProjectDto extends BaseCreateDto {
         example = "Google Maps REST Api"
     )
     @NotBlank(message = "Name field should not be null or empty.")
+    @Size(max = 30, message = "Name field should have at most 30 characters.")
     private String name;
 
     @ApiModelProperty
@@ -32,7 +33,6 @@ public class CreateProjectDto extends BaseCreateDto {
         notes = "Completed Date Estimation field can should not be null, and It should be future date.",
         required = true
     )
-    @NotNull(message = "Completed Date Estimation field can should not be null.")
     @Future(message = "Completed Date Estimation should be a future date.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedDateEstimation;
@@ -44,6 +44,6 @@ public class CreateProjectDto extends BaseCreateDto {
     private String backlogDescription;
 
     @JsonIgnore
-    private Integer backlogAmountOfTasks = 0;
+    private Integer backlogAmountOfUserStories = 0;
 
 }

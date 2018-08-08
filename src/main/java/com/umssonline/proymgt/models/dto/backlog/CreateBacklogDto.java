@@ -1,6 +1,7 @@
 package com.umssonline.proymgt.models.dto.backlog;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.umssonline.proymgt.models.dto.BaseCreateDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @ApiModel(description = "Backlog Model")
 @Getter
 @Setter
-public class CreateBacklogDto {
+public class CreateBacklogDto extends BaseCreateDto {
 
     @ApiModelProperty
     (
@@ -21,10 +22,6 @@ public class CreateBacklogDto {
     private String description;
 
     @JsonIgnore
-    private Integer amountOfTasks = 0;
-    @JsonIgnore
-    private LocalDateTime createdAt = LocalDateTime.now();
-    @JsonIgnore
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private Integer amountOfUserStories = 0;
 
 }

@@ -1,29 +1,19 @@
 package com.umssonline.proymgt.models.dto.sprint;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.umssonline.proymgt.models.dto.BaseUpdateDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @ApiModel(description = "Sprint Model")
 @Getter
 @Setter
-public class UpdateSprintDto {
+public class UpdateSprintDto extends BaseUpdateDto {
 
-
-    @ApiModelProperty
-    (
-        notes = "Id field should not be null.",
-        required = true
-    )
-    @NotNull(message = "Id field should not be null.")
-    private Long id;
 
     @ApiModelProperty
     (
@@ -46,7 +36,4 @@ public class UpdateSprintDto {
     )
     private LocalDate completedOn;
 
-
-    @JsonIgnore
-    private LocalDateTime updatedAt = LocalDateTime.now();
 }
