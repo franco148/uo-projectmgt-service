@@ -59,4 +59,13 @@ public interface SprintRestController {
     ResponseEntity<Void> markAsEnded(final Long sprintId);
 
 
+    @ApiOperation
+    (
+        notes = "Load User Stories from a sprint",
+        value = "Load User Story from Sprint.",
+        nickname = "loadUserStoriesFromSprint",
+        code = 302
+    )
+    ResponseEntity<Sprint> loadUserStoriesFromSprint(final Long sprintId);
+
 }
