@@ -5,79 +5,43 @@ import com.umssonline.proymgt.models.dto.project.UpdateProjectDto;
 import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.Sprint;
-import com.umssonline.proymgt.services.impl.ProjectServiceImpl;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.io.Serializable;
 
-@RestController
-@RequestMapping("/projects")
-public class ProjectRestController {
+@Api(value = "Projects", description = "Controller for managing Project Entity", basePath = "/project")
+public interface ProjectRestController {
 
-    //region Properties
-    @Autowired
-    private ProjectServiceImpl service;
+    @ApiOperation
+    (
+        notes = "Create a project with its related Backlog",
+        value = "Create project with a backlog",
+        nickname = "createProject",
+        code = 201
+    )
+    ResponseEntity<Project> create(
+            @ApiParam
+            (
+                value = "Project DTO which contains data to be saved.",
+                type = "CreateProjectDto",
+                required = true
+            )
+            final CreateProjectDto project);
 
-    @Autowired
-    private ModelMapper modelMapper;
-    //endregion
+    ResponseEntity<Iterable<Project>> findAll();
 
-    //region Methods
-    @GetMapping
-    public ResponseEntity<Iterable<Project>> findAll() {
-        Iterable<Project> projects = service.finAll();
-        return ResponseEntity.ok(projects);
-    }
+    ResponseEntity<Project> findById(final Long projectId);
 
-    @GetMapping("/{project_id}")
-    public ResponseEntity<Project> findById(@PathVariable("project_id") final Long projectId) {
+    ResponseEntity<Project> update(final Long projectId, final UpdateProjectDto project);
 
-        Project response = service.findById(projectId);
+    ResponseEntity<Void> delete(final Long projectId);
 
-        return ResponseEntity.ok(response);
-    }
+    ResponseEntity<Sprint> addSprint(final Long projectId, final CreateSprintDto sprint);
 
-    @PostMapping
-    public ResponseEntity<Project> create(@Valid @RequestBody final CreateProjectDto project) {
-        Project converted = modelMapper.map(project, Project.class);
-        Project savedProject = service.save(converted);
+    ResponseEntity<Project> loadSprintsFromProject(final Long projectId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProject);
-    }
-
-    @PatchMapping("/{project_id}")
-    public ResponseEntity<Project> update(@PathVariable("project_id") final Long id, @Valid @RequestBody final UpdateProjectDto project) {
-
-        Project converted = modelMapper.map(project, Project.class);
-        converted.setId(id);
-
-        Project updatedProject = service.update(converted);
-
-        return ResponseEntity.status(HttpStatus.OK).body(updatedProject);
-    }
-
-    @DeleteMapping("/{project_id}")
-    public ResponseEntity<Void> delete(@PathVariable("project_id") final Long projectId) {
-
-        service.delete(projectId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @GetMapping("/{project_id}/sprints")
-    public ResponseEntity<Iterable<Sprint>> loadSprints(@PathVariable("project_id") final Long projectId) {
-        Iterable<Sprint> projectSprints = service.loadSprints(projectId);
-
-        return ResponseEntity.ok(projectSprints);
-    }
-
-    @PostMapping("/{project_id}/sprint")
-    public ResponseEntity<Void> addSprint(@PathVariable("project_id") final Long id, @Valid @RequestBody final CreateSprintDto sprint) {
-
-        return null;
-    }
-    //endregion
+    ResponseEntity<Boolean> entityExist(final String entityType, final Serializable entityId);
 }
