@@ -1,6 +1,5 @@
 package com.umssonline.proymgt.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -8,11 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +31,7 @@ public class Project extends BaseEntity {
     private Backlog backlog;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Sprint> sprints = new HashSet<>();
 
     public void addSprint(Sprint sprint) {

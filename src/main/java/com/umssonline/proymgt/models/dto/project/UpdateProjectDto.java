@@ -12,6 +12,7 @@ import lombok.Setter;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -38,6 +39,14 @@ public class UpdateProjectDto extends BaseUpdateDto {
     @Future(message = "Completed Date Estimation should be a future date.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedDateEstimation;
+
+    @ApiModelProperty
+    (
+        notes = "BacklogId field should not be less than zero.",
+        required = true
+    )
+    @Positive(message = "BacklogId field should not be less than zero.")
+    private Long backlogId;
 
     @ApiModelProperty
     (

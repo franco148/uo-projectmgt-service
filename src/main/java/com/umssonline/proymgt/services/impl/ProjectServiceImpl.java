@@ -1,9 +1,14 @@
 package com.umssonline.proymgt.services.impl;
 
+import com.umssonline.proymgt.exceptions.InvalidResourceException;
+import com.umssonline.proymgt.feign.UsersFeignClient;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.Sprint;
+import com.umssonline.proymgt.models.entity.User;
 import com.umssonline.proymgt.repositories.ProjectRepository;
+import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +22,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UsersFeignClient usersClient;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
     //endregion
 
     //region CRUDService Members
@@ -24,6 +38,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public Project save(Project project) {
+        User authUser = usersClient.findById(project.getCreatedBy().getId());
+        if (authUser == null) {
+            throw new InvalidResourceException("User with the specified ID could not be found.");
+        }
+
+        User savedUser = userRepository.save(authUser);
+        project.getBacklog().setCreatedBy(savedUser);
+
         return projectRepository.save(project);
     }
 
@@ -50,6 +72,24 @@ public class ProjectServiceImpl implements ProjectService {
             throw new EntityNotFoundException("Project with specified ID can not be found, process has been terminated");
         }
 
+        User authUser = usersClient.findById(project.getUpdatedBy().getId());
+        if (authUser == null) {
+            throw new InvalidResourceException("User with the specified ID could not be found.");
+        }
+
+        User savedUser = userRepository.save(authUser);
+        project.getBacklog().setUpdatedBy(savedUser);
+
+        Project sourceProject = projectRepository.getOne(project.getId());
+        // modelMapper.map(project, projectToUpdate);
+        project.setIsDeleted(sourceProject.getIsDeleted());
+        project.setCreatedBy(sourceProject.getCreatedBy());
+        project.setCreatedAt(sourceProject.getCreatedAt());
+        project.getBacklog().setAmountOfUserStories(sourceProject.getBacklog().getAmountOfUserStories());
+        project.getBacklog().setIsDeleted(sourceProject.getBacklog().getIsDeleted());
+        project.getBacklog().setCreatedAt(sourceProject.getBacklog().getCreatedAt());
+        project.getBacklog().setCreatedBy(sourceProject.getBacklog().getCreatedBy());
+
         return projectRepository.save(project);
     }
 
@@ -69,8 +109,17 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public Sprint addSprint(Long projectId, Sprint sprint) {
-        Project foundProject = projectRepository.findById(projectId)
-                               .orElseThrow(() -> new EntityNotFoundException("Project with specified ID can not be found."));
+
+        if (!projectRepository.existsById(projectId)) {
+            throw new EntityNotFoundException("Project with specified ID can not be found.");
+        }
+
+        User authUser = usersClient.findById(sprint.getCreatedBy().getId());
+        if (authUser == null) {
+            throw new InvalidResourceException("User with the specified ID could not be found.");
+        }
+
+        Project foundProject = projectRepository.getOne(projectId);
 
         foundProject.addSprint(sprint);
         projectRepository.saveAndFlush(foundProject);

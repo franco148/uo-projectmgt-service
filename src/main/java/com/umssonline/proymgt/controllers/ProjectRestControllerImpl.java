@@ -85,7 +85,8 @@ public class ProjectRestControllerImpl implements ProjectRestController {
     @GetMapping("/{project_id}/sprints")
     @Override
     public ResponseEntity<Project> loadSprintsFromProject(@PathVariable("project_id") final Long projectId) {
-        return null;
+        Project projectWithSprints = service.loadProjectSprints(projectId);
+        return ResponseEntity.status(HttpStatus.FOUND).body(projectWithSprints);
     }
 
     //@GetMapping("")
