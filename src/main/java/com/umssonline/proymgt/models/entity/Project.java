@@ -25,13 +25,14 @@ public class Project extends BaseEntity {
 
     private LocalDate completedDateEstimation;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL )
+    @JsonManagedReference
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "fk_backlog", nullable = false)
     //@MapsId
     private Backlog backlog;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "project", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "project", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     private Set<Sprint> sprints = new HashSet<>();
 
     public void addSprint(Sprint sprint) {

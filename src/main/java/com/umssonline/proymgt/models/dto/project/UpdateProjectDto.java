@@ -45,6 +45,7 @@ public class UpdateProjectDto extends BaseUpdateDto {
         notes = "BacklogId field should not be less than zero.",
         required = true
     )
+    @NotNull(message = "BacklogId field should not be null.")
     @Positive(message = "BacklogId field should not be less than zero.")
     private Long backlogId;
 

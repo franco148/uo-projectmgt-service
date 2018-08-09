@@ -8,7 +8,6 @@ import com.umssonline.proymgt.models.entity.User;
 import com.umssonline.proymgt.repositories.ProjectRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +27,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private UsersFeignClient usersClient;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     //endregion
 
     //region CRUDService Members
@@ -44,6 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         User savedUser = userRepository.save(authUser);
+        project.getBacklog().setProject(project);
         project.getBacklog().setCreatedBy(savedUser);
 
         return projectRepository.save(project);
@@ -121,6 +118,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project foundProject = projectRepository.getOne(projectId);
 
+        sprint.setProject(foundProject);
         foundProject.addSprint(sprint);
         projectRepository.saveAndFlush(foundProject);
 
