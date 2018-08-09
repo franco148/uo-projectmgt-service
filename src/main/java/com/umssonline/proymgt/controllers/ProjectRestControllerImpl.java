@@ -76,8 +76,8 @@ public class ProjectRestControllerImpl implements ProjectRestController {
     public ResponseEntity<Sprint> addSprint(@PathVariable("project_id") final Long projectId,
                                             @Valid @RequestBody final CreateSprintDto sprint) {
 
-        Sprint converted = modelMapper.map(sprint, Sprint.class);
-        Sprint addedSprint = service.addSprintToProject(projectId, converted);
+        Sprint convertedSprint = modelMapper.map(sprint, Sprint.class);
+        Sprint addedSprint = service.addSprint(projectId, convertedSprint);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(addedSprint);
     }

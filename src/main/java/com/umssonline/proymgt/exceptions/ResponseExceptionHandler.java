@@ -20,6 +20,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> manageExceptions(Exception ex, WebRequest request){
         logger.warn("An exception has occurred: " + ex.getMessage());
+        logger.error("exxxxx", ex);
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -27,6 +28,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public final ResponseEntity<ExceptionResponse> manageExceptionModels(EntityNotFoundException ex, WebRequest request){
         logger.warn("A custom exception has occurred: " + ex.getMessage());
+        logger.error("exxxxx", ex);
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
@@ -34,6 +36,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         logger.warn("A validation exception has occurred: " + ex.getBindingResult().toString());
+        logger.error("exxxxx", ex);
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Validations for the entity have not passed.", ex.getBindingResult().toString());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }

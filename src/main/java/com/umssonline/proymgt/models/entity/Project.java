@@ -30,7 +30,7 @@ public class Project extends BaseEntity {
 
     private LocalDate completedDateEstimation;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL )
     @JoinColumn(name = "fk_backlog", nullable = false)
     //@MapsId
     private Backlog backlog;

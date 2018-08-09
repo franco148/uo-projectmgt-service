@@ -1,11 +1,8 @@
 package com.umssonline.proymgt.services.impl;
 
-import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.Sprint;
-import com.umssonline.proymgt.repositories.BacklogRepository;
 import com.umssonline.proymgt.repositories.ProjectRepository;
-import com.umssonline.proymgt.repositories.SprintRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +15,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     //region Properties
     @Autowired
-    private ProjectRepository projRepository;
+    private ProjectRepository projectRepository;
 
-    @Autowired
-    private BacklogRepository backlogRepository;
-
-    @Autowired
-    private SprintRepository sprintRepository;
     //endregion
 
     //region CRUDService Members
@@ -32,20 +24,20 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public Project save(Project project) {
-        return projRepository.save(project);
+        return projectRepository.save(project);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Iterable<Project> finAll() {
-        return projRepository.findAll();
+        return projectRepository.findAll();
     }
 
     @Transactional(readOnly = true)
     @Override
     public Project findById(Long id) {
-        Project projectFromDb = projRepository.findById(id)
-                                              .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID does not exist."));
+        Project projectFromDb = projectRepository.findById(id)
+                                              .orElseThrow(() -> new EntityNotFoundException("Project with specified ID does not exist."));
 
 
         return projectFromDb;
@@ -53,44 +45,48 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project update(Project project) {
-        Project projectFromDb = projRepository.findById(project.getId())
-                                              .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID can not be found, process has been terminated"));
 
-        //projectFromDb.setName(editedProject.getName());
-        //projectFromDb.setCompletedDateEstimation(editedProject.getCompletedDateEstimation());
+        if (!projectRepository.existsById(project.getId())) {
+            throw new EntityNotFoundException("Project with specified ID can not be found, process has been terminated");
+        }
 
-        return projRepository.saveAndFlush(projectFromDb);
+        return projectRepository.save(project);
     }
 
     @Override
     public void delete(Long id) {
 
-        Project projectFromDb = projRepository.findById(id)
-                                              .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID can not be found, process has been terminated"));
+        if (!projectRepository.existsById(id)) {
+            throw new EntityNotFoundException("Project with specified ID can not be found, process has been terminated");
+        }
 
-        projRepository.delete(projectFromDb);
+        projectRepository.deleteById(id);
     }
     //endregion
 
     //region SprintService Members
+
+    @Transactional
     @Override
-    public Backlog getBacklog(Long projectId) {
-//        Backlog backlogFromDb = backlogRepository.findByProjectId(projectId)
-//                .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID does not exist."));
-//
-//        return backlogFromDb;
-        return null;
+    public Sprint addSprint(Long projectId, Sprint sprint) {
+        Project foundProject = projectRepository.findById(projectId)
+                               .orElseThrow(() -> new EntityNotFoundException("Project with specified ID can not be found."));
+
+        foundProject.addSprint(sprint);
+        projectRepository.saveAndFlush(foundProject);
+
+        return sprint;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Iterable<Sprint> loadSprints(Long projectId) {
-        Iterable<Sprint> sprintsList = sprintRepository.findByProjectId(projectId);
-        return sprintsList;
-    }
+    public Project loadProjectSprints(Long projectId) {
+        Project foundProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project with specified ID can not be found."));
 
-    @Override
-    public Sprint addSprintToProject(Long projectId, Sprint sprint) {
-        return null;
+        foundProject.getSprints();
+
+        return foundProject;
     }
 
     //endregion
