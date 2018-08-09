@@ -1,6 +1,7 @@
 package com.umssonline.proymgt.models.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.umssonline.proymgt.models.dto.BaseUpdateDto;
 import com.umssonline.proymgt.models.dto.backlog.CreateBacklogDto;
 import io.swagger.annotations.ApiModel;
@@ -11,7 +12,9 @@ import lombok.Setter;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ApiModel(description = "Project Model")
 @Getter
@@ -39,8 +42,20 @@ public class UpdateProjectDto extends BaseUpdateDto {
 
     @ApiModelProperty
     (
+        notes = "BacklogId field should not be less than zero.",
+        required = true
+    )
+    @NotNull(message = "BacklogId field should not be null.")
+    @Positive(message = "BacklogId field should not be less than zero.")
+    private Long backlogId;
+
+    @ApiModelProperty
+    (
         notes = "Backlog Description field."
     )
     private String backlogDescription;
+
+    @JsonIgnore
+    private LocalDateTime backlogUpdatedAt = LocalDateTime.now();
 
 }

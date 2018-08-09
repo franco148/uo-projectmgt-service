@@ -1,5 +1,6 @@
 package com.umssonline.proymgt.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -32,6 +33,12 @@ public class Backlog extends BaseEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "backlog")
     private Set<UserStory> userStories = new HashSet<>();
+
+
+    @JsonBackReference
+    @OneToOne(optional = false, mappedBy = "backlog")
+//    @MapsId
+    private Project project;
 
 
     public void addSprintItem(UserStory userStory) {

@@ -12,6 +12,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ApiModel(description = "Project Model")
 @Getter
@@ -45,5 +46,14 @@ public class CreateProjectDto extends BaseCreateDto {
 
     @JsonIgnore
     private Integer backlogAmountOfUserStories = 0;
+
+    @JsonIgnore
+    private Boolean backlogIsDeleted = false;
+
+    @JsonIgnore
+    private LocalDateTime backlogCreatedAt = LocalDateTime.now();
+
+    @JsonIgnore
+    private LocalDateTime backlogUpdatedAt = LocalDateTime.now();
 
 }
