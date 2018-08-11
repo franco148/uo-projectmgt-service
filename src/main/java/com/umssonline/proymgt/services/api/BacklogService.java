@@ -5,5 +5,11 @@ import com.umssonline.proymgt.models.entity.UserStory;
 
 public interface BacklogService extends CrudService<Backlog> {
 
-    Iterable<UserStory> loadUserStories(Long backlogId);
+    UserStory addUserStory(Long backlogId, UserStory userStory);
+
+    boolean sendUserStoryToSprint(Long backlogId, Long userStoryId, Long sprintId);
+
+    void deleteUserStory(Long backlogId, Long userStoryId);
+
+    Backlog loadUserStories(Long backlogId);
 }
