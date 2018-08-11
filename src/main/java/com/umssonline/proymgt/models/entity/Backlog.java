@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +16,11 @@ import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
+//Soft delete
+@SQLDelete(sql = "update backlogs set is_deleted=true where id=?")
+//Conditions when retrieving data when it is not deleted
+@Where(clause = "is_deleted=false")
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @EqualsAndHashCode(exclude = {"userStories"}, callSuper = false) //exclude = {"project", "userStories"}
@@ -31,12 +38,12 @@ public class Backlog extends BaseEntity {
     private Integer amountOfUserStories;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "backlog")
+    @OneToMany(mappedBy = "backlog", cascade = CascadeType.ALL)
     private Set<UserStory> userStories = new HashSet<>();
 
 
     @JsonBackReference
-    @OneToOne(optional = false, mappedBy = "backlog")
+    @OneToOne(optional = false, mappedBy = "backlog", cascade = CascadeType.ALL)
 //    @MapsId
     private Project project;
 
@@ -44,6 +51,7 @@ public class Backlog extends BaseEntity {
     public void addSprintItem(UserStory userStory) {
         this.userStories.add(userStory);
         //Set a Backlog to the task.
+        userStory.setBacklog(this);
     }
 
 }

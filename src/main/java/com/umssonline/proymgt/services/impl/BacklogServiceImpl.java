@@ -1,102 +1,156 @@
 package com.umssonline.proymgt.services.impl;
 
+import com.umssonline.proymgt.exceptions.InvalidResourceException;
+import com.umssonline.proymgt.feign.UsersFeignClient;
 import com.umssonline.proymgt.models.entity.Backlog;
+import com.umssonline.proymgt.models.entity.Sprint;
+import com.umssonline.proymgt.models.entity.User;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.repositories.BacklogRepository;
-import com.umssonline.proymgt.repositories.ProjectRepository;
+import com.umssonline.proymgt.repositories.SprintRepository;
+import com.umssonline.proymgt.repositories.UserRepository;
+import com.umssonline.proymgt.repositories.UserStoryRepository;
 import com.umssonline.proymgt.services.api.BacklogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class BacklogServiceImpl implements BacklogService {
 
     //region Properties
-    @Resource
-    private BacklogRepository repository;
+    @Autowired
+    private BacklogRepository backlogRepository;
 
-    @Resource
-    private ProjectRepository projectRepository;
+    @Autowired
+    private UserStoryRepository userStoryRepository;
+
+    @Autowired
+    private SprintRepository sprintRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UsersFeignClient usersClient;
     //endregion
 
 
     //region CrudService Members
     @Override
     public Backlog save(Backlog backlog) {
-//        Optional<Project> projectForBacklog = projectRepository.findById(1L);
-//
-//        if (!projectForBacklog.isPresent()) {
-//            throw new Exception("Project in which needs to be created a backlog does not exist.");
-//        }
-//
-//        Backlog backlogToSave = new Backlog();
-//        backlogToSave.setDescription(backlog.getDescription());
-//        backlogToSave.setAmountOfUserStories(0);
-//        backlogToSave.setCreatedAt(LocalDateTime.now());
-//        backlogToSave.setUpdatedAt(LocalDateTime.now());
-//
-//        Backlog savedBacklog = repository.save(backlogToSave);
-//
-//        projectForBacklog.get().setBacklog(backlogToSave);
-//        //backlogToSave.setProject(projectForBacklog.get());
-//        projectRepository.saveAndFlush(projectForBacklog.get());
-//
-//        return savedBacklog;
-        throw new RuntimeException("Not implemented exception");
+        throw new RuntimeException("save - Not implemented exception");
     }
 
     @Override
     public Iterable<Backlog> finAll() {
-        return repository.findAll();
+        throw new RuntimeException("finAll - Not implemented exception");
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Backlog findById(Long id) {
-        Backlog backlog = repository.findById(id)
-                                    .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID does not exist."));
 
-        return backlog;
+        if (!backlogRepository.existsById(id)) {
+            throw new EntityNotFoundException("Backlog with specified ID does not exist.");
+        }
+
+        return backlogRepository.getOne(id);
     }
 
     @Override
     public Backlog update(Backlog backlog) {
-//        Optional<Backlog> backlogFromDb = repository.findById(1L);
-//
-//        if (!backlogFromDb.isPresent()) {
-//            throw new Exception("Backlog with specified ID can not be found, process has been terminated");
-//        }
-//
-//        backlogFromDb.get().setDescription(backlog.getDescription());
-//        backlogFromDb.get().setUpdatedAt(LocalDateTime.now());
-//
-//        return repository.saveAndFlush(backlogFromDb.get());
-        throw new RuntimeException("Not implemented exception");
+        throw new RuntimeException("update - Not implemented exception");
     }
 
     @Override
     public void delete(Long id) {
-
-        Backlog backlogFromDb = repository.findById(id)
-                                          .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID can not be found, process has been terminated"));
-
-        repository.delete(backlogFromDb);
+        throw new RuntimeException("delete - Not implemented exception");
     }
     //endregion
 
     //region BacklogService Members
 
-    public Collection<UserStory> loadUserStories(Long id) {
-        Backlog backlogFromDb = repository.findById(id)
-                                          .orElseThrow(() -> new EntityNotFoundException("Backlog with specified ID can not be found, process has been terminated"));
+    @Transactional
+    @Override
+    public UserStory addUserStory(Long backlogId, UserStory userStory) {
 
-        Set<UserStory> userStories = new HashSet<>(backlogFromDb.getUserStories());
+        if (!backlogRepository.existsById(backlogId)) {
+            throw new EntityNotFoundException("Backlog with specified ID can not be found.");
+        }
 
-        return userStories;
+        User authUser = usersClient.findById(userStory.getCreatedBy().getId());
+        if (authUser == null) {
+            throw new InvalidResourceException("User with the specified ID could not be found.");
+        }
+
+        User savedUserCreatedBy = userRepository.save(authUser);
+
+        User assignedUser = usersClient.findById(userStory.getAssignedTo().getId());
+        if (assignedUser == null) {
+            throw new InvalidResourceException("User with the specified ID could not be found.");
+        }
+
+        User assignedToUser = userRepository.save(assignedUser);
+
+
+        Backlog backlog = backlogRepository.getOne(backlogId);
+        //userStory.setBacklog(backlog);
+        userStory.setCreatedBy(savedUserCreatedBy);
+        userStory.setAssignedTo(assignedToUser);
+        backlog.addSprintItem(userStory);
+
+        backlogRepository.saveAndFlush(backlog);
+
+        return userStory;
+    }
+
+    @Transactional
+    @Override
+    public void sendUserStoryToSprint(Long backlogId, Long userStoryId, Long sprintId) {
+
+        UserStory storyToMove = userStoryRepository.findByIdAndBacklogId(userStoryId, backlogId);
+        if (storyToMove == null) {
+            throw new EntityNotFoundException("UserStory to move to a sprint does not exist in the specified backlog.");
+        }
+
+        if (!sprintRepository.existsById(sprintId)) {
+            throw new EntityNotFoundException("Target Sprint does not exist.");
+        }
+
+        Sprint targetSprint = sprintRepository.getOne(sprintId);
+        //storyToMove.setSprint(targetSprint);
+        targetSprint.addSprintItems(storyToMove);
+        sprintRepository.save(targetSprint);
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserStory(Long backlogId, Long userStoryId) {
+
+        UserStory storyToDelete = userStoryRepository.findByIdAndBacklogId(userStoryId, backlogId);
+
+        if (storyToDelete == null) {
+            throw new EntityNotFoundException("Delete operation can not be completed, UserStory does not exist in the backlog.");
+        }
+
+        userStoryRepository.delete(storyToDelete);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Backlog loadUserStories(Long backlogId) {
+
+        if (!backlogRepository.existsById(backlogId)) {
+            throw new InvalidResourceException("Backlog with the specified ID could not be found.");
+        }
+
+        Backlog backlogWithUserStories = backlogRepository.getOne(backlogId);
+        //backlogWithUserStories.getUserStories();
+
+        return backlogWithUserStories;
     }
 
 

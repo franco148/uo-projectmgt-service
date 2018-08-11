@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
@@ -36,7 +37,7 @@ public class CreateUserStoryDto extends BaseCreateDto {
         notes = "Priority field should not be null or empty.",
         required = true
     )
-    @NotBlank(message = "Priority field should not be null or empty.")
+    @NotNull(message = "Priority field should not be null or empty.")
     private Priority priority;
 
     @ApiModelProperty
@@ -58,9 +59,9 @@ public class CreateUserStoryDto extends BaseCreateDto {
     @ApiModelProperty
     (
         notes = "Date where the user story starts.",
-        example = "dd-MM-yyyy",
+        example = "dd-MM-yyyy HH:mm:ss",
         dataType = "Date"
     )
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime startedAt;
 }
