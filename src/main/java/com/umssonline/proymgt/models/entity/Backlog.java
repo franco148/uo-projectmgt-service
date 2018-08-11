@@ -43,7 +43,7 @@ public class Backlog extends BaseEntity {
 
 
     @JsonBackReference
-    @OneToOne(optional = false, mappedBy = "backlog")
+    @OneToOne(optional = false, mappedBy = "backlog", cascade = CascadeType.ALL)
 //    @MapsId
     private Project project;
 

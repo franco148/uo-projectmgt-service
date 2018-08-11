@@ -7,7 +7,7 @@ public interface BacklogService extends CrudService<Backlog> {
 
     UserStory addUserStory(Long backlogId, UserStory userStory);
 
-    boolean sendUserStoryToSprint(Long backlogId, Long userStoryId, Long sprintId);
+    void sendUserStoryToSprint(Long backlogId, Long userStoryId, Long sprintId);
 
     void deleteUserStory(Long backlogId, Long userStoryId);
 

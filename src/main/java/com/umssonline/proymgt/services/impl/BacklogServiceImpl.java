@@ -1,27 +1,36 @@
 package com.umssonline.proymgt.services.impl;
 
+import com.umssonline.proymgt.exceptions.InvalidResourceException;
+import com.umssonline.proymgt.feign.UsersFeignClient;
 import com.umssonline.proymgt.models.entity.Backlog;
+import com.umssonline.proymgt.models.entity.Sprint;
+import com.umssonline.proymgt.models.entity.User;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.repositories.BacklogRepository;
-import com.umssonline.proymgt.repositories.ProjectRepository;
+import com.umssonline.proymgt.repositories.SprintRepository;
+import com.umssonline.proymgt.repositories.UserStoryRepository;
 import com.umssonline.proymgt.services.api.BacklogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class BacklogServiceImpl implements BacklogService {
 
     //region Properties
-    @Resource
+    @Autowired
     private BacklogRepository backlogRepository;
 
-    @Resource
-    private ProjectRepository projectRepository;
+    @Autowired
+    private UserStoryRepository userStoryRepository;
+
+    @Autowired
+    private SprintRepository sprintRepository;
+
+    @Autowired
+    private UsersFeignClient usersClient;
     //endregion
 
 
@@ -36,6 +45,7 @@ public class BacklogServiceImpl implements BacklogService {
         throw new RuntimeException("finAll - Not implemented exception");
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Backlog findById(Long id) {
 
@@ -59,24 +69,72 @@ public class BacklogServiceImpl implements BacklogService {
 
     //region BacklogService Members
 
+    @Transactional
     @Override
     public UserStory addUserStory(Long backlogId, UserStory userStory) {
-        return null;
+
+        if (!backlogRepository.existsById(backlogId)) {
+            throw new EntityNotFoundException("Backlog with specified ID can not be found.");
+        }
+
+        User authUser = usersClient.findById(userStory.getCreatedBy().getId());
+        if (authUser == null) {
+            throw new InvalidResourceException("User with the specified ID could not be found.");
+        }
+
+        Backlog backlog = backlogRepository.getOne(backlogId);
+        userStory.setBacklog(backlog);
+        backlog.addSprintItem(userStory);
+
+        backlogRepository.save(backlog);
+
+        return userStory;
     }
 
+    @Transactional
     @Override
-    public boolean sendUserStoryToSprint(Long backlogId, Long userStoryId, Long sprintId) {
-        return false;
+    public void sendUserStoryToSprint(Long backlogId, Long userStoryId, Long sprintId) {
+
+        UserStory storyToMove = userStoryRepository.findByIdAndBacklogId(userStoryId, backlogId);
+        if (storyToMove == null) {
+            throw new EntityNotFoundException("UserStory to move to a sprint does not exist in the specified backlog.");
+        }
+
+        if (!sprintRepository.existsById(sprintId)) {
+            throw new EntityNotFoundException("Target Sprint does not exist.");
+        }
+
+        Sprint targetSprint = sprintRepository.getOne(sprintId);
+        storyToMove.setSprint(targetSprint);
+        targetSprint.addSprintItems(storyToMove);
+        sprintRepository.save(targetSprint);
     }
 
+    @Transactional
     @Override
     public void deleteUserStory(Long backlogId, Long userStoryId) {
 
+        UserStory storyToDelete = userStoryRepository.findByIdAndBacklogId(userStoryId, backlogId);
+
+        if (storyToDelete == null) {
+            throw new EntityNotFoundException("Delete operation can not be completed, UserStory does not exist in the backlog.");
+        }
+
+        userStoryRepository.delete(storyToDelete);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Backlog loadUserStories(Long backlogId) {
-        return null;
+
+        if (!backlogRepository.existsById(backlogId)) {
+            throw new InvalidResourceException("Backlog with the specified ID could not be found.");
+        }
+
+        Backlog backlogWithUserStories = backlogRepository.getOne(backlogId);
+        backlogWithUserStories.getUserStories();
+
+        return backlogWithUserStories;
     }
 
 

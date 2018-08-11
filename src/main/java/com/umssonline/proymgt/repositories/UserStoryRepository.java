@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserStoryRepository extends JpaRepository<UserStory, Long> {
+
+    UserStory findByIdAndBacklogId(Long userStoryId, Long backlogId);
 }
