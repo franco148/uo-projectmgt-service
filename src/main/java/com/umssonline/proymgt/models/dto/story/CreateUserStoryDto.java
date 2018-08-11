@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
@@ -36,7 +37,7 @@ public class CreateUserStoryDto extends BaseCreateDto {
         notes = "Priority field should not be null or empty.",
         required = true
     )
-    @NotBlank(message = "Priority field should not be null or empty.")
+    @NotNull(message = "Priority field should not be null or empty.")
     private Priority priority;
 
     @ApiModelProperty

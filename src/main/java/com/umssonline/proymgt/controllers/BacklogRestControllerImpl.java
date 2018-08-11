@@ -38,7 +38,10 @@ public class BacklogRestControllerImpl implements BacklogRestController {
     @Override
     public ResponseEntity<UserStory> addUserStory(@PathVariable("backlog_id") final Long backlogId,
                                                   @Valid @RequestBody final CreateUserStoryDto userStory) {
-        return null;
+        UserStory converted = modelMapper.map(userStory, UserStory.class);
+        UserStory addedUserStory = service.addUserStory(backlogId, converted);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedUserStory);
     }
 
     @PostMapping("/{backlog_id}/user-story/{user_story_id}/sprint/{sprint_id}")
@@ -46,20 +49,25 @@ public class BacklogRestControllerImpl implements BacklogRestController {
     public ResponseEntity<Boolean> sendUserStoryToSprint(@PathVariable("backlog_id") final Long backlogId,
                                                          @PathVariable("user_story_id") final Long userStoryId,
                                                          @PathVariable("sprint_id") final Long sprintId) {
-        return null;
+
+        service.sendUserStoryToSprint(backlogId, userStoryId, sprintId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
     }
 
     @DeleteMapping("/{backlog_id}/user-story/{user_story_id}")
     @Override
     public ResponseEntity<Void> deleteUserStoryFromBacklog(@PathVariable("backlog_id") final Long backlogId,
                                                            @PathVariable("user_story_id") final Long userStoryId) {
-        return null;
+        service.deleteUserStory(backlogId, userStoryId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{backlog_id}/user-story")
     @Override
     public ResponseEntity<Backlog> loadUserStoriesFromBacklog(@PathVariable("backlog_id") final Long backlogId) {
-        return null;
+
+        Backlog foundBacklog = service.loadUserStories(backlogId);
+        return ResponseEntity.status(HttpStatus.FOUND).body(foundBacklog);
     }
 
 

@@ -8,6 +8,7 @@ import com.umssonline.proymgt.models.entity.User;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.repositories.BacklogRepository;
 import com.umssonline.proymgt.repositories.SprintRepository;
+import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.repositories.UserStoryRepository;
 import com.umssonline.proymgt.services.api.BacklogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class BacklogServiceImpl implements BacklogService {
 
     @Autowired
     private SprintRepository sprintRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UsersFeignClient usersClient;
@@ -82,8 +86,11 @@ public class BacklogServiceImpl implements BacklogService {
             throw new InvalidResourceException("User with the specified ID could not be found.");
         }
 
+        User savedUser = userRepository.save(authUser);
+
         Backlog backlog = backlogRepository.getOne(backlogId);
         userStory.setBacklog(backlog);
+        userStory.setCreatedBy(savedUser);
         backlog.addSprintItem(userStory);
 
         backlogRepository.save(backlog);
@@ -132,7 +139,7 @@ public class BacklogServiceImpl implements BacklogService {
         }
 
         Backlog backlogWithUserStories = backlogRepository.getOne(backlogId);
-        backlogWithUserStories.getUserStories();
+        //backlogWithUserStories.getUserStories();
 
         return backlogWithUserStories;
     }

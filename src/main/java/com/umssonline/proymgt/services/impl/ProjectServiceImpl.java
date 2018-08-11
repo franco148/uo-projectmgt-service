@@ -116,9 +116,12 @@ public class ProjectServiceImpl implements ProjectService {
             throw new InvalidResourceException("User with the specified ID could not be found.");
         }
 
+        User savedUser = userRepository.save(authUser);
+
         Project foundProject = projectRepository.getOne(projectId);
 
         sprint.setProject(foundProject);
+        sprint.setCreatedBy(savedUser);
         foundProject.addSprint(sprint);
         projectRepository.saveAndFlush(foundProject);
 
