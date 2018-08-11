@@ -86,11 +86,20 @@ public class BacklogServiceImpl implements BacklogService {
             throw new InvalidResourceException("User with the specified ID could not be found.");
         }
 
-        User savedUser = userRepository.save(authUser);
+        User savedUserCreatedBy = userRepository.save(authUser);
+
+        User assignedUser = usersClient.findById(userStory.getAssignedTo().getId());
+        if (assignedUser == null) {
+            throw new InvalidResourceException("User with the specified ID could not be found.");
+        }
+
+        User assignedToUser = userRepository.save(assignedUser);
+
 
         Backlog backlog = backlogRepository.getOne(backlogId);
         //userStory.setBacklog(backlog);
-        userStory.setCreatedBy(savedUser);
+        userStory.setCreatedBy(savedUserCreatedBy);
+        userStory.setAssignedTo(assignedToUser);
         backlog.addSprintItem(userStory);
 
         backlogRepository.saveAndFlush(backlog);
@@ -112,7 +121,7 @@ public class BacklogServiceImpl implements BacklogService {
         }
 
         Sprint targetSprint = sprintRepository.getOne(sprintId);
-        storyToMove.setSprint(targetSprint);
+        //storyToMove.setSprint(targetSprint);
         targetSprint.addSprintItems(storyToMove);
         sprintRepository.save(targetSprint);
     }

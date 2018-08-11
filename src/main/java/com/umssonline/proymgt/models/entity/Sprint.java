@@ -37,7 +37,7 @@ public class Sprint extends BaseEntity {
     private LocalDate completedOn;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "sprint")
+    @OneToMany(mappedBy = "sprint", cascade = CascadeType.ALL)
     private Set<UserStory> userStories = new HashSet<>();
 
     @JsonBackReference
@@ -48,5 +48,6 @@ public class Sprint extends BaseEntity {
 
     public void addSprintItems(UserStory userStory) {
         this.userStories.add(userStory);
+        userStory.setSprint(this);
     }
 }
