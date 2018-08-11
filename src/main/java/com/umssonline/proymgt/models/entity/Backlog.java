@@ -38,7 +38,7 @@ public class Backlog extends BaseEntity {
     private Integer amountOfUserStories;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "backlog")
+    @OneToMany(mappedBy = "backlog", cascade = CascadeType.ALL)
     private Set<UserStory> userStories = new HashSet<>();
 
 
@@ -51,6 +51,7 @@ public class Backlog extends BaseEntity {
     public void addSprintItem(UserStory userStory) {
         this.userStories.add(userStory);
         //Set a Backlog to the task.
+        userStory.setBacklog(this);
     }
 
 }

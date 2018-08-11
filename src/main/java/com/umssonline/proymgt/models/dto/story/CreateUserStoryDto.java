@@ -59,9 +59,9 @@ public class CreateUserStoryDto extends BaseCreateDto {
     @ApiModelProperty
     (
         notes = "Date where the user story starts.",
-        example = "dd-MM-yyyy",
+        example = "dd-MM-yyyy HH:mm:ss",
         dataType = "Date"
     )
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime startedAt;
 }
