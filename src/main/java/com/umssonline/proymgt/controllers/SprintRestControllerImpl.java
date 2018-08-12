@@ -1,6 +1,6 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;
+import com.umssonline.proymgt.models.dto.sprint.UpdateSprintDto;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.services.api.SprintService;
 import org.modelmapper.ModelMapper;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/sprints")
-public class SprintRestControllerImpl {
+public class SprintRestControllerImpl implements SprintRestController {
 
     //region Properties
     @Autowired
@@ -23,55 +23,52 @@ public class SprintRestControllerImpl {
     private ModelMapper modelMapper;
     //endregion
 
-    //region Methods
+    //region SprintRestController Members
+
     @GetMapping("/{sprint_id}")
-    public ResponseEntity<Sprint> findById(@PathVariable("sprint_id") final Long id) {
-
-        Sprint sprint = sprintService.findById(id);
-
-        return ResponseEntity.ok(sprint);
-    }
-
-    //By many parameters ?????
-    @GetMapping
-    public ResponseEntity<Iterable<Sprint>> findAllByProjectId(@RequestParam("projectId") final Long projectId) {
-        return null;
-    }
-
-    @PostMapping
-    public ResponseEntity<Sprint> create(@Valid @RequestBody final CreateSprintDto sprint) {
-        Sprint converted = modelMapper.map(sprint, Sprint.class);
-        Sprint savedSprint = sprintService.save(converted);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedSprint);
+    @Override
+    public ResponseEntity<Sprint> findById(@PathVariable("sprint_id") final Long sprintId) {
+        Sprint foundSprint = sprintService.findById(sprintId);
+        return ResponseEntity.status(HttpStatus.FOUND).body(foundSprint);
     }
 
     @PutMapping("/{sprint_id}")
-    public ResponseEntity<Sprint> update(@PathVariable("sprint_id") final Long id, @Valid @RequestBody final CreateSprintDto sprint) {
-
+    @Override
+    public ResponseEntity<Sprint> update(@PathVariable("sprint_id") final Long sprintId,
+                                         @Valid @RequestBody final UpdateSprintDto sprint) {
         Sprint converted = modelMapper.map(sprint, Sprint.class);
-        converted.setId(id);
+        converted.setId(sprintId);
 
-        Sprint savedSprint = sprintService.update(converted);
-        return ResponseEntity.ok(savedSprint);
+        Sprint saved = sprintService.update(converted);
+        return ResponseEntity.ok(saved);
     }
 
-    @PostMapping("/move-task{task_id}/from/{source_sprint_id}/to/{target_sprint_id}")
-    public ResponseEntity<Void> moveTaskToOtherSprint(@PathVariable("task_id") final Long taskId,
-                                                      @PathVariable("source_sprint_id") final Long sourceSprintId,
-                                                      @PathVariable("target_sprint_id") final Long targetSprintId) {
-        return null;
+    @PostMapping("/move-story{story_id}/from/{source_sprint_id}/to/{target_sprint_id}")
+    @Override
+    public ResponseEntity<Boolean> moveStoryToAnotherSprint(@PathVariable("source_sprint_id") final Long sourceSprint,
+                                                            @PathVariable("target_sprint_id") final Long targetSprint,
+                                                            @PathVariable("story_id") final Long storyId) {
+        sprintService.moveTaskToAnotherSprint(sourceSprint, targetSprint, storyId);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{sprint_id}/start")
-    public ResponseEntity<Void> startSprint(@PathVariable("sprint_id") final Long id) {
+    @Override
+    public ResponseEntity<Boolean> activate(@PathVariable("sprint_id") final Long sprintId) {
         return null;
     }
 
     @PatchMapping("/{sprint_id}/end")
-    public ResponseEntity<Void> endSprint(@PathVariable("sprint_id") final Long id) {
+    @Override
+    public ResponseEntity<Void> markAsEnded(@PathVariable("sprint_id") final Long sprintId) {
         return null;
     }
+
+    @Override
+    public ResponseEntity<Sprint> loadUserStoriesFromSprint(Long sprintId) {
+        return null;
+    }
+
 
     //endregion
 }

@@ -37,6 +37,11 @@ public class UserStory extends SprintItem {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "userStory", orphanRemoval = true)
-    private Set<Task> tasks;
+    private Set<Task> tasks = new HashSet<>();
 
+
+    public void addTask(Task task) {
+        tasks.add(task);
+        task.setUserStory(this);
+    }
 }

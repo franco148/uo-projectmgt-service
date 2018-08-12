@@ -1,6 +1,8 @@
 package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.story.UpdateUserStoryDto;
+import com.umssonline.proymgt.models.dto.task.CreateTaskDto;
+import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.Task;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.services.api.UserStoryService;
@@ -10,10 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/user-stories")
-public class UserStoryRestControllerImpl {
+public class UserStoryRestControllerImpl implements UserStoryRestController {
 
     //region Properties
     @Autowired
@@ -23,42 +27,42 @@ public class UserStoryRestControllerImpl {
     private ModelMapper modelMapper;
     //endregion
 
-    //region Methods
-    //Need to build queries by everything
-    public ResponseEntity<UserStory> findAllBy() {
-        return null;
-    }
-
-    @GetMapping("/{us_id}")
-    public ResponseEntity findById(@PathVariable("us_id") final Long id) {
-
-        UserStory userStory = userStoryService.findById(id);
-
-        return ResponseEntity.ok(userStory);
-    }
-
-    @PutMapping("/{us_id}")
-    public ResponseEntity<UserStory> update(@PathVariable("us_id") final Long id, @RequestBody final UpdateUserStoryDto userStory) {
-
+    //region UserStoryRestController Members
+    @PutMapping("/{story_id}")
+    @Override
+    public ResponseEntity<UserStory> update(@PathVariable("story_id") final Long userStoryId,
+                                            @Valid @RequestBody final UpdateUserStoryDto userStory) {
         UserStory converted = modelMapper.map(userStory, UserStory.class);
-        converted.setId(id);
-        UserStory saved = userStoryService.update(converted);
-
-        return ResponseEntity.ok(saved);
+        UserStory updated = userStoryService.update(converted);
+        return ResponseEntity.ok(updated);
     }
 
-    @PostMapping("/{us_id}/task")
-    public ResponseEntity<Void> addTask(@PathVariable("us_id") final Long userStoryId, @RequestBody final UpdateUserStoryDto userStory) {
-        return null;
+    @GetMapping("/{story_id}")
+    @Override
+    public ResponseEntity<UserStory> findById(@PathVariable("story_id") final Long userStoryId) {
+        UserStory foundUserStory = userStoryService.findById(userStoryId);
+        return ResponseEntity.status(HttpStatus.FOUND).body(foundUserStory);
     }
 
-    @DeleteMapping("/{us_id}/task/{task_id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable("us_id") final Long userStoryId, @PathVariable("task_id") final Long taskId) {
-        return null;
+    @PostMapping("/{story_id}")
+    @Override
+    public ResponseEntity<Task> addTaskToUserStory(@PathVariable("story_id") final Long userStoryId,
+                                                   @Valid @RequestBody final CreateTaskDto task) {
+        Task convertedTask = modelMapper.map(task, Task.class);
+        Task savedTask = userStoryService.addTask(userStoryId, convertedTask);
+        return ResponseEntity.ok(savedTask);
     }
 
-    @GetMapping("/{us_id}/tasks")
-    public ResponseEntity<Iterable<Task>> loadTasks(@PathVariable("us_id") final Long userStoryId) {
+    @DeleteMapping("/{story_id}/task/{task_id}")
+    @Override
+    public ResponseEntity<Void> deleteTaskFromUserStory(@PathVariable("story_id") final Long userStoryId,
+                                                        @PathVariable("task_id") final Long taskId) {
+        userStoryService.deleteTask(userStoryId, taskId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<UserStory> loadTasksFromUserStory(Long userStoryId) {
         return null;
     }
     //endregion

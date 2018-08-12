@@ -2,7 +2,6 @@ package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.story.UpdateUserStoryDto;
 import com.umssonline.proymgt.models.dto.task.CreateTaskDto;
-import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.Task;
 import com.umssonline.proymgt.models.entity.UserStory;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +16,7 @@ public interface UserStoryRestController {
         nickname = "update",
         code = 200
     )
-    UserStory update(final Long userStoryId, final UpdateUserStoryDto userStory);
+    ResponseEntity<UserStory> update(final Long userStoryId, final UpdateUserStoryDto userStory);
 
 
     @ApiOperation
@@ -27,7 +26,7 @@ public interface UserStoryRestController {
         nickname = "findById",
         code = 302
     )
-    UserStory findById(final Long userStoryId);
+    ResponseEntity<UserStory> findById(final Long userStoryId);
 
 
     @ApiOperation
@@ -37,7 +36,7 @@ public interface UserStoryRestController {
         nickname = "addTaskToUserStory",
         code = 201
     )
-    Task addTaskToUserStory(final Long userStoryId, final CreateTaskDto task);
+    ResponseEntity<Task> addTaskToUserStory(final Long userStoryId, final CreateTaskDto task);
 
 
     @ApiOperation
@@ -47,7 +46,7 @@ public interface UserStoryRestController {
         nickname = "deleteTaskFromUserStory",
         code = 204
     )
-    void deleteTaskFromUserStory(final Long userStoryId, final Long taskId);
+    ResponseEntity<Void> deleteTaskFromUserStory(final Long userStoryId, final Long taskId);
 
 
     @ApiOperation
@@ -57,5 +56,5 @@ public interface UserStoryRestController {
         nickname = "loadTasksFromUserStory",
         code = 302
     )
-    ResponseEntity<Sprint> loadTasksFromUserStory(final Long userStoryId);
+    ResponseEntity<UserStory> loadTasksFromUserStory(final Long userStoryId);
 }

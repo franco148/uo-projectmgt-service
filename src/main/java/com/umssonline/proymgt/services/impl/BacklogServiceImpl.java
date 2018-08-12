@@ -88,18 +88,20 @@ public class BacklogServiceImpl implements BacklogService {
 
         User savedUserCreatedBy = userRepository.save(authUser);
 
-        User assignedUser = usersClient.findById(userStory.getAssignedTo().getId());
-        if (assignedUser == null) {
-            throw new InvalidResourceException("User with the specified ID could not be found.");
-        }
+        if (userStory.getAssignedTo() != null) {
+            User assignedUser = usersClient.findById(userStory.getAssignedTo().getId());
+            if (assignedUser == null) {
+                throw new InvalidResourceException("User with the specified ID could not be found.");
+            }
 
-        User assignedToUser = userRepository.save(assignedUser);
+            User assignedToUser = userRepository.save(assignedUser);
+            userStory.setAssignedTo(assignedToUser);
+        }
 
 
         Backlog backlog = backlogRepository.getOne(backlogId);
         //userStory.setBacklog(backlog);
         userStory.setCreatedBy(savedUserCreatedBy);
-        userStory.setAssignedTo(assignedToUser);
         backlog.addSprintItem(userStory);
 
         backlogRepository.saveAndFlush(backlog);
