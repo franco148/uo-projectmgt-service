@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @Setter
 public abstract class BaseUpdateDto {
 
-//    @NotNull(message = "Id field should not be null.")
-//    @Positive(message = "Id field should not be less than zero.")
     @JsonIgnore
     private Long id;
 

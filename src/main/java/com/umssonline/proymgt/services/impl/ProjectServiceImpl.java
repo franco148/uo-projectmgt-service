@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -84,7 +85,8 @@ public class ProjectServiceImpl implements ProjectService {
         project.setCreatedAt(sourceProject.getCreatedAt());
         project.getBacklog().setAmountOfUserStories(sourceProject.getBacklog().getAmountOfUserStories());
         project.getBacklog().setIsDeleted(sourceProject.getBacklog().getIsDeleted());
-        project.getBacklog().setCreatedAt(sourceProject.getBacklog().getCreatedAt());
+        //project.getBacklog().setCreatedAt(sourceProject.getBacklog().getCreatedAt());
+        project.getBacklog().setCreatedAt(LocalDateTime.now());
         project.getBacklog().setCreatedBy(sourceProject.getBacklog().getCreatedBy());
 
         return projectRepository.save(project);
