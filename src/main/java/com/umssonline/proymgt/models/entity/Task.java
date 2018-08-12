@@ -18,6 +18,7 @@ public class Task extends SprintItem {
 
     @JsonBackReference
     @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_userStory")
     private UserStory userStory;
 
 }

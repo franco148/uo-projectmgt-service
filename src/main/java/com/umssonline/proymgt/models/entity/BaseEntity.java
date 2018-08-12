@@ -26,10 +26,10 @@ public abstract class BaseEntity {
 
     @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_CreatedBy", updatable = false)
+    @JoinColumn(name = "fk_createdBy", updatable = false)
     private User createdBy;
     @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_UpdatedBy")
+    @JoinColumn(name = "fk_updatedBy")
     private User updatedBy;
 }

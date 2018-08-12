@@ -19,8 +19,8 @@ import java.util.Set;
 @Where(clause = "is_deleted=false")
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@EqualsAndHashCode(exclude = {"userStories"}, callSuper = false) //exclude = {"project", "userStories"}
-@ToString(exclude = {"userStories"})//exclude = {"project", "userStories"}
+@EqualsAndHashCode(exclude = { "project", "userStories" }, callSuper = false)
+@ToString(exclude = { "project", "userStories" })
 @Data
 
 @Entity

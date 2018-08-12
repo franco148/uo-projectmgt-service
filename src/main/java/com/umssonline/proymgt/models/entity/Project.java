@@ -44,6 +44,6 @@ public class Project extends BaseEntity {
 
     public void addSprint(Sprint sprint) {
         this.sprints.add(sprint);
-        //sprint.set(this);
+        sprint.setProject(this);
     }
 }

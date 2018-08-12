@@ -42,6 +42,7 @@ public class Sprint extends BaseEntity {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "fk_project")
     private Project project;
 
 
