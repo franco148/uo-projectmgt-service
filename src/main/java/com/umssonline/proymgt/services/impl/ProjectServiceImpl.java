@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -56,11 +55,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     @Override
     public Project findById(Long id) {
-        Project projectFromDb = projectRepository.findById(id)
-                                              .orElseThrow(() -> new EntityNotFoundException("Project with specified ID does not exist."));
 
+        if (!projectRepository.existsById(id)) {
+            throw new EntityNotFoundException("Project with specified ID does not exist.");
+        }
 
-        return projectFromDb;
+        return projectRepository.getOne(id);
     }
 
     @Override
@@ -81,13 +81,13 @@ public class ProjectServiceImpl implements ProjectService {
         Project sourceProject = projectRepository.getOne(project.getId());
         // modelMapper.map(project, projectToUpdate);
         project.setIsDeleted(sourceProject.getIsDeleted());
-        project.setCreatedBy(sourceProject.getCreatedBy());
-        project.setCreatedAt(sourceProject.getCreatedAt());
+//        project.setCreatedBy(sourceProject.getCreatedBy());
+//        project.setCreatedAt(sourceProject.getCreatedAt());
         project.getBacklog().setAmountOfUserStories(sourceProject.getBacklog().getAmountOfUserStories());
         project.getBacklog().setIsDeleted(sourceProject.getBacklog().getIsDeleted());
         //project.getBacklog().setCreatedAt(sourceProject.getBacklog().getCreatedAt());
-        project.getBacklog().setCreatedAt(LocalDateTime.now());
-        project.getBacklog().setCreatedBy(sourceProject.getBacklog().getCreatedBy());
+//        project.getBacklog().setCreatedAt(LocalDateTime.now());
+//        project.getBacklog().setCreatedBy(sourceProject.getBacklog().getCreatedBy());
 
         return projectRepository.save(project);
     }
@@ -122,7 +122,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project foundProject = projectRepository.getOne(projectId);
 
-        sprint.setProject(foundProject);
+        //sprint.setProject(foundProject);
         sprint.setCreatedBy(savedUser);
         foundProject.addSprint(sprint);
         projectRepository.saveAndFlush(foundProject);

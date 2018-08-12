@@ -32,7 +32,8 @@ public class CreateProjectDto extends BaseCreateDto {
     @ApiModelProperty
     (
         notes = "Completed Date Estimation field can should not be null, and It should be future date.",
-        required = true
+        required = true,
+        example = "dd-MM-yyyy"
     )
     @Future(message = "Completed Date Estimation should be a future date.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
