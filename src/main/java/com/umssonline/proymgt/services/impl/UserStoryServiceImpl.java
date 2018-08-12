@@ -1,63 +1,100 @@
 package com.umssonline.proymgt.services.impl;
 
+import com.umssonline.proymgt.models.entity.Task;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.repositories.TaskRepository;
 import com.umssonline.proymgt.repositories.UserStoryRepository;
 import com.umssonline.proymgt.services.api.UserStoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class UserStoryServiceImpl implements UserStoryService {
 
     //region Properties
-    @Resource
+    @Autowired
     private UserStoryRepository usRepository;
 
-    @Resource
+    @Autowired
     private TaskRepository taskRepository;
     //endregion
 
-    //region Methods
-    public UserStory find(Long id) throws Exception {
+    //region CrudService Members
 
-        Optional<UserStory> usrStoryFromDb = usRepository.findById(id);
-
-        if (!usrStoryFromDb.isPresent()) {
-            throw new Exception("UserStory with specified ID does not exist.");
-        }
-
-        return usrStoryFromDb.get();
-    }
-
+    @Transactional
+    @Override
     public UserStory save(UserStory userStory) {
         return usRepository.save(userStory);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Iterable<UserStory> finAll() {
         return null;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserStory findById(Long id) {
-        return null;
+
+        if (!usRepository.existsById(id)) {
+            throw new EntityNotFoundException("UserStory with specified ID does not exist.");
+        }
+
+        return usRepository.getOne(id);
     }
 
+    @Transactional
     @Override
     public UserStory update(UserStory userStory) {
-        return null;
+
+        if (!usRepository.existsById(userStory.getId())) {
+            throw new EntityNotFoundException("UserStory with specified ID does not exist.");
+        }
+
+        return usRepository.save(userStory);
     }
 
-    public UserStory edit(UserStory editedUserStory) {
-
-        return usRepository.save(editedUserStory);
-    }
-
+    @Transactional
     public void delete(Long id) {
         usRepository.deleteById(id);
     }
+    //endregion
+
+    //region UserStoryService Members
+
+    @Transactional
+    @Override
+    public Task addTask(Long userStoryId, Task task) {
+
+        if (!usRepository.existsById(userStoryId)) {
+            throw new EntityNotFoundException("UserStory with specified ID does not exist.");
+        }
+
+        UserStory foundUserStory = usRepository.getOne(userStoryId);
+        foundUserStory.addTask(task);
+        usRepository.saveAndFlush(foundUserStory);
+
+        return task;
+    }
+
+    @Transactional
+    @Override
+    public void deleteTask(Long userStoryId, Long taskId) {
+
+        if (!usRepository.existsById(userStoryId)) {
+            throw new EntityNotFoundException("UserStory with specified ID does not exist.");
+        }
+
+        if (!taskRepository.existsById(taskId)) {
+            throw new EntityNotFoundException("Task with specified ID does not exist.");
+        }
+
+        taskRepository.deleteByIdAndUserStoryId(taskId, userStoryId);
+    }
+
     //endregion
 }

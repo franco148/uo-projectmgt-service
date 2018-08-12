@@ -30,33 +30,39 @@ public class UserStoryRestControllerImpl implements UserStoryRestController {
     //region UserStoryRestController Members
     @PutMapping("/{story_id}")
     @Override
-    public UserStory update(@PathVariable("story_id") final Long userStoryId,
-                            @Valid @RequestBody final UpdateUserStoryDto userStory) {
-        return null;
+    public ResponseEntity<UserStory> update(@PathVariable("story_id") final Long userStoryId,
+                                            @Valid @RequestBody final UpdateUserStoryDto userStory) {
+        UserStory converted = modelMapper.map(userStory, UserStory.class);
+        UserStory updated = userStoryService.update(converted);
+        return ResponseEntity.ok(updated);
     }
 
     @GetMapping("/{story_id}")
     @Override
-    public UserStory findById(@PathVariable("story_id") final Long userStoryId) {
-        return null;
+    public ResponseEntity<UserStory> findById(@PathVariable("story_id") final Long userStoryId) {
+        UserStory foundUserStory = userStoryService.findById(userStoryId);
+        return ResponseEntity.status(HttpStatus.FOUND).body(foundUserStory);
     }
 
     @PostMapping("/{story_id}")
     @Override
-    public Task addTaskToUserStory(@PathVariable("story_id") final Long userStoryId,
-                                   @Valid @RequestBody final CreateTaskDto task) {
-        return null;
+    public ResponseEntity<Task> addTaskToUserStory(@PathVariable("story_id") final Long userStoryId,
+                                                   @Valid @RequestBody final CreateTaskDto task) {
+        Task convertedTask = modelMapper.map(task, Task.class);
+        Task savedTask = userStoryService.addTask(userStoryId, convertedTask);
+        return ResponseEntity.ok(savedTask);
     }
 
     @DeleteMapping("/{story_id}/task/{task_id}")
     @Override
-    public void deleteTaskFromUserStory(@PathVariable("story_id") final Long userStoryId,
-                                        @PathVariable("task_id") final Long taskId) {
-
+    public ResponseEntity<Void> deleteTaskFromUserStory(@PathVariable("story_id") final Long userStoryId,
+                                                        @PathVariable("task_id") final Long taskId) {
+        userStoryService.deleteTask(userStoryId, taskId);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<Sprint> loadTasksFromUserStory(Long userStoryId) {
+    public ResponseEntity<UserStory> loadTasksFromUserStory(Long userStoryId) {
         return null;
     }
     //endregion
