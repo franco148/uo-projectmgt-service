@@ -1,6 +1,5 @@
 package com.umssonline.proymgt.controllers;
 
-import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;
 import com.umssonline.proymgt.models.dto.sprint.UpdateSprintDto;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.services.api.SprintService;
@@ -29,22 +28,28 @@ public class SprintRestControllerImpl implements SprintRestController {
     @GetMapping("/{sprint_id}")
     @Override
     public ResponseEntity<Sprint> findById(@PathVariable("sprint_id") final Long sprintId) {
-        return null;
+        Sprint foundSprint = sprintService.findById(sprintId);
+        return ResponseEntity.status(HttpStatus.FOUND).body(foundSprint);
     }
 
     @PutMapping("/{sprint_id}")
     @Override
     public ResponseEntity<Sprint> update(@PathVariable("sprint_id") final Long sprintId,
                                          @Valid @RequestBody final UpdateSprintDto sprint) {
-        return null;
+        Sprint converted = modelMapper.map(sprint, Sprint.class);
+        converted.setId(sprintId);
+
+        Sprint saved = sprintService.update(converted);
+        return ResponseEntity.ok(saved);
     }
 
-    @PostMapping("/move-task{task_id}/from/{source_sprint_id}/to/{target_sprint_id}")
+    @PostMapping("/move-story{story_id}/from/{source_sprint_id}/to/{target_sprint_id}")
     @Override
-    public ResponseEntity<Boolean> moveTaskToSprint(@PathVariable("source_sprint_id") final Long sourceSprint,
-                                                    @PathVariable("target_sprint_id") final Long targetSprint,
-                                                    @PathVariable("task_id") final Long taskId) {
-        return null;
+    public ResponseEntity<Boolean> moveStoryToAnotherSprint(@PathVariable("source_sprint_id") final Long sourceSprint,
+                                                            @PathVariable("target_sprint_id") final Long targetSprint,
+                                                            @PathVariable("story_id") final Long storyId) {
+        sprintService.moveTaskToAnotherSprint(sourceSprint, targetSprint, storyId);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{sprint_id}/start")

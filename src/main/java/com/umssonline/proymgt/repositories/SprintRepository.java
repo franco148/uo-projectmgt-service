@@ -9,5 +9,4 @@ import java.util.Collection;
 @Repository
 public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
-    Collection<Sprint> findByProjectId(Long projectId);
 }

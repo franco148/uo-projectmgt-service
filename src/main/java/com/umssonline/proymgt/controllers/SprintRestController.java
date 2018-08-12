@@ -36,7 +36,7 @@ public interface SprintRestController {
         nickname = "moveTaskToSprint",
         code = 200
     )
-    ResponseEntity<Boolean> moveTaskToSprint(final Long sourceSprint, final Long targetSprint, final Long taskId);
+    ResponseEntity<Boolean> moveStoryToAnotherSprint(final Long sourceSprint, final Long targetSprint, final Long storyId);
 
 
     @ApiOperation
