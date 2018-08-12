@@ -43,7 +43,7 @@ public class SprintRestControllerImpl implements SprintRestController {
         return ResponseEntity.ok(saved);
     }
 
-    @PostMapping("/move-story{story_id}/from/{source_sprint_id}/to/{target_sprint_id}")
+    @PostMapping("/move-story/{story_id}/from/{source_sprint_id}/to/{target_sprint_id}")
     @Override
     public ResponseEntity<Boolean> moveStoryToAnotherSprint(@PathVariable("source_sprint_id") final Long sourceSprint,
                                                             @PathVariable("target_sprint_id") final Long targetSprint,
