@@ -28,6 +28,6 @@ public class CreateTaskDto extends BaseCreateDto {
     @Positive(message = "AssignedToId field should not be less than zero.")
     private Long assignedToId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime startedAt;
 }

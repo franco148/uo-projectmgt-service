@@ -10,10 +10,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,8 +19,8 @@ import java.util.Set;
 @Where(clause = "is_deleted=false")
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@EqualsAndHashCode(exclude = {"userStories"}, callSuper = false) //exclude = {"project", "userStories"}
-@ToString(exclude = {"userStories"})//exclude = {"project", "userStories"}
+@EqualsAndHashCode(exclude = { "project", "userStories" }, callSuper = false)
+@ToString(exclude = { "project", "userStories" })
 @Data
 
 @Entity

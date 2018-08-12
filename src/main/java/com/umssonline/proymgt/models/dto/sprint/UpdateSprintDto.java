@@ -1,5 +1,6 @@
 package com.umssonline.proymgt.models.dto.sprint;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.umssonline.proymgt.models.dto.BaseUpdateDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,14 +27,18 @@ public class UpdateSprintDto extends BaseUpdateDto {
 
     @ApiModelProperty
     (
-        notes = "StartedOn field refers when a sprint starts."
+        notes = "StartedOn field refers when a sprint starts.",
+        example = "dd-MM-yyyy"
     )
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate startedOn;
 
     @ApiModelProperty
     (
-        notes = "CompletedOn field refers when a sprint ends."
+        notes = "CompletedOn field refers when a sprint ends.",
+        example = "dd-MM-yyyy"
     )
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate completedOn;
 
 }

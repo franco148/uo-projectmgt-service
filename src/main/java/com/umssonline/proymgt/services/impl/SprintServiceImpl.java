@@ -50,14 +50,18 @@ public class SprintServiceImpl implements SprintService {
     @Transactional
     @Override
     public Sprint update(Sprint sprint) {
-        Sprint sprintFromDb = sprintRepository.findById(sprint.getId())
-                              .orElseThrow(() -> new EntityNotFoundException("Sprint with specified ID does not exist."));
+//        Sprint sprintFromDb = sprintRepository.findById(sprint.getId())
+//                              .orElseThrow(() -> new EntityNotFoundException("Sprint with specified ID does not exist."));
+//
+//        sprintFromDb.setName(sprint.getName());
+//        sprintFromDb.setStartedOn(sprint.getStartedOn());
+//        sprintFromDb.setCompletedOn(sprint.getCompletedOn());
 
-        sprintFromDb.setName(sprint.getName());
-        sprintFromDb.setStartedOn(sprint.getStartedOn());
-        sprintFromDb.setCompletedOn(sprint.getCompletedOn());
+        if (!sprintRepository.existsById(sprint.getId())) {
+            throw new EntityNotFoundException("Sprint with specified ID does not exist.");
+        }
 
-        return sprintRepository.saveAndFlush(sprintFromDb);
+        return sprintRepository.saveAndFlush(sprint);
     }
 
     @Transactional

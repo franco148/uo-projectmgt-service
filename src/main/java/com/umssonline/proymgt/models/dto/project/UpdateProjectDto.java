@@ -33,7 +33,8 @@ public class UpdateProjectDto extends BaseUpdateDto {
     @ApiModelProperty
     (
         notes = "Completed Date Estimation field can should not be null, and It should be future date.",
-        required = true
+        required = true,
+        example = "dd-MM-yyyy"
     )
     @NotNull(message = "Completed Date Estimation field can should not be null.")
     @Future(message = "Completed Date Estimation should be a future date.")

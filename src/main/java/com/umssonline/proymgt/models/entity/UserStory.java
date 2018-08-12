@@ -29,10 +29,12 @@ public class UserStory extends SprintItem {
 
     @JsonBackReference
     @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_backlog")
     private Backlog backlog;
 
     @JsonBackReference
     @ManyToOne
+    @JoinColumn(name = "fk_sprint")
     private Sprint sprint;
 
     @JsonManagedReference
