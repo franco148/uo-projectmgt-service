@@ -41,7 +41,7 @@ public class UserStoryRestControllerImpl implements UserStoryRestController {
     @Override
     public ResponseEntity<UserStory> findById(@PathVariable("story_id") final Long userStoryId) {
         UserStory foundUserStory = userStoryService.findById(userStoryId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(foundUserStory);
+        return ResponseEntity.ok(foundUserStory);
     }
 
     @PostMapping("/{story_id}")
