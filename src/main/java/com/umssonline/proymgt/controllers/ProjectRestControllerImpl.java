@@ -41,14 +41,14 @@ public class ProjectRestControllerImpl implements ProjectRestController {
     @Override
     public ResponseEntity<Iterable<Project>> findAll() {
         Iterable<Project> projectsCollection = service.finAll();
-        return ResponseEntity.status(HttpStatus.FOUND).body(projectsCollection);
+        return ResponseEntity.ok(projectsCollection);
     }
 
     @GetMapping("/{project_id}")
     @Override
     public ResponseEntity<Project> findById(@PathVariable("project_id") final Long projectId) {
         Project foundProject = service.findById(projectId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(foundProject);
+        return ResponseEntity.ok(foundProject);
     }
 
     @PutMapping("/{project_id}")
@@ -86,7 +86,7 @@ public class ProjectRestControllerImpl implements ProjectRestController {
     @Override
     public ResponseEntity<Project> loadSprintsFromProject(@PathVariable("project_id") final Long projectId) {
         Project projectWithSprints = service.loadProjectSprints(projectId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(projectWithSprints);
+        return ResponseEntity.ok(projectWithSprints);
     }
 
     @GetMapping("/find")
@@ -94,7 +94,7 @@ public class ProjectRestControllerImpl implements ProjectRestController {
     public ResponseEntity<Boolean> entityExist(@RequestParam("entity") final String entityType,
                                                @RequestParam("id") final Long entityId) {
         boolean entityExist = service.findEntityByTypeAndId(entityType, entityId) > 0;
-        return ResponseEntity.status(HttpStatus.FOUND).body(entityExist);
+        return ResponseEntity.ok(entityExist);
     }
 
 

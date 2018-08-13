@@ -35,8 +35,7 @@ public interface ProjectRestController {
     (
         notes = "Find all projects of the system.",
         value = "Find all projects",
-        nickname = "findAll",
-        code = 302
+        nickname = "findAll"
     )
     ResponseEntity<Iterable<Project>> findAll();
 
@@ -45,8 +44,7 @@ public interface ProjectRestController {
     (
         notes = "Find a project with a specified ID",
         value = "Find Project by ID",
-        nickname = "findById",
-        code = 302
+        nickname = "findById"
     )
     ResponseEntity<Project> findById(
             @ApiParam
@@ -62,8 +60,7 @@ public interface ProjectRestController {
     (
             notes = "Update a Project with a specified ID",
             value = "Update Project by ID",
-            nickname = "update",
-            code = 200
+            nickname = "update"
     )
     ResponseEntity<Project> update(
             @ApiParam
@@ -127,8 +124,7 @@ public interface ProjectRestController {
     (
         notes = "Get Sprints from a project with a specified ID",
         value = "Get Sprints from Project",
-        nickname = "loadSprintsFromProject",
-        code = 302
+        nickname = "loadSprintsFromProject"
     )
     ResponseEntity<Project> loadSprintsFromProject(
             @ApiParam
