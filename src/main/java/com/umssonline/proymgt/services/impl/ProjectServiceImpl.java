@@ -5,6 +5,7 @@ import com.umssonline.proymgt.feign.UsersFeignClient;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.User;
+import com.umssonline.proymgt.repositories.CommonRepository;
 import com.umssonline.proymgt.repositories.ProjectRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
@@ -23,6 +24,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CommonRepository commonRepository;
 
     @Autowired
     private UsersFeignClient usersClient;
@@ -139,6 +143,17 @@ public class ProjectServiceImpl implements ProjectService {
         foundProject.getSprints();
 
         return foundProject;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public int findEntityByTypeAndId(String entityType, Long entityId) {
+
+        if (entityId < 1) {
+            throw new EntityNotFoundException("The specified entity ID is not valid.");
+        }
+
+        return commonRepository.findEntityTypeAndId(entityType, entityId);
     }
 
     //endregion

@@ -89,10 +89,12 @@ public class ProjectRestControllerImpl implements ProjectRestController {
         return ResponseEntity.status(HttpStatus.FOUND).body(projectWithSprints);
     }
 
-    //@GetMapping("")
+    @GetMapping("/find")
     @Override
-    public ResponseEntity<Boolean> entityExist(String entityType, Long entityId) {
-        return null;
+    public ResponseEntity<Boolean> entityExist(@RequestParam("entity") final String entityType,
+                                               @RequestParam("id") final Long entityId) {
+        boolean entityExist = service.findEntityByTypeAndId(entityType, entityId) > 0;
+        return ResponseEntity.status(HttpStatus.FOUND).body(entityExist);
     }
 
 
