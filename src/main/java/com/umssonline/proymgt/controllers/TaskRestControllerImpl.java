@@ -30,7 +30,7 @@ public class TaskRestControllerImpl implements TaskRestController {
     @Override
     public ResponseEntity<Task> findById(@PathVariable("task_id") final Long taskId) {
         Task foundTask = taskService.findById(taskId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(foundTask);
+        return ResponseEntity.ok(foundTask);
     }
 
     @PutMapping("/{task_id}")
