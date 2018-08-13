@@ -31,7 +31,7 @@ public class BacklogRestControllerImpl implements BacklogRestController {
     @Override
     public ResponseEntity<Backlog> findById(@PathVariable("backlog_id") final Long backlogId) {
         Backlog foundBacklog = service.findById(backlogId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(foundBacklog);
+        return ResponseEntity.ok(foundBacklog);
     }
 
     @PostMapping("/{backlog_id}/user-story")
@@ -67,7 +67,7 @@ public class BacklogRestControllerImpl implements BacklogRestController {
     public ResponseEntity<Backlog> loadUserStoriesFromBacklog(@PathVariable("backlog_id") final Long backlogId) {
 
         Backlog foundBacklog = service.loadUserStories(backlogId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(foundBacklog);
+        return ResponseEntity.ok(foundBacklog);
     }
 
 

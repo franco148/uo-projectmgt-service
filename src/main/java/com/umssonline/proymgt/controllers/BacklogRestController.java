@@ -14,8 +14,7 @@ public interface BacklogRestController {
     (
         notes = "Find a Backlog with the specified ID",
         value = "Find a backlog",
-        nickname = "findById",
-        code = 302
+        nickname = "findById"
     )
     ResponseEntity<Backlog> findById(final Long backlogId);
 
@@ -34,8 +33,7 @@ public interface BacklogRestController {
     (
         notes = "Send a User Story from a backlog to a specified Sprint",
         value = "Send User Story to a Sprint",
-        nickname = "sendUserStoryToSprint",
-        code = 200
+        nickname = "sendUserStoryToSprint"
     )
     ResponseEntity<Boolean> sendUserStoryToSprint(final Long backlogId, final Long userStoryId, final Long sprintId);
 
@@ -54,8 +52,7 @@ public interface BacklogRestController {
     (
         notes = "Load User Stories from a backlog",
         value = "Load User Story from Backlog.",
-        nickname = "loadUserStoriesFromBacklog",
-        code = 302
+        nickname = "loadUserStoriesFromBacklog"
     )
     ResponseEntity<Backlog> loadUserStoriesFromBacklog(final Long backlogId);
 }
