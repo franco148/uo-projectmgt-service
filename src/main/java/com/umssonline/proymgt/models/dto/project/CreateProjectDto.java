@@ -1,12 +1,12 @@
 package com.umssonline.proymgt.models.dto.project;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.umssonline.proymgt.models.dto.BaseCreateDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
@@ -36,7 +36,8 @@ public class CreateProjectDto extends BaseCreateDto {
         example = "dd-MM-yyyy"
     )
     @Future(message = "Completed Date Estimation should be a future date.")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate completedDateEstimation;
 
     @ApiModelProperty
