@@ -21,8 +21,8 @@ public interface BacklogRestController {
 
     @ApiOperation
     (
-        notes = "Create a project with its related Backlog",
-        value = "Create project with a backlog",
+        notes = "Add a User Story to a specific Backlog",
+        value = "Add a User Story",
         nickname = "createProject",
         code = 201
     )
