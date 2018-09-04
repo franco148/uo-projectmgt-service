@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 6000)
 @RestController
 @RequestMapping("/sprints")
 public class SprintRestControllerImpl implements SprintRestController {
