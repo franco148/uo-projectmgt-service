@@ -7,6 +7,7 @@ import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.User;
 import com.umssonline.proymgt.repositories.CommonRepository;
 import com.umssonline.proymgt.repositories.ProjectRepository;
+import com.umssonline.proymgt.repositories.SprintRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private CommonRepository commonRepository;
+
+    @Autowired
+    private SprintRepository sprintRepository;
 
     @Autowired
     private UsersFeignClient usersClient;
@@ -126,12 +130,13 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project foundProject = projectRepository.getOne(projectId);
 
-        //sprint.setProject(foundProject);
+        sprint.setProject(foundProject);
         sprint.setCreatedBy(savedUser);
-        foundProject.addSprint(sprint);
-        projectRepository.saveAndFlush(foundProject);
+//        foundProject.addSprint(sprint);
+//        projectRepository.saveAndFlush(foundProject);
 
-        return sprint;
+//        return sprint;
+        return sprintRepository.save(sprint);
     }
 
     @Transactional(readOnly = true)
