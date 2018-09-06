@@ -75,8 +75,6 @@ public class UserStoryServiceImpl implements UserStoryService {
         }
 
         UserStory foundUserStory = usRepository.getOne(userStoryId);
-//        foundUserStory.addTask(task);
-//        usRepository.saveAndFlush(foundUserStory);
         task.setUserStory(foundUserStory);
 
         return taskRepository.save(task);

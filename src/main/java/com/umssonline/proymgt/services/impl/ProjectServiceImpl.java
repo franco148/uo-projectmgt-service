@@ -132,10 +132,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         sprint.setProject(foundProject);
         sprint.setCreatedBy(savedUser);
-//        foundProject.addSprint(sprint);
-//        projectRepository.saveAndFlush(foundProject);
 
-//        return sprint;
         return sprintRepository.save(sprint);
     }
 

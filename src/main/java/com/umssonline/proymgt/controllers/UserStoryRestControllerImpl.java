@@ -44,7 +44,7 @@ public class UserStoryRestControllerImpl implements UserStoryRestController {
         return ResponseEntity.ok(foundUserStory);
     }
 
-    @PostMapping("/{story_id}")
+    @PostMapping("/{story_id}/task")
     @Override
     public ResponseEntity<Task> addTaskToUserStory(@PathVariable("story_id") final Long userStoryId,
                                                    @Valid @RequestBody final CreateTaskDto task) {

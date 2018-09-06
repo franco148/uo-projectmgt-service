@@ -102,9 +102,6 @@ public class BacklogServiceImpl implements BacklogService {
         Backlog backlog = backlogRepository.getOne(backlogId);
         userStory.setBacklog(backlog);
         userStory.setCreatedBy(savedUserCreatedBy);
-//        backlog.addSprintItem(userStory);
-//
-//        backlogRepository.saveAndFlush(backlog);
 
         return userStoryRepository.save(userStory);
     }
