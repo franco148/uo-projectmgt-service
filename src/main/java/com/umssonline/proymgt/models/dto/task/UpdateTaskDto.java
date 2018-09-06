@@ -1,10 +1,10 @@
 package com.umssonline.proymgt.models.dto.task;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.umssonline.proymgt.models.dto.BaseUpdateDto;
 import com.umssonline.proymgt.models.entity.Priority;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -28,6 +28,6 @@ public class UpdateTaskDto extends BaseUpdateDto {
     @Positive(message = "AssignedToId field should not be less than zero.")
     private Long assignedToId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime completedAt;
 }

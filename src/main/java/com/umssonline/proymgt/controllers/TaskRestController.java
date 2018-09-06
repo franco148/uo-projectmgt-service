@@ -11,8 +11,7 @@ public interface TaskRestController {
     (
         notes = "Find a task with a specified ID.",
         value = "Find task by ID.",
-        nickname = "findById",
-        code = 302
+        nickname = "findById"
     )
     ResponseEntity<Task> findById(final Long taskId);
 
@@ -21,8 +20,7 @@ public interface TaskRestController {
     (
         notes = "Update a Task with a specified ID.",
         value = "Update task with a ID",
-        nickname = "update",
-        code = 200
+        nickname = "update"
     )
     ResponseEntity<Task> update(final Long taskId, final UpdateTaskDto task);
 }

@@ -5,12 +5,12 @@ import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.services.api.SprintService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 6000)
 @RestController
 @RequestMapping("/sprints")
 public class SprintRestControllerImpl implements SprintRestController {
@@ -29,7 +29,7 @@ public class SprintRestControllerImpl implements SprintRestController {
     @Override
     public ResponseEntity<Sprint> findById(@PathVariable("sprint_id") final Long sprintId) {
         Sprint foundSprint = sprintService.findById(sprintId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(foundSprint);
+        return ResponseEntity.ok(foundSprint);
     }
 
     @PutMapping("/{sprint_id}")

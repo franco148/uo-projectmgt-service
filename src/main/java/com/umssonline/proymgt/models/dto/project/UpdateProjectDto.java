@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +39,7 @@ public class UpdateProjectDto extends BaseUpdateDto {
     )
     @NotNull(message = "Completed Date Estimation field can should not be null.")
     @Future(message = "Completed Date Estimation should be a future date.")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate completedDateEstimation;
 
     @ApiModelProperty

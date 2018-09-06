@@ -13,8 +13,7 @@ public interface UserStoryRestController {
     (
         notes = "Update a User Story with a specified ID.",
         value = "Update user story with a ID",
-        nickname = "update",
-        code = 200
+        nickname = "update"
     )
     ResponseEntity<UserStory> update(final Long userStoryId, final UpdateUserStoryDto userStory);
 
@@ -23,8 +22,7 @@ public interface UserStoryRestController {
     (
         notes = "Find a user story with a specified ID.",
         value = "Find user story by ID.",
-        nickname = "findById",
-        code = 302
+        nickname = "findById"
     )
     ResponseEntity<UserStory> findById(final Long userStoryId);
 
@@ -53,8 +51,7 @@ public interface UserStoryRestController {
     (
         notes = "Load Tasks from a User Story",
         value = "Load Tasks from User Story.",
-        nickname = "loadTasksFromUserStory",
-        code = 302
+        nickname = "loadTasksFromUserStory"
     )
     ResponseEntity<UserStory> loadTasksFromUserStory(final Long userStoryId);
 }

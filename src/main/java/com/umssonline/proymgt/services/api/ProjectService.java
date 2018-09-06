@@ -9,4 +9,5 @@ public interface ProjectService extends CrudService<Project> {
 
     Project loadProjectSprints(Long projectId);
 
+    int findEntityByTypeAndId(String entityType, Long entityId);
 }

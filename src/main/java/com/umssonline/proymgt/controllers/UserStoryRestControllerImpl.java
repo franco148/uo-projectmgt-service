@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 6000)
 @RestController
 @RequestMapping("/user-stories")
 public class UserStoryRestControllerImpl implements UserStoryRestController {
@@ -41,10 +41,10 @@ public class UserStoryRestControllerImpl implements UserStoryRestController {
     @Override
     public ResponseEntity<UserStory> findById(@PathVariable("story_id") final Long userStoryId) {
         UserStory foundUserStory = userStoryService.findById(userStoryId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(foundUserStory);
+        return ResponseEntity.ok(foundUserStory);
     }
 
-    @PostMapping("/{story_id}")
+    @PostMapping("/{story_id}/task")
     @Override
     public ResponseEntity<Task> addTaskToUserStory(@PathVariable("story_id") final Long userStoryId,
                                                    @Valid @RequestBody final CreateTaskDto task) {
