@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class UpdateSprintDto extends BaseUpdateDto {
         notes = "StartedOn field refers when a sprint starts.",
         example = "dd-MM-yyyy"
     )
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startedOn;
 
     @ApiModelProperty
@@ -38,7 +39,7 @@ public class UpdateSprintDto extends BaseUpdateDto {
         notes = "CompletedOn field refers when a sprint ends.",
         example = "dd-MM-yyyy"
     )
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate completedOn;
 
 }

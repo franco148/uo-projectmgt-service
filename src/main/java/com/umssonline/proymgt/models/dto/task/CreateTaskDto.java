@@ -1,10 +1,10 @@
 package com.umssonline.proymgt.models.dto.task;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.umssonline.proymgt.models.dto.BaseCreateDto;
 import com.umssonline.proymgt.models.entity.Priority;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -29,6 +29,7 @@ public class CreateTaskDto extends BaseCreateDto {
     @Positive(message = "AssignedToId field should not be less than zero.")
     private Long assignedToId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startedAt;
 }

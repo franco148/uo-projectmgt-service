@@ -63,7 +63,6 @@ public class CreateUserStoryDto extends BaseCreateDto {
         example = "dd-MM-yyyy HH:mm:ss",
         dataType = "Date"
     )
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startedAt;
 }

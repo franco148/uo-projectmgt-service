@@ -36,7 +36,6 @@ public class CreateProjectDto extends BaseCreateDto {
         example = "dd-MM-yyyy"
     )
     @Future(message = "Completed Date Estimation should be a future date.")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate completedDateEstimation;
 
