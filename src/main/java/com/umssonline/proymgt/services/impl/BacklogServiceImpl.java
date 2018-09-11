@@ -140,16 +140,19 @@ public class BacklogServiceImpl implements BacklogService {
 
     @Transactional(readOnly = true)
     @Override
-    public Backlog loadUserStories(Long backlogId) {
+    public Iterable<UserStory> loadUserStories(Long backlogId) {
 
         if (!backlogRepository.existsById(backlogId)) {
             throw new InvalidResourceException("Backlog with the specified ID could not be found.");
         }
 
-        Backlog backlogWithUserStories = backlogRepository.getOne(backlogId);
-        //backlogWithUserStories.getUserStories();
+//        Backlog backlogWithUserStories = backlogRepository.getOne(backlogId);
+//        backlogWithUserStories.getUserStories();
 
-        return backlogWithUserStories;
+        Iterable<UserStory> storiesList = userStoryRepository.findByBacklogId(backlogId);
+//        System.out.println(storiesList);
+
+        return storiesList;
     }
 
 

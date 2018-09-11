@@ -64,10 +64,11 @@ public class BacklogRestControllerImpl implements BacklogRestController {
 
     @GetMapping("/{backlog_id}/user-story")
     @Override
-    public ResponseEntity<Backlog> loadUserStoriesFromBacklog(@PathVariable("backlog_id") final Long backlogId) {
+    public ResponseEntity<Iterable<UserStory>> loadUserStoriesFromBacklog(@PathVariable("backlog_id") final Long backlogId) {
 
-        Backlog foundBacklog = service.loadUserStories(backlogId);
-        return ResponseEntity.ok(foundBacklog);
+//        Backlog foundBacklog = service.loadUserStories(backlogId);
+        Iterable<UserStory> foundUserStoriesList = service.loadUserStories(backlogId);
+        return ResponseEntity.ok(foundUserStoriesList);
     }
 
 

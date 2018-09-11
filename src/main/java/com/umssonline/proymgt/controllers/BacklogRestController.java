@@ -54,5 +54,5 @@ public interface BacklogRestController {
         value = "Load User Story from Backlog.",
         nickname = "loadUserStoriesFromBacklog"
     )
-    ResponseEntity<Backlog> loadUserStoriesFromBacklog(final Long backlogId);
+    ResponseEntity<Iterable<UserStory>> loadUserStoriesFromBacklog(final Long backlogId);
 }

@@ -11,5 +11,5 @@ public interface BacklogService extends CrudService<Backlog> {
 
     void deleteUserStory(Long backlogId, Long userStoryId);
 
-    Backlog loadUserStories(Long backlogId);
+    Iterable<UserStory> loadUserStories(Long backlogId);
 }
