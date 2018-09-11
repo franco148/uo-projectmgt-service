@@ -146,13 +146,7 @@ public class BacklogServiceImpl implements BacklogService {
             throw new InvalidResourceException("Backlog with the specified ID could not be found.");
         }
 
-//        Backlog backlogWithUserStories = backlogRepository.getOne(backlogId);
-//        backlogWithUserStories.getUserStories();
-
-        Iterable<UserStory> storiesList = userStoryRepository.findByBacklogId(backlogId);
-//        System.out.println(storiesList);
-
-        return storiesList;
+        return userStoryRepository.findByBacklogId(backlogId);
     }
 
 
