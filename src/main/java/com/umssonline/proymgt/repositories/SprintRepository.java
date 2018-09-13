@@ -11,6 +11,6 @@ import java.util.Collection;
 @Repository
 public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
-    @Query("SELECT COUNT(s) FROM Sprint s WHERE s.active=true")
-    Long countActiveSprints();
+    @Query("SELECT COUNT(s) FROM Sprint s WHERE s.isActive = ?1")
+    Long countActiveSprints(boolean isActive);
 }

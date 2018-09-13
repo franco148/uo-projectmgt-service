@@ -104,7 +104,7 @@ public class SprintServiceImpl implements SprintService {
             throw new EntityNotFoundException("Sprint with specified ID does not exits.");
         }
 
-        Long activeSprints = sprintRepository.countActiveSprints();
+        Long activeSprints = sprintRepository.countActiveSprints(true);
         if (activeSprints > 0) {
             throw new InvalidPreConditionException("There already exist Active Sprint(s), you need to mark them as ended before continue.");
         }
