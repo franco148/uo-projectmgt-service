@@ -2,6 +2,7 @@ package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.sprint.UpdateSprintDto;
 import com.umssonline.proymgt.models.entity.Sprint;
+import com.umssonline.proymgt.models.entity.UserStory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +65,6 @@ public interface SprintRestController {
         value = "Load User Story from Sprint.",
         nickname = "loadUserStoriesFromSprint"
     )
-    ResponseEntity<Sprint> loadUserStoriesFromSprint(final Long sprintId);
+    ResponseEntity<Iterable<UserStory>> loadUserStoriesFromSprint(final Long sprintId);
 
 }

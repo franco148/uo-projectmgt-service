@@ -2,6 +2,7 @@ package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.sprint.UpdateSprintDto;
 import com.umssonline.proymgt.models.entity.Sprint;
+import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.services.api.SprintService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,18 +56,22 @@ public class SprintRestControllerImpl implements SprintRestController {
     @PatchMapping("/{sprint_id}/start")
     @Override
     public ResponseEntity<Boolean> activate(@PathVariable("sprint_id") final Long sprintId) {
-        return null;
+        sprintService.activateSprint(sprintId);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{sprint_id}/end")
     @Override
     public ResponseEntity<Void> markAsEnded(@PathVariable("sprint_id") final Long sprintId) {
-        return null;
+        sprintService.markAsEnded(sprintId);
+        return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{sprint_id}/user-story")
     @Override
-    public ResponseEntity<Sprint> loadUserStoriesFromSprint(Long sprintId) {
-        return null;
+    public ResponseEntity<Iterable<UserStory>> loadUserStoriesFromSprint(@PathVariable("sprint_id") Long sprintId) {
+        Iterable<UserStory> foundStories = sprintService.loadUserStories(sprintId);
+        return ResponseEntity.ok(foundStories);
     }
 
 

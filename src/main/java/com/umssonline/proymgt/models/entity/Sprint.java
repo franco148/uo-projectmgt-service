@@ -32,6 +32,9 @@ public class Sprint extends BaseEntity {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
+    @Column(nullable = false)
+    private boolean isActive;
+
     private LocalDate startedOn;
 
     private LocalDate completedOn;
