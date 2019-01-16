@@ -1,5 +1,6 @@
-package com.umssonline.proymgt.controllers;
+package com.umssonline.proymgt.controllers.impl;
 
+import com.umssonline.proymgt.controllers.ProjectRestController;
 import com.umssonline.proymgt.models.dto.project.CreateProjectDto;
 import com.umssonline.proymgt.models.dto.project.UpdateProjectDto;
 import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;

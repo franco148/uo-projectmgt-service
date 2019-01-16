@@ -1,5 +1,6 @@
-package com.umssonline.proymgt.controllers;
+package com.umssonline.proymgt.controllers.impl;
 
+import com.umssonline.proymgt.controllers.SprintRestController;
 import com.umssonline.proymgt.models.dto.sprint.UpdateSprintDto;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.UserStory;

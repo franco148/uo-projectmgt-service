@@ -1,5 +1,6 @@
-package com.umssonline.proymgt.controllers;
+package com.umssonline.proymgt.controllers.impl;
 
+import com.umssonline.proymgt.controllers.TaskRestController;
 import com.umssonline.proymgt.models.dto.task.UpdateTaskDto;
 import com.umssonline.proymgt.models.entity.Task;
 import com.umssonline.proymgt.services.api.TaskService;
