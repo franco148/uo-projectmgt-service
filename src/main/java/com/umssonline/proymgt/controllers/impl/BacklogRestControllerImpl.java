@@ -2,6 +2,7 @@ package com.umssonline.proymgt.controllers.impl;
 
 import com.umssonline.proymgt.controllers.BacklogRestController;
 import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
+import com.umssonline.proymgt.models.dto.story.UserStoryResponseDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.services.impl.BacklogServiceImpl;
@@ -65,9 +66,9 @@ public class BacklogRestControllerImpl implements BacklogRestController {
 
     @GetMapping("/{backlog_id}/user-story")
     @Override
-    public ResponseEntity<Iterable<UserStory>> loadUserStoriesFromBacklog(@PathVariable("backlog_id") final Long backlogId) {
+    public ResponseEntity<Iterable<UserStoryResponseDto>> loadUserStoriesFromBacklog(@PathVariable("backlog_id") final Long backlogId) {
 
-        Iterable<UserStory> foundUserStoriesList = service.loadUserStories(backlogId);
+        Iterable<UserStoryResponseDto> foundUserStoriesList = service.loadUserStories(backlogId);
         return ResponseEntity.ok(foundUserStoriesList);
     }
 

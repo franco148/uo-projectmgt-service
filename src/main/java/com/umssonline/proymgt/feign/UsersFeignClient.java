@@ -1,5 +1,6 @@
 package com.umssonline.proymgt.feign;
 
+import com.umssonline.proymgt.models.dto.user.AssignedToResponseDto;
 import com.umssonline.proymgt.models.entity.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -19,4 +20,13 @@ public interface UsersFeignClient {
         produces = { "application/json" }
     )
     User findById(@PathVariable("user_id") final Long userId);
+
+    @RequestMapping
+    (
+        value = "/users/{user_id}",
+        method = RequestMethod.GET,
+        consumes = { "application/json" },
+        produces = { "application/json" }
+    )
+    AssignedToResponseDto getUser(@PathVariable("user_id") final  Long userId);
 }

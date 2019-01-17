@@ -2,6 +2,8 @@ package com.umssonline.proymgt.services.impl;
 
 import com.umssonline.proymgt.exceptions.InvalidResourceException;
 import com.umssonline.proymgt.feign.UsersFeignClient;
+import com.umssonline.proymgt.models.dto.story.UserStoryResponseDto;
+import com.umssonline.proymgt.models.dto.user.AssignedToResponseDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.User;
@@ -11,11 +13,14 @@ import com.umssonline.proymgt.repositories.SprintRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.repositories.UserStoryRepository;
 import com.umssonline.proymgt.services.api.BacklogService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Service
 public class BacklogServiceImpl implements BacklogService {
@@ -35,6 +40,9 @@ public class BacklogServiceImpl implements BacklogService {
 
     @Autowired
     private UsersFeignClient usersClient;
+
+    @Autowired
+    private ModelMapper modelMapper;
     //endregion
 
 
@@ -140,13 +148,25 @@ public class BacklogServiceImpl implements BacklogService {
 
     @Transactional(readOnly = true)
     @Override
-    public Iterable<UserStory> loadUserStories(Long backlogId) {
+    public Iterable<UserStoryResponseDto> loadUserStories(Long backlogId) {
+
+        Collection<UserStoryResponseDto> response = new ArrayList<>();
 
         if (!backlogRepository.existsById(backlogId)) {
             throw new InvalidResourceException("Backlog with the specified ID could not be found.");
         }
 
-        return userStoryRepository.findByBacklogId(backlogId);
+        Iterable<UserStory> foundStories = userStoryRepository.findByBacklogId(backlogId);
+
+        for (UserStory story : foundStories) {
+            AssignedToResponseDto user = usersClient.getUser(story.getAssignedTo().getId());
+            UserStoryResponseDto userStory = modelMapper.map(story, UserStoryResponseDto.class);
+            userStory.setAssignedTo(user);
+
+            response.add(userStory);
+        }
+
+        return response;
     }
 
 
