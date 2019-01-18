@@ -6,7 +6,7 @@ import com.umssonline.proymgt.models.entity.UserStory;
 
 public interface BacklogService extends CrudService<Backlog> {
 
-    UserStory addUserStory(Long backlogId, UserStory userStory);
+    UserStoryResponseDto addUserStory(Long backlogId, UserStory userStory);
 
     void sendUserStoryToSprint(Long backlogId, Long userStoryId, Long sprintId);
 

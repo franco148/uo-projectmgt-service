@@ -27,7 +27,7 @@ public interface BacklogRestController {
         nickname = "createProject",
         code = 201
     )
-    ResponseEntity<UserStory> addUserStory(final Long backlogId, final CreateUserStoryDto userStory);
+    ResponseEntity<UserStoryResponseDto> addUserStory(final Long backlogId, final CreateUserStoryDto userStory);
 
 
     @ApiOperation

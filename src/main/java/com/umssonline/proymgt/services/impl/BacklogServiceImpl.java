@@ -83,7 +83,7 @@ public class BacklogServiceImpl implements BacklogService {
 
     @Transactional
     @Override
-    public UserStory addUserStory(Long backlogId, UserStory userStory) {
+    public UserStoryResponseDto addUserStory(Long backlogId, UserStory userStory) {
 
         if (!backlogRepository.existsById(backlogId)) {
             throw new EntityNotFoundException("Backlog with specified ID can not be found.");
@@ -106,12 +106,16 @@ public class BacklogServiceImpl implements BacklogService {
             userStory.setAssignedTo(assignedToUser);
         }
 
-
         Backlog backlog = backlogRepository.getOne(backlogId);
         userStory.setBacklog(backlog);
         userStory.setCreatedBy(savedUserCreatedBy);
+        userStoryRepository.save(userStory);
 
-        return userStoryRepository.save(userStory);
+        AssignedToResponseDto assignedTo = usersClient.getUser(userStory.getAssignedTo().getId());
+        UserStoryResponseDto userStoryResponse = modelMapper.map(userStory, UserStoryResponseDto.class);
+        userStoryResponse.setAssignedTo(assignedTo);
+
+        return userStoryResponse;
     }
 
     @Transactional

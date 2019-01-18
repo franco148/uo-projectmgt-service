@@ -38,10 +38,10 @@ public class BacklogRestControllerImpl implements BacklogRestController {
 
     @PostMapping("/{backlog_id}/user-story")
     @Override
-    public ResponseEntity<UserStory> addUserStory(@PathVariable("backlog_id") final Long backlogId,
+    public ResponseEntity<UserStoryResponseDto> addUserStory(@PathVariable("backlog_id") final Long backlogId,
                                                   @Valid @RequestBody final CreateUserStoryDto userStory) {
         UserStory converted = modelMapper.map(userStory, UserStory.class);
-        UserStory addedUserStory = service.addUserStory(backlogId, converted);
+        UserStoryResponseDto addedUserStory = service.addUserStory(backlogId, converted);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(addedUserStory);
     }
