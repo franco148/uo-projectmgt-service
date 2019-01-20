@@ -1,5 +1,6 @@
-package com.umssonline.proymgt.controllers;
+package com.umssonline.proymgt.controllers.impl;
 
+import com.umssonline.proymgt.controllers.UserStoryRestController;
 import com.umssonline.proymgt.models.dto.story.UpdateUserStoryDto;
 import com.umssonline.proymgt.models.dto.task.CreateTaskDto;
 import com.umssonline.proymgt.models.entity.Sprint;

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
+
+    Iterable<Project> findByCreatedById(Long userId);
 }

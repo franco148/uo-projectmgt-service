@@ -1,5 +1,6 @@
-package com.umssonline.proymgt.controllers;
+package com.umssonline.proymgt.controllers.impl;
 
+import com.umssonline.proymgt.controllers.ProjectRestController;
 import com.umssonline.proymgt.models.dto.project.CreateProjectDto;
 import com.umssonline.proymgt.models.dto.project.UpdateProjectDto;
 import com.umssonline.proymgt.models.dto.sprint.CreateSprintDto;
@@ -42,6 +43,13 @@ public class ProjectRestControllerImpl implements ProjectRestController {
     @Override
     public ResponseEntity<Iterable<Project>> findAll() {
         Iterable<Project> projectsCollection = service.finAll();
+        return ResponseEntity.ok(projectsCollection);
+    }
+
+    @GetMapping("/by")
+    @Override
+    public ResponseEntity<Iterable<Project>> findAllByUser(@RequestParam("user") final Long userId) {
+        Iterable<Project> projectsCollection = service.findByUserIdOrSharedWithMe(userId);
         return ResponseEntity.ok(projectsCollection);
     }
 

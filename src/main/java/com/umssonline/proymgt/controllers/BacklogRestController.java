@@ -1,6 +1,7 @@
 package com.umssonline.proymgt.controllers;
 
 import com.umssonline.proymgt.models.dto.story.CreateUserStoryDto;
+import com.umssonline.proymgt.models.dto.story.UserStoryResponseDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.UserStory;
 import io.swagger.annotations.Api;
@@ -26,7 +27,7 @@ public interface BacklogRestController {
         nickname = "createProject",
         code = 201
     )
-    ResponseEntity<UserStory> addUserStory(final Long backlogId, final CreateUserStoryDto userStory);
+    ResponseEntity<UserStoryResponseDto> addUserStory(final Long backlogId, final CreateUserStoryDto userStory);
 
 
     @ApiOperation
@@ -54,5 +55,5 @@ public interface BacklogRestController {
         value = "Load User Story from Backlog.",
         nickname = "loadUserStoriesFromBacklog"
     )
-    ResponseEntity<Backlog> loadUserStoriesFromBacklog(final Long backlogId);
+    ResponseEntity<Iterable<UserStoryResponseDto>> loadUserStoriesFromBacklog(final Long backlogId);
 }

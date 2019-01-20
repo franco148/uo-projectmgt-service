@@ -10,4 +10,8 @@ public interface UserStoryRepository extends JpaRepository<UserStory, Long> {
     UserStory findByIdAndBacklogId(Long userStoryId, Long backlogId);
 
     UserStory findByIdAndSprintId(Long userStoryId, Long sprintId);
+
+    Iterable<UserStory> findByBacklogId(Long backlogId);
+
+    Iterable<UserStory> findBySprintId(Long sprintId);
 }

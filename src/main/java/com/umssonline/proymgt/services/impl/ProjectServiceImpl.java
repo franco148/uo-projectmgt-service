@@ -11,6 +11,7 @@ import com.umssonline.proymgt.repositories.SprintRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private SprintRepository sprintRepository;
 
+//    @Qualifier("authService")
     @Autowired
     private UsersFeignClient usersClient;
 
@@ -112,6 +114,13 @@ public class ProjectServiceImpl implements ProjectService {
     //endregion
 
     //region SprintService Members
+
+    @Override
+    public Iterable<Project> findByUserIdOrSharedWithMe(Long userId) {
+        Iterable<Project> userProjects = projectRepository.findByCreatedById(userId);
+
+        return userProjects;
+    }
 
     @Transactional
     @Override

@@ -1,5 +1,7 @@
 package com.umssonline.proymgt.services.impl;
 
+import com.umssonline.proymgt.exceptions.InvalidPreConditionException;
+import com.umssonline.proymgt.exceptions.InvalidResourceException;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.UserStory;
 import com.umssonline.proymgt.repositories.SprintRepository;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class SprintServiceImpl implements SprintService {
@@ -50,13 +54,6 @@ public class SprintServiceImpl implements SprintService {
     @Transactional
     @Override
     public Sprint update(Sprint sprint) {
-//        Sprint sprintFromDb = sprintRepository.findById(sprint.getId())
-//                              .orElseThrow(() -> new EntityNotFoundException("Sprint with specified ID does not exist."));
-//
-//        sprintFromDb.setName(sprint.getName());
-//        sprintFromDb.setStartedOn(sprint.getStartedOn());
-//        sprintFromDb.setCompletedOn(sprint.getCompletedOn());
-
         if (!sprintRepository.existsById(sprint.getId())) {
             throw new EntityNotFoundException("Sprint with specified ID does not exist.");
         }
@@ -103,13 +100,46 @@ public class SprintServiceImpl implements SprintService {
     @Transactional
     @Override
     public void activateSprint(Long sprintId) {
+        if (!sprintRepository.existsById(sprintId)) {
+            throw new EntityNotFoundException("Sprint with specified ID does not exits.");
+        }
 
+        Long activeSprints = sprintRepository.countActiveSprints(true);
+        if (activeSprints > 0) {
+            throw new InvalidPreConditionException("There already exist Active Sprint(s), you need to mark them as ended before continue.");
+        }
+
+        Sprint sprintToActivate = sprintRepository.getOne(sprintId);
+        sprintToActivate.setActive(true);
+        sprintToActivate.setStartedOn(LocalDate.now());
+        sprintToActivate.setUpdatedAt(LocalDateTime.now());
+
+        sprintRepository.flush();
     }
 
     @Transactional
     @Override
     public void markAsEnded(Long sprintId) {
 
+        if (!sprintRepository.existsById(sprintId)) {
+            throw new EntityNotFoundException("Sprint with specified ID does not exits.");
+        }
+
+        Sprint sprintToEnd = sprintRepository.getOne(sprintId);
+        sprintToEnd.setActive(false);
+        sprintToEnd.setCompletedOn(LocalDate.now());
+        sprintToEnd.setUpdatedAt(LocalDateTime.now());
+
+        sprintRepository.flush();
+    }
+
+    @Override
+    public Iterable<UserStory> loadUserStories(Long sprintId) {
+        if (!sprintRepository.existsById(sprintId)) {
+            throw new InvalidResourceException("Sprint with the specified ID could not be found.");
+        }
+
+        return userStoryRepository.findBySprintId(sprintId);
     }
 
 

@@ -2,6 +2,8 @@ package com.umssonline.proymgt.services.impl;
 
 import com.umssonline.proymgt.exceptions.InvalidResourceException;
 import com.umssonline.proymgt.feign.UsersFeignClient;
+import com.umssonline.proymgt.models.dto.story.UserStoryResponseDto;
+import com.umssonline.proymgt.models.dto.user.AssignedToResponseDto;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Sprint;
 import com.umssonline.proymgt.models.entity.User;
@@ -11,11 +13,14 @@ import com.umssonline.proymgt.repositories.SprintRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.repositories.UserStoryRepository;
 import com.umssonline.proymgt.services.api.BacklogService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Service
 public class BacklogServiceImpl implements BacklogService {
@@ -35,6 +40,9 @@ public class BacklogServiceImpl implements BacklogService {
 
     @Autowired
     private UsersFeignClient usersClient;
+
+    @Autowired
+    private ModelMapper modelMapper;
     //endregion
 
 
@@ -75,7 +83,7 @@ public class BacklogServiceImpl implements BacklogService {
 
     @Transactional
     @Override
-    public UserStory addUserStory(Long backlogId, UserStory userStory) {
+    public UserStoryResponseDto addUserStory(Long backlogId, UserStory userStory) {
 
         if (!backlogRepository.existsById(backlogId)) {
             throw new EntityNotFoundException("Backlog with specified ID can not be found.");
@@ -98,12 +106,16 @@ public class BacklogServiceImpl implements BacklogService {
             userStory.setAssignedTo(assignedToUser);
         }
 
-
         Backlog backlog = backlogRepository.getOne(backlogId);
         userStory.setBacklog(backlog);
         userStory.setCreatedBy(savedUserCreatedBy);
+        userStoryRepository.save(userStory);
 
-        return userStoryRepository.save(userStory);
+        AssignedToResponseDto assignedTo = usersClient.getUser(userStory.getAssignedTo().getId());
+        UserStoryResponseDto userStoryResponse = modelMapper.map(userStory, UserStoryResponseDto.class);
+        userStoryResponse.setAssignedTo(assignedTo);
+
+        return userStoryResponse;
     }
 
     @Transactional
@@ -140,16 +152,25 @@ public class BacklogServiceImpl implements BacklogService {
 
     @Transactional(readOnly = true)
     @Override
-    public Backlog loadUserStories(Long backlogId) {
+    public Iterable<UserStoryResponseDto> loadUserStories(Long backlogId) {
+
+        Collection<UserStoryResponseDto> response = new ArrayList<>();
 
         if (!backlogRepository.existsById(backlogId)) {
             throw new InvalidResourceException("Backlog with the specified ID could not be found.");
         }
 
-        Backlog backlogWithUserStories = backlogRepository.getOne(backlogId);
-        //backlogWithUserStories.getUserStories();
+        Iterable<UserStory> foundStories = userStoryRepository.findByBacklogId(backlogId);
 
-        return backlogWithUserStories;
+        for (UserStory story : foundStories) {
+            AssignedToResponseDto user = usersClient.getUser(story.getAssignedTo().getId());
+            UserStoryResponseDto userStory = modelMapper.map(story, UserStoryResponseDto.class);
+            userStory.setAssignedTo(user);
+
+            response.add(userStory);
+        }
+
+        return response;
     }
 
 

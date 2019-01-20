@@ -42,6 +42,22 @@ public interface ProjectRestController {
 
     @ApiOperation
     (
+        notes = "Find all projects of the system by user ID.",
+        value = "Find all projects by user",
+        nickname = "findAllByUser"
+    )
+    ResponseEntity<Iterable<Project>> findAllByUser(
+            @ApiParam
+            (
+                value = "UserId of the project that needs to be fetched.",
+                type = "Number",
+                required = true
+            )
+            Long userId);
+
+
+    @ApiOperation
+    (
         notes = "Find a project with a specified ID",
         value = "Find Project by ID",
         nickname = "findById"

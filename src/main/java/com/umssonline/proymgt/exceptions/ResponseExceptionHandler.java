@@ -40,6 +40,13 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidPreConditionException.class)
+    public final ResponseEntity<ExceptionResponse> manageInvalidPreConditionException(InvalidPreConditionException ex, WebRequest request) {
+        logger.warn("A pre condition has failed: " + ex.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.PRECONDITION_FAILED);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         logger.warn("A validation exception has occurred: " + ex.getBindingResult().toString());
