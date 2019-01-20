@@ -5,6 +5,8 @@ import com.umssonline.proymgt.models.entity.Sprint;
 
 public interface ProjectService extends CrudService<Project> {
 
+//    Project findByUserId
+
     Sprint addSprint(Long projectId, Sprint sprint);
 
     Project loadProjectSprints(Long projectId);

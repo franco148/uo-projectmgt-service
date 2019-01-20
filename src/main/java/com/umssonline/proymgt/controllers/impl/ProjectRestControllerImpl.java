@@ -46,6 +46,13 @@ public class ProjectRestControllerImpl implements ProjectRestController {
         return ResponseEntity.ok(projectsCollection);
     }
 
+    @GetMapping
+    @Override
+    public ResponseEntity<Iterable<Project>> findAllByUser(@RequestParam("user") final Long userId) {
+//        Iterable<Project> projectsCollection = service.
+        return null;
+    }
+
     @GetMapping("/{project_id}")
     @Override
     public ResponseEntity<Project> findById(@PathVariable("project_id") final Long projectId) {

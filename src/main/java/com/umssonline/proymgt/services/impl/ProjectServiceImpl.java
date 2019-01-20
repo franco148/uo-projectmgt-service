@@ -57,6 +57,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     @Override
     public Iterable<Project> finAll() {
+        Iterable<Project> response = projectRepository.findByCreatedById(1L);
         return projectRepository.findAll();
     }
 
