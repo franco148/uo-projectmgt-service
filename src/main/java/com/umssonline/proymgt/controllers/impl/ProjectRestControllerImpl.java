@@ -46,11 +46,11 @@ public class ProjectRestControllerImpl implements ProjectRestController {
         return ResponseEntity.ok(projectsCollection);
     }
 
-    @GetMapping
+    @GetMapping("/by")
     @Override
     public ResponseEntity<Iterable<Project>> findAllByUser(@RequestParam("user") final Long userId) {
-//        Iterable<Project> projectsCollection = service.
-        return null;
+        Iterable<Project> projectsCollection = service.findByUserIdOrSharedWithMe(userId);
+        return ResponseEntity.ok(projectsCollection);
     }
 
     @GetMapping("/{project_id}")
