@@ -80,16 +80,16 @@ public class ProjectRestControllerImpl implements ProjectRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{project_id}/sprint")
-    @Override
-    public ResponseEntity<Sprint> addSprint(@PathVariable("project_id") final Long projectId,
-                                            @Valid @RequestBody final CreateSprintDto sprint) {
-
-        Sprint convertedSprint = modelMapper.map(sprint, Sprint.class);
-        Sprint addedSprint = service.addSprint(projectId, convertedSprint);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(addedSprint);
-    }
+//    @PostMapping("/{project_id}/sprint")
+//    @Override
+//    public ResponseEntity<Sprint> addSprint(@PathVariable("project_id") final Long projectId,
+//                                            @Valid @RequestBody final CreateSprintDto sprint) {
+//
+//        Sprint convertedSprint = modelMapper.map(sprint, Sprint.class);
+//        Sprint addedSprint = service.addSprint(projectId, convertedSprint);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(addedSprint);
+//    }
 
     @GetMapping("/{project_id}/sprints")
     @Override
@@ -98,13 +98,13 @@ public class ProjectRestControllerImpl implements ProjectRestController {
         return ResponseEntity.ok(projectWithSprints);
     }
 
-    @GetMapping("/find")
-    @Override
-    public ResponseEntity<Boolean> entityExist(@RequestParam("entity") final String entityType,
-                                               @RequestParam("id") final Long entityId) {
-        boolean entityExist = service.findEntityByTypeAndId(entityType, entityId) > 0;
-        return ResponseEntity.ok(entityExist);
-    }
+//    @GetMapping("/find")
+//    @Override
+//    public ResponseEntity<Boolean> entityExist(@RequestParam("entity") final String entityType,
+//                                               @RequestParam("id") final Long entityId) {
+//        boolean entityExist = service.findEntityByTypeAndId(entityType, entityId) > 0;
+//        return ResponseEntity.ok(entityExist);
+//    }
 
 
     //endregion

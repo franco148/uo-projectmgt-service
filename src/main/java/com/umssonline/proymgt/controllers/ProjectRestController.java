@@ -112,28 +112,28 @@ public interface ProjectRestController {
             final Long projectId);
 
 
-    @ApiOperation
-    (
-        notes = "Create a new Sprint in project with a specified ID",
-        value = "Add new sprint to project",
-        nickname = "addSprint",
-        code = 201
-    )
-    ResponseEntity<Sprint> addSprint(
-            @ApiParam
-            (
-                value = "ProjectId in which a new sprint is going to be created.",
-                type = "Number",
-                required = true
-            )
-            final Long projectId,
-            @ApiParam
-            (
-                value = "ProjectId which is going to be deleted.",
-                type = "CreateSprintDto",
-                required = true
-            )
-            final CreateSprintDto sprint);
+//    @ApiOperation
+//    (
+//        notes = "Create a new Sprint in project with a specified ID",
+//        value = "Add new sprint to project",
+//        nickname = "addSprint",
+//        code = 201
+//    )
+//    ResponseEntity<Sprint> addSprint(
+//            @ApiParam
+//            (
+//                value = "ProjectId in which a new sprint is going to be created.",
+//                type = "Number",
+//                required = true
+//            )
+//            final Long projectId,
+//            @ApiParam
+//            (
+//                value = "ProjectId which is going to be deleted.",
+//                type = "CreateSprintDto",
+//                required = true
+//            )
+//            final CreateSprintDto sprint);
 
 
     @ApiOperation
@@ -152,26 +152,26 @@ public interface ProjectRestController {
             final Long projectId);
 
 
-    @ApiOperation
-    (
-        notes = "Verify if a entity with a specified ID exists.",
-        value = "Does entity exist",
-        nickname = "entityExist",
-        code = 302
-    )
-    ResponseEntity<Boolean> entityExist(
-            @ApiParam
-            (
-                value = "Entity type that needs to be verified.",
-                type = "String",
-                required = true
-            )
-            final String entityType,
-            @ApiParam
-            (
-                value = "Entity ID that needs to be verified.",
-                type = "Number",
-                required = true
-            )
-            final Long entityId);
+//    @ApiOperation
+//    (
+//        notes = "Verify if a entity with a specified ID exists.",
+//        value = "Does entity exist",
+//        nickname = "entityExist",
+//        code = 302
+//    )
+//    ResponseEntity<Boolean> entityExist(
+//            @ApiParam
+//            (
+//                value = "Entity type that needs to be verified.",
+//                type = "String",
+//                required = true
+//            )
+//            final String entityType,
+//            @ApiParam
+//            (
+//                value = "Entity ID that needs to be verified.",
+//                type = "Number",
+//                required = true
+//            )
+//            final Long entityId);
 }
