@@ -1,6 +1,7 @@
 package com.umssonline.proymgt.services;
 
 
+import com.umssonline.proymgt.exceptions.InvalidResourceException;
 import com.umssonline.proymgt.feign.UsersFeignClient;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Project;
@@ -79,6 +80,21 @@ public class ProjectServiceSpec {
                                project.getBacklog().getDescription(),
                       "Once a new project is saved, it should contain: " + VALID_PROJECT_BACKLOG_DESCRIPTION)
         );
+    }
+
+    @DisplayName("If the user that is creating the project does not exist, an exception is thrown.")
+    @Test
+    void throwsExceptionWhenUserDoesNotExist() {
+
+        InvalidResourceException throwException = assertThrows(
+            InvalidResourceException.class,
+            () -> projectService.save(getValidProjectParameter()),
+            "An exception should be thrown when a user that is creating the project does not exist."
+        );
+
+        assertEquals("User with the specified ID could not be found.",
+                     throwException.getMessage(),
+                     "An exception should be thrown when a user that is creating the project does not exist.");
     }
     //endregion
 
