@@ -2,6 +2,7 @@ package com.umssonline.proymgt.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -22,6 +23,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"backlog", "sprints"}, callSuper = false)
 @ToString(exclude = {"backlog", "sprints"})
 @Data
+@Builder
 
 @Entity
 @Table(name = "projects")

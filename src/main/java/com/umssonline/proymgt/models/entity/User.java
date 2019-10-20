@@ -1,12 +1,14 @@
 package com.umssonline.proymgt.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
+@Builder
 
 @Entity
 @Table(name = "users")

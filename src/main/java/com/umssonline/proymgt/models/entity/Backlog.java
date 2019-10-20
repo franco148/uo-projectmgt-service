@@ -3,6 +3,7 @@ package com.umssonline.proymgt.models.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -22,6 +23,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = { "project", "userStories" }, callSuper = false)
 @ToString(exclude = { "project", "userStories" })
 @Data
+@Builder
 
 @Entity
 @Table(name = "backlogs")
