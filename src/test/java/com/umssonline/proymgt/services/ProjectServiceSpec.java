@@ -6,7 +6,9 @@ import com.umssonline.proymgt.feign.UsersFeignClient;
 import com.umssonline.proymgt.models.entity.Backlog;
 import com.umssonline.proymgt.models.entity.Project;
 import com.umssonline.proymgt.models.entity.User;
+import com.umssonline.proymgt.repositories.CommonRepository;
 import com.umssonline.proymgt.repositories.ProjectRepository;
+import com.umssonline.proymgt.repositories.SprintRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
 import com.umssonline.proymgt.services.impl.ProjectServiceImpl;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -38,6 +41,8 @@ public class ProjectServiceSpec {
     //region Test Properties
     private ProjectRepository projectRepository = mock(ProjectRepository.class);
     private UserRepository userRepository = mock(UserRepository.class);
+    private CommonRepository commonRepository = mock(CommonRepository.class);
+    private SprintRepository sprintRepository = mock(SprintRepository.class);
     private UsersFeignClient usersFeignClient = mock(UsersFeignClient.class);
 
     private ProjectService projectService;
@@ -45,16 +50,14 @@ public class ProjectServiceSpec {
     private Project validSavedProject;
     //endregion
 
-
     //region Test Setup
     @BeforeEach
     void setup() {
-        this.projectService = new ProjectServiceImpl(projectRepository, userRepository, usersFeignClient);
+        this.projectService = new ProjectServiceImpl(projectRepository, userRepository, commonRepository, sprintRepository, usersFeignClient);
         this.validSavedProject = getValidProjectParameter();
         this.validSavedProject.setId(VALID_PROJECT_SAVED_ID);
     }
     //endregion
-
 
     //region Unit Tests
 
@@ -62,9 +65,10 @@ public class ProjectServiceSpec {
     @Nested
     @DisplayName("Unit Tests for Save Project feature")
     class SaveOperationSpec {
-        @DisplayName("When all properties of a project are configured correctly, " +
-                "it should return a non null project that contains an ID")
+
         @Test
+        @DisplayName("When all properties of a project are configured correctly, " +
+                     "it should return a non null project that contains an ID")
         void aProjectEntityIsReturnedWhenEverythingIsValid() {
             when(usersFeignClient.findById(getCreatedBy().getId())).thenReturn(getCreatedBy());
             when(userRepository.save(getCreatedBy())).thenReturn(getCreatedBy());
@@ -88,14 +92,13 @@ public class ProjectServiceSpec {
             );
         }
 
-        @DisplayName("If the user that is creating the project does not exist, an exception is thrown.")
         @Test
+        @DisplayName("If the user that is creating the project does not exist, an exception is thrown.")
         void throwsExceptionWhenUserDoesNotExist() {
 
             InvalidResourceException throwException = assertThrows(
                     InvalidResourceException.class,
-                    () -> projectService.save(getValidProjectParameter()),
-                    "An exception should be thrown when a user that is creating the project does not exist."
+                    () -> projectService.save(getValidProjectParameter())
             );
 
             assertEquals("User with the specified ID could not be found.",
@@ -108,7 +111,39 @@ public class ProjectServiceSpec {
     //region FindById Unit Tests
     @Nested
     @DisplayName("Unit Tests for FindById feature")
-    class FindByIdOperationSpec {}
+    class FindByIdOperationSpec {
+
+        @Test
+        @DisplayName("When a project with the specified ID does not exist, an exception is thrown.")
+        void throwsExceptionWhenSpecifiedIdDostNotExist() {
+            Long someProjectId = 100L;
+
+            EntityNotFoundException throwException = assertThrows(
+                EntityNotFoundException.class,
+                () -> projectService.findById(someProjectId)
+            );
+
+            assertEquals(
+                "Project with specified ID does not exist.",
+                throwException.getMessage(),
+                "An exception should be thrown when a project with the specified ID does not exist."
+            );
+        }
+
+        @Test
+        @DisplayName("When the specified project ID is correct, then a Project Entity is returned.")
+        void projectEntityIsReturnedWhenTheSpecifiedIdIsCorrect() {
+            when(projectRepository.existsById(VALID_PROJECT_SAVED_ID)).thenReturn(true);
+            when(projectRepository.getOne(VALID_PROJECT_SAVED_ID)).thenReturn(validSavedProject);
+
+            Project project = projectService.findById(VALID_PROJECT_SAVED_ID);
+
+            assertAll(
+                () -> assertNotNull(project, "Project should not be null when ID is correct."),
+                () -> assertEquals(VALID_PROJECT_SAVED_ID, project.getId(), "The project ID should be the specified one.")
+            );
+        }
+    }
     //endregion
     //endregion
 

@@ -10,7 +10,6 @@ import com.umssonline.proymgt.repositories.ProjectRepository;
 import com.umssonline.proymgt.repositories.SprintRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,20 +19,15 @@ import javax.persistence.EntityNotFoundException;
 public class ProjectServiceImpl implements ProjectService {
 
     //region Properties
-    @Autowired
+
     private ProjectRepository projectRepository;
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private CommonRepository commonRepository;
 
-    @Autowired
     private SprintRepository sprintRepository;
 
-//    @Qualifier("authService")
-    @Autowired
     private UsersFeignClient usersFeignClient;
 
     //endregion
@@ -42,9 +36,13 @@ public class ProjectServiceImpl implements ProjectService {
     //region Constructors
     public ProjectServiceImpl(ProjectRepository projectRepository,
                               UserRepository userRepository,
+                              CommonRepository commonRepository,
+                              SprintRepository sprintRepository,
                               UsersFeignClient usersFeignClient) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.commonRepository = commonRepository;
+        this.sprintRepository = sprintRepository;
         this.usersFeignClient = usersFeignClient;
     }
     //endregion
