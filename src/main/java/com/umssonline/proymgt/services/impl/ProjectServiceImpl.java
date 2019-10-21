@@ -11,7 +11,6 @@ import com.umssonline.proymgt.repositories.SprintRepository;
 import com.umssonline.proymgt.repositories.UserRepository;
 import com.umssonline.proymgt.services.api.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,24 +26,36 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private CommonRepository commonRepository;
-//
-//    @Autowired
-//    private SprintRepository sprintRepository;
+    @Autowired
+    private CommonRepository commonRepository;
+
+    @Autowired
+    private SprintRepository sprintRepository;
 
 //    @Qualifier("authService")
     @Autowired
-    private UsersFeignClient usersClient;
+    private UsersFeignClient usersFeignClient;
 
     //endregion
+
+
+    //region Constructors
+    public ProjectServiceImpl(ProjectRepository projectRepository,
+                              UserRepository userRepository,
+                              UsersFeignClient usersFeignClient) {
+        this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
+        this.usersFeignClient = usersFeignClient;
+    }
+    //endregion
+
 
     //region CRUDService Members
 
     @Transactional
     @Override
     public Project save(Project project) {
-        User authUser = usersClient.findById(project.getCreatedBy().getId());
+        User authUser = usersFeignClient.findById(project.getCreatedBy().getId());
         if (authUser == null) {
             throw new InvalidResourceException("User with the specified ID could not be found.");
         }
@@ -80,7 +91,7 @@ public class ProjectServiceImpl implements ProjectService {
             throw new EntityNotFoundException("Project with specified ID can not be found, process has been terminated");
         }
 
-        User authUser = usersClient.findById(project.getUpdatedBy().getId());
+        User authUser = usersFeignClient.findById(project.getUpdatedBy().getId());
         if (authUser == null) {
             throw new InvalidResourceException("User with the specified ID could not be found.");
         }
@@ -122,28 +133,28 @@ public class ProjectServiceImpl implements ProjectService {
         return userProjects;
     }
 
-//    @Transactional
-//    @Override
-//    public Sprint addSprint(Long projectId, Sprint sprint) {
-//
-//        if (!projectRepository.existsById(projectId)) {
-//            throw new EntityNotFoundException("Project with specified ID can not be found.");
-//        }
-//
-//        User authUser = usersClient.findById(sprint.getCreatedBy().getId());
-//        if (authUser == null) {
-//            throw new InvalidResourceException("User with the specified ID could not be found.");
-//        }
-//
-//        User savedUser = userRepository.save(authUser);
-//
-//        Project foundProject = projectRepository.getOne(projectId);
-//
-//        sprint.setProject(foundProject);
-//        sprint.setCreatedBy(savedUser);
-//
-//        return sprintRepository.save(sprint);
-//    }
+    @Transactional
+    @Override
+    public Sprint addSprint(Long projectId, Sprint sprint) {
+
+        if (!projectRepository.existsById(projectId)) {
+            throw new EntityNotFoundException("Project with specified ID can not be found.");
+        }
+
+        User authUser = usersFeignClient.findById(sprint.getCreatedBy().getId());
+        if (authUser == null) {
+            throw new InvalidResourceException("User with the specified ID could not be found.");
+        }
+
+        User savedUser = userRepository.save(authUser);
+
+        Project foundProject = projectRepository.getOne(projectId);
+
+        sprint.setProject(foundProject);
+        sprint.setCreatedBy(savedUser);
+
+        return sprintRepository.save(sprint);
+    }
 
     @Transactional(readOnly = true)
     @Override
@@ -156,16 +167,16 @@ public class ProjectServiceImpl implements ProjectService {
         return foundProject;
     }
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public int findEntityByTypeAndId(String entityType, Long entityId) {
-//
-//        if (entityId < 1) {
-//            throw new EntityNotFoundException("The specified entity ID is not valid.");
-//        }
-//
-//        return commonRepository.findEntityTypeAndId(entityType, entityId);
-//    }
+    @Transactional(readOnly = true)
+    @Override
+    public int findEntityByTypeAndId(String entityType, Long entityId) {
+
+        if (entityId < 1) {
+            throw new EntityNotFoundException("The specified entity ID is not valid.");
+        }
+
+        return commonRepository.findEntityTypeAndId(entityType, entityId);
+    }
 
     //endregion
 }
